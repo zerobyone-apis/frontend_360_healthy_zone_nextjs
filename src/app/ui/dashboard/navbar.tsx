@@ -1,9 +1,8 @@
 import Image from "next/image";
 
-
 export function Navbar() {
     return (
-        <nav className="w-full h-[50px] p-3  justify-between content-center flex">
+        <nav className="w-full h-[70px] p-3  justify-between content-center flex">
             <form >
                 <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
                 <div className="relative">
@@ -17,7 +16,7 @@ export function Navbar() {
             </form>
 
             <div className="border-2 p-1 border-jungle-green-400 rounded-full w-10 h-10">
-                <Image alt="imagen" width={288} height={288} className="rounded-full" src={"/profile.png"}></Image>
+                <Image alt="imagen" width={288} height={288} className="rounded-full" src={"/profile.png"} />
             </div>
         </nav >
     )
