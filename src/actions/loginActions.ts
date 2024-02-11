@@ -16,8 +16,6 @@ export const login = async ({ email, password }: login) => {
 			}),
 		});
 
-		console.log(resp.headers.get("Authorization"));
-
 		return resp.headers.get("Authorization") || "";
 	} catch (error) {
 		return console.log(error);
