@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function Navbar() {
     const [showProfileDrop, setShowProfileDrop] = useState(false);
@@ -32,14 +32,19 @@ export function Navbar() {
 function ProfileDropdown({ show = false }) {
     const router = useRouter();
     const dropdownRef = useRef(null);
-    const handleClickOutsideFn = () => show = false;
+    const [isvisible, setIsVisible] = useState(show);
+    const handleClickOutsideFn = () => setIsVisible(false);
+
+    useEffect(() => {
+        setIsVisible(show);
+    }, [show])
     useOnClickOutside(dropdownRef, handleClickOutsideFn);
 
     function handleSignout() {
         Cookies.remove("token");
         router.push("/");
     }
-    if (!show) return null
+    if (!isvisible) return null
     return (
         <div className="relative inline-block text-left" ref={dropdownRef}>
             <div className="absolute right-0 z-10 mt-1 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" >
