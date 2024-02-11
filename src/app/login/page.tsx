@@ -4,9 +4,10 @@ import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
-
+    const router = useRouter();
     const [userdata, setUserData] = useState({ email: "", password: "" });
 
     async function handleLoginForm() {
@@ -15,6 +16,8 @@ export default function Page() {
             Cookies.set("token", resp, {
                 expires: 7,
             });
+            router.push("/dashboard");
+
         }
     }
 
