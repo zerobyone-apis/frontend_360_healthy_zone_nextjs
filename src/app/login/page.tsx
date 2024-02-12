@@ -1,5 +1,5 @@
 'use client'
-import { login } from "@/actions/loginActions";
+import { login } from "@/actions/login/loginActions";
 import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 import Link from "next/link";
 import Cookies from "js-cookie";
