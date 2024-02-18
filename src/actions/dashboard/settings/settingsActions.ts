@@ -8,8 +8,17 @@ interface BasicInfo {
 	email: string;
 }
 
-export async function saveBasicInfo(info: BasicInfo) {
-	if (typeof info === "undefined") return new Error("There is no info to save");
+export type State = {
+	errors?: {
+		customerId?: string[];
+		amount?: string[];
+		status?: string[];
+	};
+	message?: string | null;
+};
+
+export async function saveBasicInfo(_prevState: State, info: FormData) {
+	// if (typeof info === "undefined") return new Error("There is no info to save");
 	const cookieStore = cookies();
 	const token = "Bearer " + cookieStore.get("token")?.value;
 	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
