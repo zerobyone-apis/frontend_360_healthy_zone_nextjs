@@ -35,9 +35,9 @@ export function Sidebar() {
     }]
 
     return (
-        <aside className='md:h-[95vh]  shadow max-h-full w-[80%] m-2 relative border rounded-[40px]  bg-gradient-to-b from-jungle-green-400 to-jungle-green-600 '>
-            <div className="h-full flex justify-center">
-                <ul className=" p-4 font-bold flex justify-center flex-col items-center gap-3 w-full text-center">
+        <aside className='md:h-[100vh]  max-h-full md:w-full w-[80%] relative  bg-gradient-to-b from-jungle-green-400 to-jungle-green-600 '>
+            <div className="h-full w-full flex justify-center">
+                <ul className=" pl-3 font-bold flex justify-center flex-col items-center gap-3 w-full text-center">
                     {list.map((li, index) => <ListItem {...li} key={index}></ListItem>)}
                 </ul>
             </div>
@@ -54,9 +54,9 @@ function ListItem({ icon, title, redirect = "" }: ListItemInterface): any {
     const pathname = usePathname();
 
     return (
-        <div>
+        <div className="w-full">
             <Link key={redirect} href={redirect}>
-                <li className={clsx('w-full flex gap-2 p-2 content-start text-center hover:text-black active:text-jungle-green-500 hover:bg-white active:bg-white rounded-full transition-colors justify-center', { 'bg-white text-jungle-green-500': pathname === redirect })}> <i className={icon}></i> <p className="hidden sm:block truncate">{title}</p></li>
+                <li className={clsx('w-full flex gap-2 p-2 content-start text-center hover:text-black active:text-jungle-green-500 hover:bg-white active:bg-white rounded-s-full transition-colors justify-center', { 'bg-white text-jungle-green-500': pathname === redirect })}> <i className={icon}></i> <p className="hidden sm:block truncate">{title}</p></li>
             </Link >
         </div>
     )

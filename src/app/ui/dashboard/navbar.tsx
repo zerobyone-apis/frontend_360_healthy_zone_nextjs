@@ -42,7 +42,7 @@ function ProfileDropdown({ show = false }) {
 
     function handleSignout() {
         Cookies.remove("token");
-        router.push("/");
+        // router.push("/");
     }
     if (!isvisible) return null
     return (
