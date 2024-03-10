@@ -5,6 +5,7 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Crypto } from "@/utils/encrypt";
 
 export default function Page() {
     const router = useRouter();
@@ -12,11 +13,11 @@ export default function Page() {
 
     async function handleLoginForm() {
         if (userdata.email === "test@test.com" && userdata.password === "password") {
-            Cookies.set("token", "UnaPruebaDeTokenSinSentido", {
+            Cookies.set("token", Crypto.encrypt("UnaPruebaDeTokenSinSentido"), {
                 expires: 7
             });
             Cookies.set("user",
-                JSON.stringify({
+                Crypto.encrypt(JSON.stringify({
                     "user": {
                         "userId": "1",
                         "email": "gaston.nicolas.morales.olivera@gmail.com",
@@ -44,14 +45,14 @@ export default function Page() {
                     },
                     "nutritionist": null,
                     "coach": null
-                }), { expires: 7 })
+                })), { expires: 7 })
             return true;
         }
         let resp = await login(userdata);
         if (resp) {
-            Cookies.set("token", resp, {
-                expires: 7,
-            });
+            // Cookies.set("token", Crypto.encrypt(resp), {
+            //     expires: 7,
+            // });
             router.push("/dashboard");
 
         }

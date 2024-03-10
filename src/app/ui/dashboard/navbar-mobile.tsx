@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from 'next/navigation';
 
 export function NavbarMobile() {
-
     const list = [{
         icon: 'bx bxs-dashboard text-2xl',
         title: "Dashboard",
@@ -35,9 +34,10 @@ export function NavbarMobile() {
     }]
 
     return (
-        <nav className='max-h-full w-[95%] rounded-full mb-2 relative  bg-gradient-to-b from-jungle-green-400 to-jungle-green-600 '>
+        <nav className='max-h-full w-[95%] rounded-full mb-2 p-2 relative bg-gradient-to-b from-jungle-green-400 to-jungle-green-600 '>
             <div className="h-full w-full flex justify-center">
                 <ul className=" pl-3 font-bold flex justify-center flex-row items-center gap-3 w-full text-center">
+
                     {list.map((li, index) => <ListItem {...li} key={index}></ListItem>)}
                 </ul>
             </div>
@@ -56,7 +56,7 @@ function ListItem({ icon, title, redirect = "" }: ListItemInterface): any {
     return (
         <div className="w-full">
             <Link key={redirect} href={redirect}>
-                <li className={clsx('w-full flex gap-2 p-2 content-start text-center hover:text-black active:text-jungle-green-500 hover:bg-white active:bg-white rounded-full transition-colors justify-center', { 'bg-white text-jungle-green-500': pathname === redirect })}> <i className={icon}></i> <p className="hidden lg:block truncate">{title}</p></li>
+                <li className={clsx('w-full flex gap-2 p-2 content-start text-center hover:text-black active:text-jungle-green-500 hover:bg-white active:bg-white rounded-full transition-colors justify-center', { 'bg-white text-jungle-green-500': pathname === redirect })} aria-description={title}> <i className={icon}></i> </li>
             </Link >
         </div>
     )

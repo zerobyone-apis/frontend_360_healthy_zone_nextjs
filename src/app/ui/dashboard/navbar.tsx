@@ -42,7 +42,6 @@ function ProfileDropdown({ show = false }) {
 
     function handleSignout() {
         Cookies.remove("token");
-        // router.push("/");
     }
     if (!isvisible) return null
     return (

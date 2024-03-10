@@ -1,5 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
+import { Crypto } from "@/utils/encrypt";
 
 interface BasicInfo {
 	first_name: string;
@@ -9,37 +10,51 @@ interface BasicInfo {
 }
 
 export type State = {
-	errors?: {
-		customerId?: string[];
-		amount?: string[];
-		status?: string[];
-	};
 	message?: string | null;
 };
 
 export async function saveBasicInfo(_prevState: State, info: FormData) {
-	// if (typeof info === "undefined") return new Error("There is no info to save");
 	const cookieStore = cookies();
-	const token = "Bearer " + cookieStore.get("token")?.value;
-	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
+	// const tokenValue = Crypto.decrypt(cookieStore.get("token")?.value || "");
+	const tokenValue = cookieStore.get("token")?.value || "";
+	const token = tokenValue;
+	const user = JSON.parse(
+		// Crypto.decrypt(cookieStore.get("user")?.value || "") || "{}"
+		cookieStore.get("user")?.value || "{}"
+	);
+
+	const userbody: BasicInfo = {
+		first_name: info.get("first_name")?.toString() || "",
+		last_name: info.get("last_name")?.toString() || "",
+		phone: info.get("phone")?.toString() || "",
+		email: info.get("email")?.toString() || "",
+	};
 
 	try {
 		const resp = await fetch(
-			"http://localhost:8080/v1.0/profile/update/" + user.id,
+			process.env.BASE_PATH + "/v1.0/profile/update/" + user.user.userId,
 			{
-				method: "POST",
+				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					"Cache-Control": "no-store",
 					Authorization: token,
 				},
-				body: JSON.stringify(info),
+				body: JSON.stringify(userbody),
 			}
 		);
 
-		let respi = await resp.json();
-		console.log(respi);
+		let respi = await resp.text();
+		return {
+			error: false,
+			message: "Data updated successfuly",
+			response: respi,
+		};
 	} catch (error) {
-		console.log(error);
-		return error;
+		return {
+			error: true,
+			message: "Error trying to updating information, try later.",
+			response: null,
+		};
 	}
 }

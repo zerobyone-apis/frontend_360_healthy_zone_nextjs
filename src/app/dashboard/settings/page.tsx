@@ -4,24 +4,52 @@ import { Button } from "@/app/ui/button";
 import InputField from "@/app/ui/input";
 import Cookies from "js-cookie";
 import { useFormState } from "react-dom";
+import { Crypto } from "@/utils/encrypt";
+import clsx from "clsx";
+import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { getProfile } from "@/actions/client/clientActions";
 
 export default function Page() {
-    const cookie = Cookies
-    const userInfo = JSON.parse(cookie.get('user') || "{}");
-    console.log(userInfo);
-    // const [stateBasicInfo, formActionBasicInfo] = useFormState(saveBasicInfo, { message: null })
+    const cookie = Cookies;
+    // const userInfo = JSON.parse(Crypto.decrypt(cookie.get('user') || "") || "{}");
+    const [userInfo, setUserInfo] = useState({ first_name: "", last_name: "", phone: "", email: "" });
+    const [stateBasicInfo, formActionBasicInfo] = useFormState(saveBasicInfo, { message: "", error: false, response: null })
+    const [error, setError] = useState(false);
+    useEffect(() => {
+        getProfile().then((resp) => {
+            if (resp.error) setError(true);
+            else setUserInfo(resp);
+        })
+    }, []);
+
+    useEffect(() => {
+        if (stateBasicInfo.message) {
+            if (stateBasicInfo.error) toast.error(stateBasicInfo.message);
+            else toast.success(stateBasicInfo.message);
+        }
+    }, [stateBasicInfo.message, stateBasicInfo.error])
+
+    //Cambiar por handler de next js
+
+    if (error) return <>
+        <h1>Error</h1>
+    </>;
 
     return (
         <div>
-            <form className="border border-jungle-green-200 rounded p-4 mt-10" >
+            <form className="border border-jungle-green-200 rounded p-4 mt-10" action={formActionBasicInfo}>
                 {/**
                  * Agregar h5 para describir que se agregara aqui...
                  */}
                 <label className="-top-7 relative z-20 bg-jungle-green-200 rounded p-1 shadow"  >Basic information</label>
-                <InputField placeholder="John" label="Name" name="first_name" value={userInfo.client.first_name} />
-                <InputField placeholder="Doe" label="Lastname" name="last_name" value={userInfo.client.last_name} />
-                <InputField placeholder="+17863036228" label="Phone number" name="phone" value={userInfo.client.phone} />
-                <InputField placeholder="jhon.doe@mydomain.com" label="Email" name="email" value={userInfo.client.email} />
+                <InputField placeholder="John" label="Name" name="first_name" defaultValue={userInfo.first_name} />
+                <InputField placeholder="Doe" label="Lastname" name="last_name" defaultValue={userInfo.last_name} />
+                <InputField placeholder="+17863036228" label="Phone number" name="phone" defaultValue={userInfo.phone} />
+                <InputField placeholder="jhon.doe@mydomain.com" label="Email" name="email" defaultValue={userInfo.email} />
+                {/* {stateBasicInfo.message && <div className={clsx("p-2 w-full rounded mb-3", stateBasicInfo.error ? "bg-red-500" : "bg-jungle-green-400")}><p className={clsx("font-sm text-white")}>
+                    <i className={clsx('bx font-bold', stateBasicInfo.error ? "bx-error" : "bx-check")}></i> {stateBasicInfo.message}
+                </p></div>} */}
                 <div className="flex justify-end w-full">
                     <Button type="submit" className="rounded bg-jungle-green-400 hover:bg-jungle-green-500 text-white"> Save Info</Button>
                 </div>
