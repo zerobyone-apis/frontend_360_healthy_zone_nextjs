@@ -9,8 +9,6 @@ type Props = {
 }
 
 export function TasksList({ tasks }: Props) {
-    console.log(tasks);
-
     return (
         <div className="gap-3 flex flex-col">
             {

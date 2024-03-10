@@ -1,6 +1,6 @@
 'use client'
 
-import { registration } from "@/actions/signupActions";
+import { registration } from "@/actions/signup/signupActions";
 import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 import Link from "next/link";
 import { useState } from "react";
