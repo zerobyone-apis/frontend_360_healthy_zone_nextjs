@@ -1,4 +1,4 @@
-import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
+import Logo from "@/ui/svgs/logo-360-healthy-zone.svg";
 
 export function Footer() {
     return (

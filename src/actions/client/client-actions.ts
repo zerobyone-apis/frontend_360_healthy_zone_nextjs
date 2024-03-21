@@ -8,6 +8,7 @@ export async function getProfile() {
 	const userId = user.user.userId;
 	const tokenValue = cookieStore.get("token")?.value || "";
 	const token = tokenValue;
+	console.log(token);
 
 	try {
 		const resp = await fetch(process.env.BASE_PATH + "/v1.0/client/" + userId, {

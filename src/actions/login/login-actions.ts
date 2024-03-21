@@ -1,6 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
-import { Crypto } from "@/utils/encrypt";
+// import { Crypto } from "@/utils/encrypt";
 
 type login = {
 	email: string;
@@ -14,6 +14,7 @@ export const login = async ({ email, password }: login) => {
 			headers: {
 				"Content-Type": "application/json",
 				"Cache-Control": "no-store",
+				cache: "no-store",
 			},
 			body: JSON.stringify({
 				email,
@@ -21,14 +22,15 @@ export const login = async ({ email, password }: login) => {
 			}),
 		});
 		let body = await resp.json();
-		const cookieStore = cookies();
 
 		// cookieStore.set("user", Crypto.encrypt(JSON.stringify(body)));
 		const token: string = resp.headers.get("Authorization") || "";
+		console.log("Token desde back en el login: " + token);
 		if (!token) return false;
 
 		// adding cookies...
 		const sevenDays = 168 * 60 * 60 * 1000;
+		const cookieStore = cookies();
 		cookieStore.set("user", JSON.stringify(body), {
 			expires: Date.now() + sevenDays,
 		});

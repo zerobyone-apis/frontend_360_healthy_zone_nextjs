@@ -1,7 +1,7 @@
 
-import { PlanOfferCard } from '../ui/dashboard/plan-offer-card'
-import ProgressCard from '../ui/dashboard/progress-card'
-import { TasksCard } from '../ui/dashboard/tasks-card'
+import { PlanOfferCard } from '../../ui/dashboard/plan-offer-card'
+import ProgressCard from '../../ui/dashboard/progress-card'
+import { TasksCard } from '../../ui/dashboard/tasks-card'
 
 
 export default function Page() {

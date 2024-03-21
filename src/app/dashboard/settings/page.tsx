@@ -1,14 +1,14 @@
 'use client'
-import { saveBasicInfo } from "@/actions/dashboard/settings/settingsActions";
-import { Button } from "@/app/ui/button";
-import InputField from "@/app/ui/input";
+import { saveBasicInfo } from "@/actions/dashboard/settings/settings-actions";
+import { Button } from "@/ui/button";
+import InputField from "@/ui/input";
 import Cookies from "js-cookie";
 import { useFormState } from "react-dom";
 import { Crypto } from "@/utils/encrypt";
 import clsx from "clsx";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
-import { getProfile } from "@/actions/client/clientActions";
+import { getProfile } from "@/actions/client/client-actions";
 
 export default function Page() {
     const cookie = Cookies;
@@ -18,17 +18,12 @@ export default function Page() {
     const [error, setError] = useState(false);
     useEffect(() => {
         getProfile().then((resp) => {
+            console.log(resp)
             if (resp.error) setError(true);
             else setUserInfo(resp);
         })
     }, []);
 
-    useEffect(() => {
-        if (stateBasicInfo.message) {
-            if (stateBasicInfo.error) toast.error(stateBasicInfo.message);
-            else toast.success(stateBasicInfo.message);
-        }
-    }, [stateBasicInfo.message, stateBasicInfo.error])
 
     //Cambiar por handler de next js
 
