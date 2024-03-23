@@ -1,7 +1,7 @@
 'use client'
 import { saveBasicInfo } from "@/actions/dashboard/settings/settings-actions";
-import { Button } from "@/ui/button";
-import InputField from "@/ui/input";
+import { Button } from "@/app/ui/button";
+import InputField from "@/app/ui/input";
 import Cookies from "js-cookie";
 import { useFormState } from "react-dom";
 import { Crypto } from "@/utils/encrypt";

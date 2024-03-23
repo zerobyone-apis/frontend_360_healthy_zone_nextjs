@@ -1,40 +1,40 @@
 export enum TypeGoals {
-	"LOSE_WEIGHT",
-	"INCREASE_MASS_MUSCLE",
-	"LOSE_WEIGHT_HEALTHY_HABITS",
+	"LOSE_WEIGHT" = "LOSE WEIGHT",
+	"INCREASE_MASS_MUSCLE" = "INCREASE MASS MUSCLE",
+	"LOSE_WEIGHT_HEALTHY_HABITS" = "LOSE WEIGHT HEALTHY HABITS",
 }
 
 export enum CoachPlansServices {
-	"MUSCLE",
-	"RITMIA",
-	"HIPERTROFIA",
-	"NOT_APPLY",
+	"MUSCLE" = "MUSCLE",
+	"RITMIA" = "RITMIA",
+	"HIPERTROFIA" = "HIPERTROFIA",
+	"NOT_APPLY" = "NOT APPLY",
 }
 
 export enum GoalStatus {
-	"CREATED",
-	"STARTED",
-	"IN_PROGRESS",
-	"COMPLETED",
-	"CANCELED",
-	"MODIFIED",
+	"CREATED" = "CREATED",
+	"STARTED" = "STARTED",
+	"IN_PROGRESS" = "IN PROGRESS",
+	"COMPLETED" = "COMPLETED",
+	"CANCELED" = "CANCELED",
+	"MODIFIED" = "MODIFIED",
 }
 
 export enum DietStatus {
-	"CREATED",
-	"STARTED",
-	"IN_PROGRESS",
-	"COMPLETED",
-	"CANCELED",
-	"MODIFIED",
-	"NOT_APPLY",
+	"CREATED" = "CREATED",
+	"STARTED" = "STARTED",
+	"IN_PROGRESS" = "IN PROGRESS",
+	"COMPLETED" = "COMPLETED",
+	"CANCELED" = "CANCELED",
+	"MODIFIED" = "MODIFIED",
+	"NOT_APPLY" = "NOT APPLY",
 }
 
 export enum NutritionistPlansServices {
-	"HEALTH_WEIGHT",
-	"HEALTHY_EAT",
-	"HEALTHY_EAT_AND_LOSE_WEIGHT",
-	"NOT_APPLY",
+	"HEALTH_WEIGHT" = "HEALTH WEIGHT",
+	"HEALTHY_EAT" = "HEALTHY EAT",
+	"HEALTHY_EAT_AND_LOSE_WEIGHT" = "HEALTHY EAT AND LOSE WEIGHT",
+	"NOT_APPLY" = "NOT APPLY",
 }
 
 export enum TrainingStatus {
@@ -48,9 +48,9 @@ export enum TrainingStatus {
 }
 
 export enum TypeDiets {
-	LOSE_WEIGHT,
-	INCREASE_MASS_MUSCLE,
-	LOSE_WEIGHT_HEALTHY_HABITS,
+	"LOSE_WEIGHT" = "LOSE WEIGHT 🏃",
+	"INCREASE_MASS_MUSCLE" = "INCREASE MASS MUSCLE 💪",
+	"LOSE_WEIGHT_HEALTHY_HABITS" = "LOSE WEIGHT HEALTHY HABITS 🥑",
 }
 
 export interface GoalResponseDTO {
@@ -104,7 +104,6 @@ export interface DietResponseDTO {
 	nutritionist: number;
 	custom_form: number;
 	goal: GoalResponseDTO;
-
 	trainer_plans: CoachPlansServices;
 	nutritionist_plans: NutritionistPlansServices;
 	diet_status: DietStatus;

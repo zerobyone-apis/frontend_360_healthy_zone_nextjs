@@ -1,6 +1,6 @@
 'use client'
 import { login } from "@/actions/login/login-actions";
-import Logo from "@/ui/svgs/logo-360-healthy-zone.svg";
+import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { useState } from "react";

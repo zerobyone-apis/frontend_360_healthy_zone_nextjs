@@ -1,7 +1,7 @@
 'use client'
-import { Navbar } from "../../ui/dashboard/navbar";
-import { Sidebar } from "../../ui/dashboard/sidebar";
-import { NavbarMobile } from "../../ui/dashboard/navbar-mobile";
+import { Navbar } from "../ui/dashboard/navbar";
+import { Sidebar } from "../ui/dashboard/sidebar";
+import { NavbarMobile } from "../ui/dashboard/navbar-mobile";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 

@@ -1,5 +1,5 @@
 'use client'
-import Logo from "@/ui/svgs/logo-360-healthy-zone.svg";
+import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 import { Button } from "../button";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
