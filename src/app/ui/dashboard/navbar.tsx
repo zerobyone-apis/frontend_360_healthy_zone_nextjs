@@ -21,8 +21,8 @@ export function Navbar() {
                     <input type="search" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-200  " placeholder="Search chats, diets, ingredients, etc..." required />
                 </div>
             </form>
-            <div className="border-2 p-1 border-jungle-green-400 rounded-full w-10 h-10" onClick={() => setShowProfileDrop(!showProfileDrop)}>
-                <Image alt="imagen" width={288} height={288} className="rounded-full" src={"/profile.png"} />
+            <div className="border-2 p-1 border-jungle-green-400 rounded-full w-[10px] h-[10px]" onClick={() => setShowProfileDrop(!showProfileDrop)}>
+                <img alt="imagen" className="w-10 h-10 rounded-full" src={"/profile.png"} />
                 <ProfileDropdown show={showProfileDrop} />
             </div>
         </nav >

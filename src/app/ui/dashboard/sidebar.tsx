@@ -21,7 +21,7 @@ export function Sidebar() {
     }, {
         icon: 'bx bxs-pear text-xl',
         title: "Diet",
-        redirect: "/dashboard/diet"
+        redirect: "/dashboard/diets"
     },
     {
         icon: 'bx bxs-flag-checkered text-xl',

@@ -20,7 +20,7 @@ export function NavbarMobile() {
     }, {
         icon: 'bx bxs-pear text-xl',
         title: "Diet",
-        redirect: "/dashboard/diet"
+        redirect: "/dashboard/diets"
     },
     {
         icon: 'bx bxs-flag-checkered text-xl',
@@ -34,10 +34,9 @@ export function NavbarMobile() {
     }]
 
     return (
-        <nav className='max-h-full w-[95%] rounded-full mb-2 p-2 relative bg-gradient-to-b from-jungle-green-400 to-jungle-green-600 '>
+        <nav className='max-h-[60px] w-[95%] rounded-full mb-2 p-2 relative bottom-0 bg-gradient-to-b from-jungle-green-400 to-jungle-green-600 '>
             <div className="h-full w-full flex justify-center">
                 <ul className=" pl-3 font-bold flex justify-center flex-row items-center gap-3 w-full text-center">
-
                     {list.map((li, index) => <ListItem {...li} key={index}></ListItem>)}
                 </ul>
             </div>
