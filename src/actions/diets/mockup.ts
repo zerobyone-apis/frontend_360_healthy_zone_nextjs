@@ -45,7 +45,7 @@ export default [
 			"Plan de alimentación para perder peso de forma saludable.",
 		balanced_meal_plan: "Plan equilibrado con nutrientes esenciales.",
 		portion_size_guide: "Guía de tamaños de porción adecuados.",
-		healthy_shopping_list: "Lista de compras saludables.",
+		healthy_shopping_list: "✦ Manzana verde \n✦ Apio \n✦ Perejil",
 		healthy_recipes: "Recetas saludables y deliciosas.",
 		tips_for_change_eating_habits:
 			"Consejos para cambiar hábitos alimenticios.",
@@ -163,7 +163,7 @@ export default [
 		isActive: false,
 	},
 	{
-		diet_id: 3,
+		diet_id: 4,
 		client_id: 2,
 		nutritionist: 456,
 		custom_form: 789,
@@ -214,7 +214,7 @@ export default [
 		isActive: false,
 	},
 	{
-		diet_id: 3,
+		diet_id: 5,
 		client_id: 2,
 		nutritionist: 456,
 		custom_form: 789,
@@ -265,7 +265,7 @@ export default [
 		isActive: false,
 	},
 	{
-		diet_id: 3,
+		diet_id: 6,
 		client_id: 2,
 		nutritionist: 456,
 		custom_form: 789,
@@ -316,7 +316,7 @@ export default [
 		isActive: false,
 	},
 	{
-		diet_id: 3,
+		diet_id: 7,
 		client_id: 2,
 		nutritionist: 456,
 		custom_form: 789,
