@@ -1,6 +1,5 @@
 "use server";
 import { cookies } from "next/headers";
-import { Crypto } from "@/utils/encrypt";
 
 interface BasicInfo {
 	first_name: string;
