@@ -30,9 +30,9 @@ export const DietResumeCardStyles = {
 		labelText: "",
 	},
 	"IN PROGRESS": {
-		card: "border-android-green-300 border-b",
-		label: "border-android-green-400 border-b-4",
-		labelText: "text-android-green-400",
+		card: "border-teal-300 bg-teal-100",
+		label: "border-teal-400 border-b-4",
+		labelText: "text-teal-400",
 	},
 	IsNotActive: "bg-slate-300",
 	CANCELED: {
