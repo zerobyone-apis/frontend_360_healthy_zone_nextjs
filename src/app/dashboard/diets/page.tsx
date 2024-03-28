@@ -28,7 +28,7 @@ export default function Page() {
 
   return (
     <div className='grid grid-cols-4 gap-2'>
-      <div className='col-span-4 md:col-span-1 grid-cols-2'>
+      <div className='col-span-4 md:col-span-1 grid grid-cols-2 max-h-[100px] gap-1 md:gap-2'>
         <DietCounterChart cols="col-span-1 md:col-span-2" bg="bg-jungle-green-100"
           border="border-jungle-green-500" title='✅ COMPLETED ✅' count={diets.filter.length} />
 
