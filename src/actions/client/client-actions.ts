@@ -8,8 +8,7 @@ export async function getProfile() {
 	const userId = user.user.userId;
 	const tokenValue = cookieStore.get("token")?.value || "";
 	const token = tokenValue;
-	console.log(token);
-
+	console.log(user);
 	try {
 		const resp = await fetch(process.env.BASE_PATH + "/v1.0/client/" + userId, {
 			method: "GET",
@@ -17,6 +16,9 @@ export async function getProfile() {
 				"Content-Type": "application/json",
 				"Cache-Control": "no-store",
 				Authorization: token,
+			},
+			next: {
+				revalidate: 60,
 			},
 		});
 
