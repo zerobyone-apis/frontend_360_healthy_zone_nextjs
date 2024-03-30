@@ -5,7 +5,7 @@ import { getAllDietsByUserID } from '@/actions/diets/diet-actions';
 import Cookies from "js-cookie";
 import { User } from '@/interfaces/user';
 import { DietResponseDTO } from '@/interfaces/diets';
-import DietCounterChart from '@/app/ui/dashboard/diets/diet-counter-chart';
+import DietCounterChart from '@/app/ui/dashboard/counter-chart';
 
 export default function Page() {
   const [diets, setDiets] = useState<DietResponseDTO[]>([]);
