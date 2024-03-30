@@ -10,9 +10,9 @@ export function NavbarMobile() {
         redirect: "/dashboard"
     },
     {
-        icon: 'bx bxs-select-multiple text-xl',
-        title: "My Tasks",
-        redirect: "/dashboard/tasks"
+        icon: 'bx bxs-run text-xl',
+        title: "Trainings",
+        redirect: "/dashboard/trainings"
     }, {
         icon: 'bx bxs-message-rounded-dots text-xl',
         title: "Chats",

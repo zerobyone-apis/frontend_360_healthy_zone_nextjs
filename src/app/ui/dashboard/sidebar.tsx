@@ -11,9 +11,9 @@ export function Sidebar() {
         redirect: "/dashboard"
     },
     {
-        icon: 'bx bxs-select-multiple text-xl',
-        title: "My Tasks",
-        redirect: "/dashboard/tasks"
+        icon: 'bx bx-run text-xl',
+        title: "Trainings",
+        redirect: "/dashboard/trainings"
     }, {
         icon: 'bx bxs-message-rounded-dots text-xl',
         title: "Chats",
