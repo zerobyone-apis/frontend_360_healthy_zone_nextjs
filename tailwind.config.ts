@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-	safelist: ["border-jungle-green-400", "border-jungle-green-500"],
+	safelist: [],
 	content: [
 		"./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
 		"./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -81,6 +81,9 @@ const config: Config = {
 					"800": "#c62828",
 					"900": "#b71c1c",
 					"950": "#7f0000",
+				},
+				"red-canceled": {
+					"500": "#E57373",
 				},
 			},
 		},
