@@ -36,3 +36,22 @@ export const TrainingResumeCardStyles = {
 		labelText: "text-red-500",
 	},
 };
+
+export const TrainingTimeLinePillStyles = {
+	READY: {
+		pill: "bg-[#20C997]",
+		text: "text-white",
+	},
+	OMMITED: {
+		pill: "bg-red-canceled-500",
+		text: "text-white",
+	},
+	"IN PROGRESS": {
+		pill: "bg-[#17A2B8]",
+		text: "text-white",
+	},
+	PENDING: {
+		pill: "bg-[#F4F4F4]",
+		text: "text-[#C0C0C0]",
+	},
+};
