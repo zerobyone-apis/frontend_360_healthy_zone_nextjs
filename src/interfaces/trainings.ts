@@ -46,3 +46,26 @@ export enum TrainingTypes {
 	INCREASE_MASS_MUSCLE = "INCREASE MASS MUSCLE",
 	LOSE_WEIGHT_HEALTHY_HABITS = "LOSE WEIGHT HEALTHY HABITS",
 }
+
+// personalizados>
+
+export type DayExercises = {
+	number_of_day: number;
+	status: DayExercisesStatus;
+};
+
+export enum DayExercisesStatus {
+	"READY" = "READY",
+	"OMMITED" = "OMMITED",
+	"IN_PROGRESS" = "IN PROGRESS",
+	"PENDING" = "PENDING",
+}
+
+export interface ExerciseDTO {
+	name: string;
+	description?: string;
+	sets?: number | null;
+	seconds?: number | null;
+	reps?: number | null;
+	ready: boolean;
+}
