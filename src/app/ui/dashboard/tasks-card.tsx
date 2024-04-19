@@ -10,7 +10,7 @@ export function TasksCard({ }: Props) {
     },
     {
         title: "Follow coach instructions",
-        subtitle: "Excercice post launch time",
+        subtitle: "Exercise post launch time",
         id: "2dmai2a2d"
     },
     {

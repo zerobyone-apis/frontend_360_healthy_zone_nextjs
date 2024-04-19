@@ -21,7 +21,7 @@ export const login = async ({ email, password }: login) => {
 				password,
 			}),
 			next: {
-				revalidate: 60,
+				revalidate: 10,
 			},
 		});
 		let body = await resp.json();

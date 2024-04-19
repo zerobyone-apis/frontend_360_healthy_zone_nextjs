@@ -1,12 +1,10 @@
 'use client'
-import { saveBasicInfo } from "@/actions/dashboard/settings/settings-actions";
+import { saveBasicInfo } from "@/actions/dashboard/settings";
 import { Button } from "@/app/ui/button";
 import InputField from "@/app/ui/input";
 import Cookies from "js-cookie";
 import { useFormState } from "react-dom";
 import { Crypto } from "@/utils/encrypt";
-import clsx from "clsx";
-import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { getProfile } from "@/actions/client/client-actions";
 

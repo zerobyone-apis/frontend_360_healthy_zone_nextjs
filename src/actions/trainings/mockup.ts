@@ -1,3 +1,11 @@
+import { DietStatus, NutritionistPlansServices } from "@/interfaces/diets";
+import { GoalStatus, TypeGoals } from "@/interfaces/goals";
+import {
+	CoachPlansServices,
+	TrainingStatus,
+	TrainingTypes,
+} from "@/interfaces/trainings";
+
 export default [
 	{
 		training_id: 1,
@@ -5,18 +13,18 @@ export default [
 		goal: {
 			id: 456,
 			client_id: 123,
-			status: "IN PROGRESS",
+			status: GoalStatus.IN_PROGRESS,
 			descriptionGoal: "Reduce body fat by 10% in 3 months",
 			timeLapse: "3",
 			timeUnit: "months",
 			percentage: "10%",
-			goalType: "LOSE WEIGHT",
+			goalType: TypeGoals.INCREASE_MASS_MUSCLE,
 			healthyFocusDescription:
 				"Focus on high-intensity interval training and clean eating",
-			trainerPlans: "MUSCLE",
-			nutritionistPlans: "HEALTH WEIGHT",
-			dietStatus: "IN PROGRESS",
-			trainingStatus: "IN PROGRESS",
+			trainerPlans: CoachPlansServices.MUSCLE,
+			nutritionistPlans: NutritionistPlansServices.HEALTHY_EAT,
+			dietStatus: DietStatus.IN_PROGRESS,
+			trainingStatus: TrainingStatus.IN_PROGRESS,
 			init_on: "2024-03-01",
 			end_on: "2024-05-31",
 			created_on: "2024-02-15",
@@ -25,9 +33,9 @@ export default [
 		},
 		coach_id: 789,
 		customForm_id: 101,
-		coach_plans: "MUSCLE",
-		training_status: "IN PROGRESS",
-		type: "LOSE WEIGHT",
+		coach_plans: CoachPlansServices.MUSCLE,
+		training_status: TrainingStatus.IN_PROGRESS,
+		type: TrainingTypes.LOSE_WEIGHT,
 		description_training:
 			"High-intensity interval training with focus on cardio and strength",
 		exercise: "Burpees, Squats, Deadlifts",
@@ -49,18 +57,18 @@ export default [
 		goal: {
 			id: 456,
 			client_id: 123,
-			status: "IN PROGRESS",
+			status: GoalStatus.IN_PROGRESS,
 			descriptionGoal: "Reduce body fat by 10% in 3 months",
 			timeLapse: "3",
 			timeUnit: "months",
 			percentage: "10%",
-			goalType: "LOSE WEIGHT",
+			goalType: TypeGoals.INCREASE_MASS_MUSCLE,
 			healthyFocusDescription:
 				"Focus on high-intensity interval training and clean eating",
-			trainerPlans: "MUSCLE",
-			nutritionistPlans: "HEALTH WEIGHT",
-			dietStatus: "IN PROGRESS",
-			trainingStatus: "IN PROGRESS",
+			trainerPlans: CoachPlansServices.MUSCLE,
+			nutritionistPlans: NutritionistPlansServices.HEALTHY_EAT,
+			dietStatus: DietStatus.IN_PROGRESS,
+			trainingStatus: TrainingStatus.IN_PROGRESS,
 			init_on: "2024-03-01",
 			end_on: "2024-05-31",
 			created_on: "2024-02-15",
@@ -69,9 +77,9 @@ export default [
 		},
 		coach_id: 789,
 		customForm_id: 102,
-		coach_plans: "RITMIA",
-		training_status: "COMPLETED",
-		type: "INCREASE MASS MUSCLE",
+		coach_plans: CoachPlansServices.RITMIA,
+		training_status: TrainingStatus.COMPLETED,
+		type: TrainingTypes.INCREASE_MASS_MUSCLE,
 		description_training:
 			"Strength training with emphasis on compound exercises",
 		exercise: "Squats, Bench Press, Deadlifts",
@@ -86,5 +94,63 @@ export default [
 		updated_on: "2024-04-05",
 		isCompleted: true,
 		isActive: false,
+	},
+];
+
+export const exercises_from_api = async () => {
+	const url = "https://exercisedb.p.rapidapi.com/exercises?limit=15";
+	const options = {
+		method: "GET",
+		headers: {
+			"X-RapidAPI-Key": "ad496e97f5msh7c152be18c636d3p1e6d66jsncc13664c364a",
+			"X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
+		},
+	};
+
+	try {
+		const response = await fetch(url, options);
+		const result = await response.json();
+		console.log(result);
+		result.map((exercise: any) => {
+			//reducer
+		});
+	} catch (error) {
+		console.error(error);
+		return new Error("Problem fetching the api");
+	}
+};
+
+export const mock_daily_train: any = [
+	{
+		id: "3c08a661-ec06-4a5d-9f13-de23584d578e",
+		name: "Arm slingers hanging bent knee legs",
+		type: "WAIST",
+		description:
+			"Hang from a pull-up bar with your arms fully extended and your knees bent at a 90-degree angle. \n Engage your core and lift your knees towards your chest, bringing them as close to your elbows as possible.\n Slowly lower your legs back down to the starting position.\nRepeat for the desired number of repetitions.",
+		gifUrl: "https://v2.exercisedb.io/image/MY4WKv83Y7nke",
+		is_completed: false,
+		difficulty: 1,
+		rest_in_seconds: 30,
+		series: 15,
+		repetitions: 3,
+		duration_in_seconds: null,
+	},
+];
+
+export const trainings: any = [
+	{
+		name: "Russian Twist",
+		description:
+			"Exercise description here lorem skaaskdaskdas,  masd,,sm d,mm,,m,m asdasm,dam,s.d asdjaskdasldjk \n asjkdljasdlkasjkalsdjasdlsajdlkasjdklasjklasjdkljaskjdlas \n akjsdasjdhaskhdakshdajshdjkashdashjdhasjkhdaskjhdkjasdjkashdjkashdjkash \n akjsdasjdhaskhdakshdajshdjkashdashjdhasjkhdaskjhdkjasdjkashdjkashdjkash \n akjsdasjdhaskhdakshdajshdjkashdashjdhasjkhdaskjhdkjasdjkashdjkashdjkash \n akjsdasjdhaskhdakshdajshdjkashdashjdhasjkhdaskjhdkjasdjkashdjkashdjkash ",
+		sets: 20,
+		reps: 3,
+		ready: false,
+	},
+	{
+		name: "Russian Twist",
+		description: "Exercise description here....",
+		sets: 20,
+		reps: 3,
+		ready: false,
 	},
 ];

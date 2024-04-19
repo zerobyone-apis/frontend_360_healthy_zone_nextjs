@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import DietResumeCard from '@/app/ui/dashboard/diets/diet-resume-card';
-import { getAllDietsByUserID } from '@/actions/diets/diet-actions';
+import { getAllDietsByUserID } from '@/actions/diets';
 import Cookies from "js-cookie";
 import { User } from '@/interfaces/user';
 import { DietResponseDTO } from '@/interfaces/diets';
