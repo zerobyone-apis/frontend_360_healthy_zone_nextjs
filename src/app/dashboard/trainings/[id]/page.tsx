@@ -1,3 +1,4 @@
+"use client"
 import { getTrainingsID } from "@/actions/trainings";
 import { Button } from "@/app/ui/button";
 import ExercisesTimeline from "@/app/ui/dashboard/trainings/exercises-timeline";
