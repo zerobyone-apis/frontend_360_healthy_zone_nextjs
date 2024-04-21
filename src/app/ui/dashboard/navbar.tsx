@@ -1,9 +1,7 @@
-
+"use client"
+import { signout } from "@/actions/dashboard/signout";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
-import Cookies from "js-cookie";
-import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 export function Navbar() {
@@ -30,7 +28,6 @@ export function Navbar() {
 }
 
 function ProfileDropdown({ show = false }) {
-    const router = useRouter();
     const dropdownRef = useRef(null);
     const [isvisible, setIsVisible] = useState(show);
     const handleClickOutsideFn = () => setIsVisible(false);
@@ -40,9 +37,6 @@ function ProfileDropdown({ show = false }) {
     }, [show])
     useOnClickOutside(dropdownRef, handleClickOutsideFn);
 
-    function handleSignout() {
-        Cookies.remove("token");
-    }
     if (!isvisible) return null
     return (
         <div className="relative inline-block text-left" ref={dropdownRef}>
@@ -51,9 +45,7 @@ function ProfileDropdown({ show = false }) {
                     <button className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" id="menu-item-0">Account settings</button>
                     <Link href="/chat" className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" id="menu-item-1">Support</Link>
                     <Link href="/license" className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" id="menu-item-2">License</Link>
-                    <form method="POST" action="#" role="none">
-                        <button className="text-gray-700 block w-full px-4 py-2 text-left text-sm" role="menuitem" id="menu-item-3" onClick={handleSignout}>Sign out</button>
-                    </form>
+                    <button className="text-gray-700 block w-full px-4 py-2 text-left text-sm" role="menuitem" id="menu-item-3" onClick={() => signout()}>Sign out</button>
                 </div>
             </div>
         </div>
