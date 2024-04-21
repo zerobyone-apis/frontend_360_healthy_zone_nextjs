@@ -5,6 +5,8 @@ import {
 	TrainingStatus,
 	TrainingTypes,
 } from "@/interfaces/trainings";
+import { randomIntFromInterval } from "@/utils/randomGnr";
+import { randomUUID } from "crypto";
 
 export default [
 	{
@@ -111,9 +113,23 @@ export const exercises_from_api = async () => {
 		const response = await fetch(url, options);
 		const result = await response.json();
 		console.log(result);
-		result.map((exercise: any) => {
-			//reducer
+		let data = result.map((exercise: any, index: number) => {
+			return {
+				id: randomUUID(),
+				name: exercise.name,
+				type: exercise.bodyPart.toUpperCase(),
+				description: exercise.instructions.join("\n"),
+				gifUrl: exercise.gifUrl,
+				is_completed: false,
+				difficulty: Math.floor(Math.random() * 5),
+				rest_in_seconds: randomIntFromInterval(15, 30),
+				series: index % 2 === 0 ? randomIntFromInterval(15, 30) : null,
+				repetitions: index % 2 === 0 ? randomIntFromInterval(3, 5) : null,
+				duration_in_seconds:
+					index % 2 !== 0 ? randomIntFromInterval(15, 40) : null,
+			};
 		});
+		return data;
 	} catch (error) {
 		console.error(error);
 		return new Error("Problem fetching the api");
