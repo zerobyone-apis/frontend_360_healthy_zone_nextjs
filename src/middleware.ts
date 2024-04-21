@@ -2,16 +2,15 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-	const currentToken = request.cookies.get("token");
+	const currentToken = request.cookies.get("token")?.value || "";
+	console.log("current token", currentToken);
+	console.log("actual path", request.nextUrl.pathname);
 
-	if (
-		!currentToken?.value &&
-		request.nextUrl.pathname.startsWith("/dashboard")
-	) {
+	if (!currentToken && request.nextUrl.pathname.startsWith("/dashboard")) {
 		return NextResponse.redirect(new URL("/login", request.url));
 	}
 
-	if (currentToken?.value && request.nextUrl.pathname.startsWith("/login")) {
+	if (currentToken && request.nextUrl.pathname.startsWith("/login")) {
 		return NextResponse.redirect(new URL("/dashboard", request.url));
 	}
 	return NextResponse.next();
