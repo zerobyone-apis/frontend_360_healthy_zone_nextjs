@@ -3,7 +3,7 @@ import { Card } from "../card";
 
 export function AboutUS() {
     return (
-        <section className="h-full min-h-full w-full p-6 relative" >
+        <section className="h-full min-h-full w-full p-6 relative" id="features">
             <div className="text-center">
                 <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-jungle-green-700">BENEFITS</h2>
                 <p className="mb-5 font-light text-gray-500 sm:text-xl">YOUR LIFE MORE HEALTHY</p>
