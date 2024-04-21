@@ -23,11 +23,6 @@ export default function Page() {
     }, []);
 
 
-    //Cambiar por handler de next js
-
-    if (error) return <>
-        <h1>Error</h1>
-    </>;
 
     return (
         <div>
