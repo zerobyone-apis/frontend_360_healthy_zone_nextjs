@@ -28,20 +28,20 @@ export function Navbar() {
 					</div>
 				</div>
 				<ul className="md:flex gap-5 text-jungle-green-500 hidden">
-					<li><Button className="uppercase">Features</Button></li>
-					<li><Button className="uppercase">Pricing</Button></li>
-					<li><Button className="uppercase">About us</Button></li>
+					<li><Button className="uppercase font-light" onClick={() => router.push("#features")}>Features</Button></li>
+					<li><Button className="uppercase font-light" onClick={() => router.push("#pricing")}>Pricing</Button></li>
+					<li><Button className="uppercase font-light " onClick={() => router.push("#features")}>About us</Button></li>
 				</ul>
 				<div className="flex gap-2">
 					{
 						isLogged ?
 							<>
-								<Button className="rounded-full bg-jungle-green-500 hover:bg-jungle-green-300" onClick={() => router.push("/dashboard")}>Go Dashboard</Button>
+								<Button className="rounded-full bg-jungle-green-500 hover:bg-jungle-green-300 text-white" onClick={() => router.push("/dashboard")}>Dashboard</Button>
 							</>
 							:
 							<>
-								<Button className="rounded-full bg-jungle-green-500 hover:bg-jungle-green-300" onClick={() => router.push("/sign-up")}>Sign up</Button>
-								<Button className="rounded-full  border-android-green-500 border hover:bg-android-green-300" onClick={() => router.push("/login")}>Sign in</Button>
+								<Button className="rounded-full bg-jungle-green-500 hover:bg-jungle-green-300 text-white" onClick={() => router.push("/signup")}>Sign up</Button>
+								<Button className="rounded-full  border-android-green-500 border hover:bg-android-green-300 text-android-green-500" onClick={() => router.push("/login")}>Sign in</Button>
 							</>
 
 					}
