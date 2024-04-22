@@ -110,7 +110,11 @@ export const exercises_from_api = async () => {
 	};
 
 	try {
-		const response = await fetch(url, options);
+		const response = await fetch(url, {
+			...options,
+			cache: "no-store",
+			next: { revalidate: 10 },
+		});
 		const result = await response.json();
 		console.log(result);
 		let data = result.map((exercise: any, index: number) => {
