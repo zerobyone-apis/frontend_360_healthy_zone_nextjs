@@ -26,22 +26,32 @@ export async function getExerciseDay(daily_train_id: string) {
 	console.log("DailyTrain ID", daily_train_id);
 
 	// Funcion hardcoded...
-	let training: any = await new Promise((resolve, _reject) => {
-		setTimeout(async () => {
-			let trainingResponse = await exercises_from_api();
-			//fragmentando ejercicios y descansos:
-			let exercisesAndRests = [];
-			trainingResponse.forEach((exerciseData: any) => {
-				let rest = {
-					rest: true,
-					rest_in_seconds: exerciseData.rest_in_seconds,
-				};
-				let exercise = { ...exerciseData, rest: false };
-				exercisesAndRests.push(exercise);
-				exercisesAndRests.push(rest);
-			});
-			return resolve(trainingResponse);
-		}, 4000);
+	let training: any = await new Promise(async (resolve, _reject) => {
+		let trainingResponse = await exercises_from_api();
+		//fragmentando ejercicios y descansos:
+		let exercisesAndRests: any = [
+			/**
+			 * Primer descanso antes de comenzar
+			 */
+			{
+				rest: true,
+				rest_in_seconds: 5,
+			},
+		];
+
+		trainingResponse.forEach((exerciseData: any) => {
+			let rest = {
+				rest: true,
+				rest_in_seconds: exerciseData.rest_in_seconds,
+			};
+			let exercise = { ...exerciseData, rest: false };
+			exercisesAndRests.push(exercise);
+			exercisesAndRests.push(rest);
+		});
+		return resolve({
+			training: trainingResponse,
+			exercises: exercisesAndRests,
+		});
 	});
 
 	console.log(training);
