@@ -14,9 +14,9 @@ export default function TrainingDifficultyCard({ difficulty, days_remaining }: P
     }
 
     return (
-        <div className='w-full bg-teal-500 rounded-xl p-5 items-center flex flex-col'>
-            <div className='flex gap-1'><p className='font-sans font-normal mr-2 text-white'>DIFFICULTY</p> <>{stars.map((star, index) => <div key={index}>{star}</div>)}</></div>
-            <div className='flex gap-2 text-center items-center'><i className='bx bx-time-five text-white'></i><p className='font-sans font-normal mr-2 text-white'>{days_remaining} Days remaining</p></div>
+        <div className='w-full bg-white border-teal-500 border rounded p-5 items-center flex flex-col'>
+            <div className='flex gap-1'><p className='font-sans font-normal mr-2 text-teal-500'>DIFFICULTY</p> <>{stars.map((star, index) => <div key={index}>{star}</div>)}</></div>
+            <div className='flex gap-2 text-center items-center'><i className='bx bx-time-five text-teal-500'></i><p className='font-sans font-normal mr-2 text-teal-500'>{days_remaining} Days remaining</p></div>
         </div>
     )
 }
