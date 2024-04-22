@@ -64,8 +64,9 @@ export enum DayExercisesStatus {
 export interface ExerciseDTO {
 	name: string;
 	description?: string;
-	sets?: number | null;
-	seconds?: number | null;
-	reps?: number | null;
+	series?: number | null;
+	duration_in_seconds?: number | null;
+	repetitions?: number | null;
 	ready: boolean;
+	gifUrl?: string;
 }
