@@ -1,5 +1,6 @@
 import { getExerciseDay } from '@/actions/trainings'
 import { Button } from '@/app/ui/button';
+import TrainingParent from '@/app/ui/dashboard/trainings/training-parent';
 import Link from 'next/link';
 
 type Props = {
@@ -22,13 +23,13 @@ export default async function Page({ params }: Props) {
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>Info</h5>
 
-            <div>
+            <div className='h-full p-4'>
                 {/**
                  * Pantalla principal donde se ejecutaran las acciones correspondendientes
                  *  Pantalla de descanso
                  *  Pantalla de entrenamiento
                  */}
-                <span>Loaded</span>
+                <TrainingParent exercises={exercises.exercises}></TrainingParent>
             </div>
         </div>
     )
