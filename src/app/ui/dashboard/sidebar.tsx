@@ -56,7 +56,7 @@ function ListItem({ icon, title, redirect = "" }: ListItemInterface): any {
     return (
         <div className="w-full">
             <Link key={redirect} href={redirect}>
-                <li className={clsx('w-full flex gap-2 p-2 content-start text-center hover:text-black active:text-jungle-green-500 hover:bg-white active:bg-white rounded-s-full transition-colors justify-center', { 'bg-white text-jungle-green-500': pathname === redirect })}> <i className={icon}></i> <p className="hidden lg:block truncate">{title}</p></li>
+                <li className={clsx('w-full flex gap-2 p-2 content-start text-center hover:text-black active:text-jungle-green-500 hover:bg-white active:bg-white rounded-full transition-colors justify-center', pathname == redirect ? 'bg-white text-jungle-green-500' : "text-white")}> <i className={icon}></i> <p className="hidden lg:block truncate">{title}</p></li>
             </Link >
         </div>
     )
