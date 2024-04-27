@@ -13,7 +13,8 @@ type Props = {
 
 export default function RestView({ restInSeconds, setCurrentIndex, nextExercise }: Props) {
     let timer = 0;
-    const [nextExerciseAudio] = useSound("/audios/training/next_exercise_will_start.mp3");
+    // const [nextExerciseAudio] = useSound("/audios/training/next_exercise_will_start.mp3");
+    const nextExerciseAudio = new Audio("/audios/training/next_exercise_will_start.mp3");
     const [timeLeft, setTimeLeft] = useState(Number(restInSeconds));
 
     useEffect(() => {
@@ -28,13 +29,26 @@ export default function RestView({ restInSeconds, setCurrentIndex, nextExercise 
 
         return () => {
             clearTimeout(timerout)
+            nextExerciseAudio.pause()
         }
     }, [timeLeft])
 
     useEffect(() => {
         //ejecuto audio inicial;
-        setTimeout(() => { nextExerciseAudio() }, 2000)
-    }, [])
+        setTimeout(() => { nextExerciseAudio.play() }, 2000);
+        return () => {
+            nextExerciseAudio.pause()
+        }
+    }, []);
+
+    function handleGoAhead() {
+        setCurrentIndex((state: number) => state + 1);
+        nextExerciseAudio.pause();
+    }
+
+    function handleAddSeconds() {
+        setTimeLeft((state: number) => state + 15);
+    }
 
     return (
         <div className="h-full p-4 rounded w-full bg-jungle-green-500 flex justify-center flex-col items-center gap-3 overflow-auto" aria-labelledby="drawer-label">
@@ -43,8 +57,8 @@ export default function RestView({ restInSeconds, setCurrentIndex, nextExercise 
             <Image src={nextExercise.gifUrl || ""} alt={''} width={318} height={159} className="rounded"></Image>
             <h2 className="text-white text-3xl font-bold">Starts on {timeLeft}</h2>
             <div className="flex gap-3">
-                <Button onClick={() => setTimeLeft((state: number) => state + 15)} className="text-white border border-white rounded">+15 Seconds</Button>
-                <Button onClick={() => setCurrentIndex((state: number) => state + 1)} className="text-jungle-green-500 bg-white rounded">Go ahead!</Button>
+                <Button onClick={handleAddSeconds} className="text-white border border-white rounded">+15 Seconds</Button>
+                <Button onClick={handleGoAhead} className="text-jungle-green-500 bg-white rounded">Go ahead!</Button>
             </div>
         </div>
     )
