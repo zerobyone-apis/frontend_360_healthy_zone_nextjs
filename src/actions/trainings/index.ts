@@ -39,14 +39,14 @@ export async function getExerciseDay(daily_train_id: string) {
 			},
 		];
 
-		trainingResponse.forEach((exerciseData: any) => {
+		trainingResponse.forEach((exerciseData: any, index: number) => {
 			let rest = {
 				rest: true,
 				rest_in_seconds: exerciseData.rest_in_seconds,
 			};
 			let exercise = { ...exerciseData, rest: false };
 			exercisesAndRests.push(exercise);
-			exercisesAndRests.push(rest);
+			if (index !== trainingResponse.length - 1) exercisesAndRests.push(rest);
 		});
 		return resolve({
 			training: trainingResponse,
