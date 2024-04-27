@@ -2,52 +2,16 @@
 import { login } from "@/actions/login";
 import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 import Link from "next/link";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Crypto } from "@/utils/encrypt";
+// import { Crypto } from "@/utils/encrypt";
 
 export default function Page() {
     const router = useRouter();
     const [userdata, setUserData] = useState({ email: "", password: "" });
 
     async function handleLoginForm() {
-        // if (userdata.email === "test@test.com" && userdata.password === "password") {
-        //     Cookies.set("token", Crypto.encrypt("UnaPruebaDeTokenSinSentido"), {
-        //         expires: 7
-        //     });
-        //     Cookies.set("user",
-        //         Crypto.encrypt(JSON.stringify({
-        //             "user": {
-        //                 "userId": "1",
-        //                 "email": "gaston.nicolas.morales.olivera@gmail.com",
-        //                 "username": "Gaston.Morales",
-        //                 "roles": "CLIENT",
-        //                 "isAdmin": false
-        //             },
-        //             "client": {
-        //                 "id": 1,
-        //                 "first_name": "Gaston",
-        //                 "last_name": "Morales",
-        //                 "phone": "5986393429239",
-        //                 "email": "gaston.nicolas.morales.olivera@gmail.com",
-        //                 "city": "",
-        //                 "country": "UY",
-        //                 "description": null,
-        //                 "profile_picture": "",
-        //                 "address": null,
-        //                 "subscription": null,
-        //                 "nutritionist_id": null,
-        //                 "coach_id": null,
-        //                 "goals": [],
-        //                 "is_blocked": false,
-        //                 "isActive": true
-        //             },
-        //             "nutritionist": null,
-        //             "coach": null
-        //         })), { expires: 7 })
-        //     return true;
-        // }
         let resp = await login(userdata);
         if (resp) {
             // Cookies.set("token", Crypto.encrypt(resp), {
