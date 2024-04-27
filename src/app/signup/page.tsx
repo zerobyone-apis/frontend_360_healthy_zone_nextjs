@@ -3,14 +3,20 @@
 import { registration } from "@/actions/signup";
 import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Page() {
 
     const [userdata, setUserData] = useState({ user: "", password: "", repass: "", first_name: "", last_name: "", phone: "" });
 
     async function handleSignupForm() {
-        await registration(userdata);
+        let router = useRouter();
+        let resp = await registration(userdata);
+        if (resp.username) router.push("/success-registration");
+        else toast.error("There was an internal error")
     }
 
     return (
@@ -80,6 +86,7 @@ export default function Page() {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </section>
     )
 }
