@@ -2,10 +2,12 @@
 import { login } from "@/actions/login";
 import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 import Link from "next/link";
-// import Cookies from "js-cookie";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 // import { Crypto } from "@/utils/encrypt";
+
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Page() {
     const router = useRouter();
@@ -13,13 +15,12 @@ export default function Page() {
 
     async function handleLoginForm() {
         let resp = await login(userdata);
-        if (resp) {
-            // Cookies.set("token", Crypto.encrypt(resp), {
-            //     expires: 7,
-            // });
-            router.push("/dashboard");
+        console.log("resp", resp);
+        if (!resp || resp.status === 500) return toast.warning("Check your credentials and try again");
+        if (resp.user.roles === "CLIENT") return router.push("/dashboard");
+        if (resp.user.roles === "COACH") return router.push("/coach/dashboard");
+        if (resp.user.roles === "NUTRITIONIST") return router.push("/nutritionist/dashboard");
 
-        }
     }
 
     return (
@@ -65,6 +66,7 @@ export default function Page() {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </section>
     )
 }
