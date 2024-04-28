@@ -20,17 +20,12 @@ export const login = async ({ email, password }: login) => {
 				email,
 				password,
 			}),
-			next: {
-				revalidate: 0,
-			},
 			cache: "no-store",
 		});
 		let body = await resp.json();
 
 		// cookieStore.set("user", Crypto.encrypt(JSON.stringify(body)));
 		const token: string = resp.headers.get("Authorization") || "";
-		console.log(body);
-		console.log("Token desde back en el login: " + token);
 		if (!token) return false;
 
 		// adding cookies...
@@ -41,7 +36,7 @@ export const login = async ({ email, password }: login) => {
 		});
 		cookieStore.set("token", token, { expires: Date.now() + sevenDays });
 
-		return true;
+		return body;
 	} catch (error) {
 		console.log(error);
 		return false;
