@@ -76,7 +76,7 @@ export default function Page() {
                                     id="professionals"
                                     options={[
                                         { icon: "bx bx-run", title: "Coach", subtitle: "Trainings and rutines", value: "coach" },
-                                        { icon: "bx bxs-pear", title: "Nutrisionist", subtitle: "Healthy food and diets", value: "nutrisionist" }]}
+                                        { icon: "bx bxs-pear", title: "Nutritionist", subtitle: "Healthy food and diets", value: "nutritionist" }]}
                                     onChange={(value: string) => setUserData({ ...userdata, role: value })} />
                             </div>
                             <div className="col-span-2 flex items-center justify-between">
