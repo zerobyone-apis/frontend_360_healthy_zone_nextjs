@@ -1,51 +1,65 @@
 import React, { useEffect, useState } from 'react';
-import { Stepper, Step, StepLabel, Button } from '@mui/material';
+import { MobileStepper, Button } from '@mui/material';
 import { SURVEY_PAGE_TYPES, SurveyPageType } from './survey-page';
 import { SurveyPage } from './survey-page';
-import useSurvey from '../hooks/useSurvey';
+import useSurvey, { SurveyResponse } from '../hooks/useSurvey';
 import { QuestionCardType } from '../question-card/question-card';
 
-interface SurveyComponentProps {
+interface SurveyProps {
     pages: SurveyPageType[];
+    onSubmit: (responses: SurveyResponse[]) => void;
 }
 
-const SurveyComponent: React.FC<SurveyComponentProps> = ({ pages }) => {
+export const Survey = ({ pages, onSubmit }: SurveyProps) => {
     const [activeStep, setActiveStep] = useState(0);
-    const { responses, updateResponse } = useSurvey();
+    const { responses, updateResponse, clearResponses } = useSurvey();
     const [isNextButtonDisabled, setIsNextButtonDisabled] = useState(false);
 
     useEffect(() => {
+        if (!pages || pages.length === 0 || activeStep < 0 || activeStep >= pages.length) {
+            // There are no pages or activeStep is out of valid range
+            return;
+        }
+
         const currentPage = pages[activeStep];
+
+        // If the current page is of type "info", allow advancing the stepper without restrictions
         if (currentPage.type === SURVEY_PAGE_TYPES.INFO) {
             setIsNextButtonDisabled(false);
             return;
         }
 
-        const allQuestionsAnswered = currentPage.questions.every((question: QuestionCardType) => {
+        // Find the response corresponding to the current page in the responses array
+        const currentPageResponse = responses.find(response => response.name === currentPage.name);
+
+        // Check if the current page has responses
+        const pageHasResponses = currentPageResponse && Object.keys(currentPageResponse.answers).length > 0;
+
+        // Check if all questions on the current page have responses
+        const allQuestionsAnswered = (currentPage.questions || []).every((question: QuestionCardType) => {
+            // If the question is optional, it does not need to be answered
             if (question.optional) {
                 return true;
             }
-            return responses.some(response => response.name === currentPage.name && response.answers[question.value]);
+            // Check if there are responses for this question in the current page's responses
+            return currentPageResponse && currentPageResponse.answers.hasOwnProperty(question.value) && currentPageResponse.answers[question.value].length > 0;
         });
-        setIsNextButtonDisabled(!allQuestionsAnswered);
+
+        // Disable the button if there are no responses for all mandatory questions
+        setIsNextButtonDisabled(!pageHasResponses || !allQuestionsAnswered);
     }, [activeStep, pages, responses]);
+
 
     const handleNext = () => {
         if (activeStep < pages.length - 1) {
             setActiveStep(prevActiveStep => prevActiveStep + 1);
+        } else {
+            onSubmit(responses);
         }
     };
 
     const handleBack = () => {
         setActiveStep(prevActiveStep => prevActiveStep - 1);
-    };
-
-    const handleSubmit = () => {
-        console.log('Respuestas:', responses);
-    };
-
-    const handlePageChange = (newStep: number) => {
-        setActiveStep(newStep);
     };
 
     return (
@@ -61,33 +75,29 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({ pages }) => {
                     </div>
                 ))}
             </div>
-            <div className='absolute bottom-[260px] left-0 right-0 flex justify-center mb-8'>
-                <Button disabled={activeStep === 0} onClick={handleBack} className='mr-4'>Atrás</Button>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    style={{ backgroundColor: "#1AAB8C" }}
-                    disabled={isNextButtonDisabled}
-                    className='mr-4'
-                >
-                    {activeStep === pages.length - 1 ? 'Finalizar' : 'Siguiente'}
-                </Button>
-                {activeStep === pages.length && (
-                    <Button onClick={handleSubmit}>Enviar respuestas</Button>
-                )}
-            </div>
-            <div className='w-fit mx-auto mb-[180px]'>
-                <Stepper activeStep={activeStep} alternativeLabel>
-                    {pages.map((page, index) => (
-                        <Step key={index}>
-                            <StepLabel style={{ marginTop: '10px', }}>{page.title}</StepLabel>
-                        </Step>
-                    ))}
-                </Stepper>
+            <div className='mx-auto mb-[250px] w-[400px]'>
+                <MobileStepper
+                    variant="dots"
+                    steps={pages.length}
+                    position="static"
+                    activeStep={activeStep}
+                    nextButton={
+                        <Button
+                            onClick={handleNext}
+                            style={{ backgroundColor: (isNextButtonDisabled ? "#CCCCCC" : "#1AAB8C"), color: "#fff" }}
+                            disabled={isNextButtonDisabled}
+                        >
+                            {activeStep === pages.length - 1 ? 'Finalizar' : 'Siguiente'}
+                        </Button>
+                    }
+                    backButton={
+                        <Button
+                            style={{ backgroundColor: (activeStep === 0 ? "#fff" : "#1AAB8C"), color: "#fff" }}
+                            onClick={handleBack}
+                            disabled={activeStep === 0}>Atrás</Button>
+                    }
+                />
             </div>
         </div>
     );
 };
-
-export default SurveyComponent;

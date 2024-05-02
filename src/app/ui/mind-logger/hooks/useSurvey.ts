@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-type SurveyResponse = {
+export type SurveyResponse = {
     name: string;
     answers: { [key: string]: string[] };
 };
@@ -8,25 +8,33 @@ type SurveyResponse = {
 type UseSurveyComponentReturn = {
     responses: SurveyResponse[];
     updateResponse: (name: string, answers: { [key: string]: string[] }) => void;
+    clearResponses: () => void;
 };
 
 const useSurveyComponent = (initialResponses: SurveyResponse[] = []): UseSurveyComponentReturn => {
     const [responses, setResponses] = useState<SurveyResponse[]>(initialResponses);
 
     const updateResponse = (name: string, answers: { [key: string]: string[] }) => {
-        const index = responses.findIndex(response => response.name === name);
-        if (index !== -1) {
-            setResponses(prevResponses => {
+        setResponses(prevResponses => {
+            const existingIndex = prevResponses.findIndex(response => response.name === name);
+            if (existingIndex !== -1) {
+                // Si ya existe una respuesta con el mismo nombre, actualiza sus respuestas
                 const newResponses = [...prevResponses];
-                newResponses[index] = { name, answers };
+                newResponses[existingIndex] = { name, answers };
                 return newResponses;
-            });
-        } else {
-            setResponses(prevResponses => [...prevResponses, { name, answers }]);
-        }
+            } else {
+                // Si no existe una respuesta con el mismo nombre, añade una nueva respuesta
+                return [...prevResponses, { name, answers }];
+            }
+        });
     };
 
-    return { responses, updateResponse };
+    const clearResponses = () => {
+        setResponses([])
+    }
+
+    return { responses, updateResponse, clearResponses };
 };
+
 
 export default useSurveyComponent;

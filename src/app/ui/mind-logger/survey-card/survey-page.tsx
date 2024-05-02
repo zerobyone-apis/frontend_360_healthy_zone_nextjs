@@ -30,8 +30,9 @@ export const SurveyPage = ({
     const [answers, setAnswers] = useState<{ [key: string]: string[] }>({});
 
     useEffect(() => {
-        console.log("survey page", answers)
-        updateResponse(data.name, answers);
+        if (data.questions.length) {
+            updateResponse(data.name, answers);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [answers])
 

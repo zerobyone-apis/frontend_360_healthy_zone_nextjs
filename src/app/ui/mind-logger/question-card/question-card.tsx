@@ -3,13 +3,13 @@ import useQuestion from '../hooks/useQuestion';
 import { Options } from '../option-card/options';
 
 export type QuestionCardType = {
-    id: number,
+    id?: number,
     title: string,
     value: string,
     type: string,
     multiple: boolean,
     optional?: boolean,
-    options: { title: string, value: boolean }[],
+    options: { title: string }[],
 };
 
 type QuestionCardProps = {
@@ -27,9 +27,9 @@ const QuestionCard = ({
     const { handleOptionSelected, optionsSelected } = useQuestion([], data.multiple);
 
     useEffect(() => {
-        if (optionsSelected.length) {
-            onSubmitOptions(data.value, optionsSelected)
-        }
+        // if (optionsSelected.length) {
+        onSubmitOptions(data.value, optionsSelected)
+        // }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [optionsSelected])
 

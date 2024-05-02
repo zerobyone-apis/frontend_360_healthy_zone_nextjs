@@ -18,11 +18,9 @@ const useSurveyPage = (initialQuestions: Question[] = []): UseSurveyPageReturn =
         const index = questions.findIndex(question => question.name === name);
         if (index !== -1) {
             // Si la pregunta ya existe, actualizamos su respuesta
-            setQuestions(prevQuestions => {
-                const newQuestions = [...prevQuestions];
-                newQuestions[index] = { ...newQuestions[index], response };
-                return newQuestions;
-            });
+            const updatedQuestions = [...questions];
+            updatedQuestions[index] = { ...updatedQuestions[index], response };
+            setQuestions(updatedQuestions);
         } else {
             // Si la pregunta no existe, la agregamos al array de preguntas
             setQuestions(prevQuestions => [...prevQuestions, { name, response }]);

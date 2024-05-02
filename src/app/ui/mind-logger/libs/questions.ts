@@ -1,7 +1,7 @@
 import { OPTION_TYPES } from "../option-card"
-import { SURVEY_PAGE_TYPES } from "../survey-card/survey-page"
+import { SURVEY_PAGE_TYPES, SurveyPageType } from "../survey-card/survey-page"
 
-export const SURVEY_PAGES = [
+export const SURVEY_PAGES: SurveyPageType[] = [
     {
         id: 0,
         name: "intro",
@@ -9,6 +9,7 @@ export const SURVEY_PAGES = [
         title: "Bienvenido a la encuenta",
         subtitle: "Por favor complete esta simple encuesta para que podamos mejorar su estudio",
         img: "https://www.voxco.com/wp-content/uploads/2021/04/students-feedback-survey-cvr.jpg",
+        questions: [],
     },
     {
         id: 1,
@@ -17,19 +18,11 @@ export const SURVEY_PAGES = [
         title: "Información demográfica",
         img: "https://www.voxco.com/wp-content/uploads/2021/04/students-feedback-survey-cvr.jpg",
         questions: [
-            // {
-            //     title: "¿Cuál es tu fecha de nacimiento?",
-            //     value: "age",
-            //     type: OPTION_TYPES.DATE,
-            //     options: [],
-            // },
-
-            // { "title": "¿Cuál es tu género?", "value": "Género (Masculino/Femenino/Otro/Prefiero no decirlo)" },
-
             {
                 title: "¿Cuál es tu género?",
                 value: "gender",
                 type: OPTION_TYPES.CHECK,
+                multiple: false,
                 options: [
                     { title: "Femenino" },
                     { title: "Masculino" },
@@ -37,78 +30,14 @@ export const SURVEY_PAGES = [
                     { title: "Prefiero no decirlo" },
                 ],
             },
-            // { "title": "¿Cuál es tu ocupación?", "value": "Ocupación" },
-
-            // {
-            //     title: "¿Cuál es tu ocupación?",
-            //     value: "charge",
-            //     type: OPTION_TYPES.INPUT,
-            //     options: [],
-            // },
-            // { "title": "¿Dónde resides?", "value": "Residencia" }
-            // {
-            //     title: "¿Tienes alguna condición médica que debamos conocer?",
-            //     value: "medicalConditions",
-            //     type: OPTION_TYPES.CHECK,
-            //     multiple: true,
-            //     options: [
-            //         { title: "Ninguna" },
-            //         { title: "Diabetes" },
-            //         { title: "Hipertensión" },
-            //         { title: "Enfermedad del corazón" },
-            //         { title: "Alergias alimentarias" },
-            //         { title: "Otra" },
-            //     ],
-            // },
-            // {
-            //     "id": 4,
-            //     "name": "levelsOfPhysicalActivity",
-            //     "value": "Niveles de actividad física",
-            //     "options": [
-            //         { "title": "¿Qué tipo de ejercicio haces, cuánto tiempo y con qué frecuencia?", "value": "Tipo, duración y frecuencia del ejercicio (Ninguno/1-2 veces por semana/3-4 veces por semana/5 o más veces por semana)" }
-            //     ]
-            // },
-
-            // {
-            //     title: "¿Qué tipo de ejercicio haces, cuánto tiempo y con qué frecuencia?",
-            //     value: "levelsOfPhysicalActivity",
-            //     type: OPTION_TYPES.SLIDER,
-            //     options: ["si", "no"],
-            // },
         ]
     },
     {
-        "id": 2,
-        "name": "otherQuestion",
+        id: 2,
+        name: "otherQuestion",
         title: "Otra pregunta",
+        type: SURVEY_PAGE_TYPES.QUESTION,
         questions: [
-            // {
-            //     title: "¿Cuál es tu fecha de nacimiento?",
-            //     value: "age",
-            //     type: OPTION_TYPES.DATE,
-            //     options: [],
-            // },
-
-            // { "title": "¿Cuál es tu género?", "value": "Género (Masculino/Femenino/Otro/Prefiero no decirlo)" },
-
-            // {
-            //     title: "¿Cuál es tu género 2?",
-            //     value: "gender2",
-            //     type: OPTION_TYPES.CHECK,
-            //     options: [
-            //         { title: "Femenino2" },
-            //         { title: "Masculino2" },
-            //     ],
-            // },
-            // { "title": "¿Cuál es tu ocupación?", "value": "Ocupación" },
-
-            // {
-            //     title: "¿Cuál es tu ocupación?",
-            //     value: "charge",
-            //     type: OPTION_TYPES.INPUT,
-            //     options: [],
-            // },
-            // { "title": "¿Dónde resides?", "value": "Residencia" }
             {
                 title: "¿Tienes alguna condición médica que debamos conocer 2?",
                 value: "medicalConditions2",
@@ -123,22 +52,16 @@ export const SURVEY_PAGES = [
                     { title: "Otra" },
                 ],
             },
-            // {
-            //     "id": 4,
-            //     "name": "levelsOfPhysicalActivity",
-            //     "value": "Niveles de actividad física",
-            //     "options": [
-            //         { "title": "¿Qué tipo de ejercicio haces, cuánto tiempo y con qué frecuencia?", "value": "Tipo, duración y frecuencia del ejercicio (Ninguno/1-2 veces por semana/3-4 veces por semana/5 o más veces por semana)" }
-            //     ]
-            // },
-
-            // {
-            //     title: "¿Qué tipo de ejercicio haces, cuánto tiempo y con qué frecuencia?",
-            //     value: "levelsOfPhysicalActivity",
-            //     type: OPTION_TYPES.SLIDER,
-            //     options: ["si", "no"],
-            // },
         ]
+    },
+    {
+        id: 3,
+        name: "done",
+        type: SURVEY_PAGE_TYPES.INFO,
+        title: "Todo Listo!",
+        subtitle: "Ya podemos comenzar! Presion Finalizar para salir de la encuesta",
+        img: "https://www.voxco.com/wp-content/uploads/2021/04/students-feedback-survey-cvr.jpg",
+        questions: [],
     },
 
 
