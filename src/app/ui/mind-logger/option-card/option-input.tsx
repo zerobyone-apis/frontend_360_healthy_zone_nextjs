@@ -1,5 +1,5 @@
 import TextField from '@mui/material/TextField';
-import React, { ReactElement, useState } from 'react';
+import React, { useState } from 'react';
 
 export type OptionInputType = {
     handleClick: (text: string) => any, // Modificamos el tipo de handleClick

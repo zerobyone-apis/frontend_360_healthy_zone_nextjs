@@ -1,8 +1,11 @@
 import React, { ReactElement } from 'react';
-import { OPTION_TYPES, OptionCheck } from '.';
-import { OptionDate } from './option-date';
-import { OptionInput } from './option-input';
-import { OptionSlider } from './option-slider';
+import {
+    OPTION_TYPES,
+    OptionCheck,
+    OptionDate,
+    OptionInput,
+    // OptionSlider
+} from '.';
 
 export type OptionsType = {
     type: string,
@@ -44,7 +47,7 @@ export const Options = ({
             <OptionInput
                 handleClick={handleClick}
             />);
-        // if (type === OPTION_TYPES.SLIDER) return (
+        // TODO: if (type === OPTION_TYPES.SLIDER) return (
         //     <OptionSlider
         //         title=""
         //         data={options}

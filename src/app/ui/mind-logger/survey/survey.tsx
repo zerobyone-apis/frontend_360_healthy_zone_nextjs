@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { MobileStepper, Button } from '@mui/material';
-import { SURVEY_PAGE_TYPES, SurveyPageType } from './survey-page';
-import { SurveyPage } from './survey-page';
+import { SURVEY_STEP_TYPES, SurveyStepType } from '.';
+import { SurveyPage } from '.';
 import useSurvey, { SurveyResponse } from '../hooks/useSurvey';
 import { QuestionCardType } from '../question-card/question-card';
 
 interface SurveyProps {
-    pages: SurveyPageType[];
+    pages: SurveyStepType[];
     onSubmit: (responses: SurveyResponse[]) => void;
 }
 
@@ -24,7 +24,7 @@ export const Survey = ({ pages, onSubmit }: SurveyProps) => {
         const currentPage = pages[activeStep];
 
         // If the current page is of type "info", allow advancing the stepper without restrictions
-        if (currentPage.type === SURVEY_PAGE_TYPES.INFO) {
+        if (currentPage.type === SURVEY_STEP_TYPES.INFO) {
             setIsNextButtonDisabled(false);
             return;
         }

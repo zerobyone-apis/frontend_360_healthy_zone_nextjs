@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { VerifiedUser } from '@mui/icons-material';
 
 type OptionCardType = {
     icon?: ReactElement;
@@ -14,12 +13,9 @@ export const OptionCard = ({
     title,
     radio,
 }: OptionCardType) => {
-
-    // TODO
-
     return (
         <div className={`border-solid border-black bg-slate-700  p-4 flex items-center ${visible ? 'block' : 'hidden'}`}>
-            {/* {icon} */}
+            {/* TODO {icon} */}
             <h2 className="flex-grow text-lg font-semibold">{title}</h2>
             {radio ? (
                 <input type="radio" className="ml-auto" />

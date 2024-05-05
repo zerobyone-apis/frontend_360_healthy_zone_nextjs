@@ -1,3 +1,3 @@
 export * from "./option-card";
-export * from "./survey-card/survey-page";
+export * from "./survey/survey-step";
 export * from "./question-card/question-card";

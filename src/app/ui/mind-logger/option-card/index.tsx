@@ -7,3 +7,8 @@ export const OPTION_TYPES = {
 }
 
 export * from "./option-check";
+export * from "./option-date";
+export * from "./option-input";
+export * from "./option-number-range";
+export * from "./option-slider";
+export * from "./options";

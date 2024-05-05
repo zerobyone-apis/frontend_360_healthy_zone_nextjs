@@ -2,12 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import QuestionCard, { QuestionCardType } from '../question-card/question-card';
 
-export const SURVEY_PAGE_TYPES = {
+export const SURVEY_STEP_TYPES = {
     INFO: "info",
     QUESTION: "question",
 };
 
-export type SurveyPageType = {
+export type SurveyStepType = {
     id: number,
     name: string,
     title: string,
@@ -18,10 +18,11 @@ export type SurveyPageType = {
 };
 
 type SurveyPageProps = {
-    data: SurveyPageType;
+    data: SurveyStepType;
     visible: boolean;
     updateResponse: (name: string, answers: any) => void;
 };
+
 export const SurveyPage = ({
     data,
     updateResponse,
@@ -71,5 +72,3 @@ export const SurveyPage = ({
         </section>
     );
 };
-
-export default SurveyPage;
