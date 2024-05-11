@@ -1,29 +1,40 @@
-
-import { PlanOfferCard } from '../../ui/dashboard/plan-offer-card'
+"use server"
+import { getDashboardStats } from '@/actions/coach/dashboard'
+import PieChart from '@/app/ui/pie-chart'
+import Table from '@/app/ui/table'
 import ProgressCard from '../../ui/dashboard/progress-card'
-import { TasksCard } from '../../ui/dashboard/tasks-card'
 
+function convertToCustomerTableValues(customers: any) {
+    return customers.map((customer: any) => {
+        return {
+            items: [customer.client.first_name + "." + customer.client.last_name.split("")[0], customer.client.country, customer.client.training.length, customer.client_status.replaceAll("_", " "), "Details"],
+            redirectTo: "/coach/dashboard/customers?id=" + customer.id
+        }
+    })
+}
 
-export default function Page() {
+export default async function Page() {
+    const stats = await getDashboardStats();
+    const tableValues = convertToCustomerTableValues(stats.full_assignments);
+    const pieChartValue = {
+        series: [stats.total_completed_assignments, stats.total_in_progress_assignments, stats.total_ready_to_start_assignments],
+        colors: ["#a0b43b", "#16BDCA", "#9061F9"],
+        labels: ["Completed", "In progress", "Ready to start"]
+    }
     return (
         <div className='h-full grid grid-cols-3 gap-2'>
-            <div className='md:col-span-2 col-span-3'>
-                <TasksCard />
-            </div>
-            <div className='md:col-span-1 col-span-3'>
-                <PlanOfferCard />
-            </div>
-            <div className="md:col-span-1 col-span-3">
-                <ProgressCard bcolor="bg-yellow-green-500" tcolor="text-yellow-green-500" target="7km / week"
-                    percent={30} currentProgress="5 km / week" title="Daily Running" />
+            <div className='col-span-3'>
+                <Table
+                    header={["Name", "Country", "Trainings", "Status"]}
+                    searchbox={false}
+                    values={tableValues} />
             </div>
             <div className="md:col-span-1 col-span-3">
-                <ProgressCard bcolor="bg-jungle-green-600" tcolor="text-jungle-green-600" target="1900cal / week"
-                    percent={70} currentProgress="1500cal / week" title="Daily Calories" />
+                <ProgressCard bcolor="bg-android-green-500" tcolor="text-android-green-500" target={stats.custom.customers_limit}
+                    percent={stats.custom.customers_percent} currentProgress={stats.custom.customers} title="Customers" icon="bx bxs-user-detail" />
             </div>
-            <div className="md:col-span-1 col-span-3">
-                <ProgressCard bcolor="bg-red-600" tcolor="text-red-600" target="15 / Day"
-                    percent={10} currentProgress="5 / Day" title="Water Glasses" />
+            <div className="md:col-span-2 col-span-3">
+                <PieChart stats={pieChartValue} title="Assignaments" redirect="/coach/dashboard/customers" />
             </div>
         </div>
     )
