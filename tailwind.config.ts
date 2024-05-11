@@ -8,6 +8,7 @@ const config: Config = {
 		"./src/app/**/*.{js,ts,jsx,tsx,mdx}",
 		"./src/use-cases/**/*.{js,ts,jsx,tsx,mdx}",
 		"./node_modules/flowbite/**/*.js",
+		"./node_modules/flowbite-react/lib/**/*.js",
 	],
 	theme: {
 		extend: {
