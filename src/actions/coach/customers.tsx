@@ -19,7 +19,7 @@ export async function getAllCustomers() {
                     "Cache-Control": "no-store",
                     Authorization: token,
                 },
-                body: JSON.stringify(userbody),
+                body: "",
             }
         );
 

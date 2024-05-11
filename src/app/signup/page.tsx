@@ -11,9 +11,9 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function Page() {
 
     const [userdata, setUserData] = useState({ user: "", password: "", repass: "", first_name: "", last_name: "", phone: "" });
+    const router = useRouter();
 
     async function handleSignupForm() {
-        let router = useRouter();
         let resp = await registration(userdata);
         if (resp.username) router.push("/success-registration");
         else toast.error("There was an internal error")
