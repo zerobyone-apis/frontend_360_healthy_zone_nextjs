@@ -38,7 +38,7 @@ export function middleware(request: NextRequest) {
 	}
 
 	// Evitaremos el acceso a las diferentes areas si no tienen el acceso a las mismas
-	if (currentToken && pathname !== Roles[currentToken.role])
+	if (currentToken && !pathname.startsWith(Roles[currentToken.role]))
 		return NextResponse.redirect(
 			new URL(Roles[currentToken.role], request.url)
 		);
