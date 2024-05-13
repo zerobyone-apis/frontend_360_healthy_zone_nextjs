@@ -1,38 +1,44 @@
 'use client'
 
-import { registration } from "@/actions/signup/signupActions";
+import { registration } from "@/actions/signup";
 import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Page() {
 
     const [userdata, setUserData] = useState({ user: "", password: "", repass: "", first_name: "", last_name: "", phone: "" });
+    const router = useRouter();
 
     async function handleSignupForm() {
-        await registration(userdata);
+        let resp = await registration(userdata);
+        if (resp.username) router.push("/success-registration");
+        else toast.error("There was an internal error")
     }
 
     return (
-        <section className="bg-gray-50 dark:bg-gray-900">
-            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                <a href="#" className="hidden md:flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-                    <Logo className="text-[4rem]" width="none"></Logo>
-                </a>
-                <div className="w-full sm:h-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0">
+        <section className="bg-jungle-green-50 ">
+            <Link href="/" className="hidden md:flex items-center mt-2 mb-6 text-2xl font-semibold text-gray-900 ">
+                <Logo className="text-[4rem]" width="none"></Logo>
+            </Link>
+
+            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
+                <div className="w-full sm:h-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
                             Registry with us!
                         </h1>
                         <form className="space-y-4 md:space-y-6 grid grid-cols-2 gap-2">
-
-                            <div className="col-span-2 md:col-span-1">
+                            <div className="col-span-2">
                                 <label className="block mb-2 text-sm font-medium text-gray-900 ">Name</label>
                                 <input type="name" name="name" id="name"
                                     value={userdata.first_name} onChange={(e) => setUserData({ ...userdata, first_name: e.target.value })}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " placeholder="John" required />
                             </div>
-                            <div className="col-span-2 md:col-span-1">
+                            <div className="col-span-2">
                                 <label className="block mb-2 text-sm font-medium text-gray-900 ">Lastname</label>
                                 <input type="lastname" name="lastname" id="lastname"
                                     value={userdata.last_name} onChange={(e) => setUserData({ ...userdata, last_name: e.target.value })}
@@ -80,6 +86,11 @@ export default function Page() {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </section>
     )
+}
+
+function useNavigate() {
+    throw new Error("Function not implemented.");
 }

@@ -1,12 +1,10 @@
 import {
-	CoachPlansServices,
 	DietStatus,
-	GoalStatus,
 	NutritionistPlansServices,
-	TrainingStatus,
 	TypeDiets,
-	TypeGoals,
 } from "@/interfaces/diets";
+import { GoalStatus, TypeGoals } from "@/interfaces/goals";
+import { CoachPlansServices, TrainingStatus } from "@/interfaces/trainings";
 
 export default [
 	{

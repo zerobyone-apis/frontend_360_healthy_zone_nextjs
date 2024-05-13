@@ -4,11 +4,11 @@ import { cookies } from "next/headers";
 
 export async function getProfile() {
 	const cookieStore = cookies();
-	const user: User = JSON.parse(cookieStore.get("user")?.value || "");
-	const userId = user.user.userId;
+	const user: any = JSON.parse(cookieStore.get("user")?.value || "");
+	const userId: any = user.client?.id;
 	const tokenValue = cookieStore.get("token")?.value || "";
 	const token = tokenValue;
-	console.log(user);
+	console.log(userId);
 	try {
 		const resp = await fetch(process.env.BASE_PATH + "/v1.0/client/" + userId, {
 			method: "GET",
@@ -23,6 +23,7 @@ export async function getProfile() {
 		});
 
 		let respi = await resp.json();
+		console.log(respi);
 		return respi;
 	} catch (error) {
 		return {

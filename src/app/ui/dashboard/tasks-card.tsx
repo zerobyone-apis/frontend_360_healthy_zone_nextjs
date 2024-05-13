@@ -4,13 +4,13 @@ type Props = {}
 
 export function TasksCard({ }: Props) {
     const tasks = [{
-        title: "Call with nutrisionist",
+        title: "Call with nutritionist",
         subtitle: "10 AM CST",
         id: "2dmai2ad"
     },
     {
         title: "Follow coach instructions",
-        subtitle: "Excercice post launch time",
+        subtitle: "Exercise post launch time",
         id: "2dmai2a2d"
     },
     {

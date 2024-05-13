@@ -1,4 +1,4 @@
-import { getDietById } from "@/actions/diets/diet-actions"
+import { getDietById } from "@/actions/diets"
 import { Button } from "@/app/ui/button";
 import DefaultCard from "@/app/ui/dashboard/default-card";
 import HorizontalTimeline from "@/app/ui/dashboard/horizontal-timeline";

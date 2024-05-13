@@ -1,65 +1,30 @@
 'use client'
-import { login } from "@/actions/login/login-actions";
+import { login } from "@/actions/login";
 import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 import Link from "next/link";
-import Cookies from "js-cookie";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Crypto } from "@/utils/encrypt";
+// import { Crypto } from "@/utils/encrypt";
+
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Page() {
     const router = useRouter();
     const [userdata, setUserData] = useState({ email: "", password: "" });
 
     async function handleLoginForm() {
-        if (userdata.email === "test@test.com" && userdata.password === "password") {
-            Cookies.set("token", Crypto.encrypt("UnaPruebaDeTokenSinSentido"), {
-                expires: 7
-            });
-            Cookies.set("user",
-                Crypto.encrypt(JSON.stringify({
-                    "user": {
-                        "userId": "1",
-                        "email": "gaston.nicolas.morales.olivera@gmail.com",
-                        "username": "Gaston.Morales",
-                        "roles": "CLIENT",
-                        "isAdmin": false
-                    },
-                    "client": {
-                        "id": 1,
-                        "first_name": "Gaston",
-                        "last_name": "Morales",
-                        "phone": "5986393429239",
-                        "email": "gaston.nicolas.morales.olivera@gmail.com",
-                        "city": "",
-                        "country": "UY",
-                        "description": null,
-                        "profile_picture": "",
-                        "address": null,
-                        "subscription": null,
-                        "nutritionist_id": null,
-                        "coach_id": null,
-                        "goals": [],
-                        "is_blocked": false,
-                        "isActive": true
-                    },
-                    "nutritionist": null,
-                    "coach": null
-                })), { expires: 7 })
-            return true;
-        }
         let resp = await login(userdata);
-        if (resp) {
-            // Cookies.set("token", Crypto.encrypt(resp), {
-            //     expires: 7,
-            // });
-            router.push("/dashboard");
+        console.log("resp", resp);
+        if (!resp || resp.status === 500) return toast.warning("Check your credentials and try again");
+        if (resp.user.roles === "CLIENT") return router.push("/dashboard");
+        if (resp.user.roles === "COACH") return router.push("/coach/dashboard");
+        if (resp.user.roles === "NUTRITIONIST") return router.push("/nutritionist/dashboard");
 
-        }
     }
 
     return (
-        <section className="bg-gray-50 dark:bg-gray-900">
+        <section className="bg-jungle-green-50">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                 <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                     <Logo className="text-[4rem]" width="none"></Logo>
@@ -101,6 +66,7 @@ export default function Page() {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </section>
     )
 }

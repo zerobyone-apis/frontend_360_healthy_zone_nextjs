@@ -9,7 +9,7 @@ type Props = {
     cols: string;
 }
 
-export default function DietCounterChart({ count, title, bg, border, cols }: Props) {
+export default function CounterChart({ count, title, bg, border, cols }: Props) {
     return (
         <div className={clsx("w-full p-4 rounded border-l-8 flex items-center flex-col gap-2", border, bg, cols)}>
             <h5 className='font-thin text-sm'>{title}</h5>
