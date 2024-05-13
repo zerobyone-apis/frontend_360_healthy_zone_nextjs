@@ -7,19 +7,45 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 
+    const navbarList = [{
+        icon: 'bx bxs-dashboard text-2xl',
+        title: "Dashboard",
+        redirect: "/dashboard"
+    },
+    {
+        icon: 'bx bxs-pear text-xl',
+        title: "Diets",
+        redirect: "/dashboard/diets"
+    },
+    {
+        icon: 'bx bx-run text-xl',
+        title: "Trainings",
+        redirect: "/dashboard/trainings"
+    },
+    {
+        icon: 'bx bxs-flag-checkered text-xl',
+        title: "Goals",
+        redirect: "/dashboard/goals"
+    },
+    {
+        icon: 'bx bxs-cog text-xl',
+        title: "Settings",
+        redirect: "/dashboard/settings"
+    }]
+
 
     return (
         <>
             <main className="h-screen grid grid-cols-12 bg-jungle-green-50">
                 <div className="col-span-2 md:flex md:justify-start  hidden h-full items-center">
-                    <Sidebar />
+                    <Sidebar list={navbarList} />
                 </div>
                 <div className="flex flex-col col-span-12 md:col-span-10 h-full overflow-auto">
                     <Navbar />
                     <main className=" h-[95%] max-h-full p-3 overflow-auto">{children}</main>
                 </div>
                 <div className="md:hidden flex col-span-12 justify-center">
-                    <NavbarMobile />
+                    <NavbarMobile list={navbarList} />
                 </div>
             </main>
             <ToastContainer />

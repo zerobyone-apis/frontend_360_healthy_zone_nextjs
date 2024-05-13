@@ -3,7 +3,7 @@
 import { registration } from "@/actions/signup";
 import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -89,4 +89,8 @@ export default function Page() {
             <ToastContainer />
         </section>
     )
+}
+
+function useNavigate() {
+    throw new Error("Function not implemented.");
 }
