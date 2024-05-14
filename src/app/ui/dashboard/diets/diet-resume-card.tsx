@@ -18,7 +18,7 @@ export default function DietResumeCard({ diet }: { diet: DietResponseDTO }) {
             ))}>
             {diet.type}
             <div className=" pt-1 flex flex-col items-start gap-2">
-                <span className='font-thin text-sm'>{diet.description_diet}</span>
+                <span className='text-sm'>{diet.description_diet}</span>
                 <div className='flex justify-between w-full'>
                     <label className={twMerge(clsx("p-1 rounded ", diet.diet_status && dietObject[diet.diet_status].label))}>
                         <p className={twMerge(clsx('font-bold', diet.diet_status && dietObject[diet.diet_status].labelText))}>{diet.diet_status}</p>
