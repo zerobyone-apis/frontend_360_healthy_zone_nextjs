@@ -8,8 +8,7 @@ export default function Page() {
 
     const onSubmit = (values: any) => {
         console.log(values)
-        alert("redirect")
-        router.push("/")
+        router.push("/dashboard")
     }
     return <Survey pages={SURVEY_PAGES} onSubmit={onSubmit} />
 }
