@@ -25,10 +25,8 @@ export async function getDashboardStats() {
             customers_limit: body.remaining_clients.split("/")[1].slice(),
             customers_percent: Number(body.remaining_clients.split("/")[0].slice()) * 100 / Number(body.remaining_clients.split("/")[1].slice())
         };
-        console.log(body.full_assignments)
         return body;
     } catch (error) {
-        console.log(error);
         return false;
     }
 }
