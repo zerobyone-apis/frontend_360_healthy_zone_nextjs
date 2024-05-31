@@ -100,7 +100,8 @@ export default [
 ];
 
 export const exercises_from_api = async () => {
-	const url = "https://exercisedb.p.rapidapi.com/exercises?limit=15";
+	const url =
+		"https://exercisedb.p.rapidapi.com/exercises/equipment/body weight?limit=10";
 	const options = {
 		method: "GET",
 		headers: {
