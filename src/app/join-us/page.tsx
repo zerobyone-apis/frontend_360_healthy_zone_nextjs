@@ -15,9 +15,7 @@ export default function Page() {
     const router = useRouter();
 
     async function handleSignupForm() {
-        console.log("user data=> ", userdata)
         let resp = await professionalRegistration(userdata);
-        console.log(resp);
         if (resp.username) router.push("/registration-success");
         else toast.error("There was an internal error")
     }
