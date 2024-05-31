@@ -1,0 +1,6 @@
+export enum SubscriptionType {
+	ECONOMIC = "ECONOMIC",
+	MEDIUM = "MEDIUM",
+	PRIME = "PRIME",
+	NON_SUBSCRIPTION = "NON SUBSCRIPTION",
+}
