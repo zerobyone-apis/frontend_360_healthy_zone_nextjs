@@ -1,14 +1,15 @@
-
+"use server"
 import { PlanOfferCard } from '../ui/dashboard/plan-offer-card'
 import ProgressCard from '../ui/dashboard/progress-card'
 import { TasksCard } from '../ui/dashboard/tasks-card'
 
 
-export default function Page() {
+export default async function Page() {
+
     return (
         <div className='h-full grid grid-cols-3 gap-2'>
             <div className='md:col-span-2 col-span-3'>
-                <TasksCard />
+                <TasksCard tasks={[]} />
             </div>
             <div className='md:col-span-1 col-span-3'>
                 <PlanOfferCard />
