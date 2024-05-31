@@ -48,7 +48,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <Navbar />
                     <main className=" h-[95%] max-h-full p-3 overflow-auto">{children}</main>
                 </div>
-                <div className="md:hidden flex col-span-12 justify-center">
+                <div className="md:hidden flex  justify-center fixed bottom-0 w-full">
                     <NavbarMobile list={navbarList} />
                 </div>
             </main>
