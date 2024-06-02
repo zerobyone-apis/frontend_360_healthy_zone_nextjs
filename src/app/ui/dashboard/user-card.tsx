@@ -37,7 +37,9 @@ export function UserCard({ user }: Props) {
                     </div>
                     <MenuDropdown items={[
                         { title: "New training", href: "?new-training=true&client-id=" + user.id },
-                        { title: "View trainings", href: "/coach/dashboard/trainings/" + user.id }]} />
+                        { title: "View trainings", href: "/coach/dashboard/trainings/" + user.id },
+                        { title: "Custom form", href: "?custom-form=true&client-id=" + user.id },
+                        { title: "Current Progress", href: "/coach/dashboard/goals/" + user.id }]} />
                 </figcaption>
             </figure>
         </div>
