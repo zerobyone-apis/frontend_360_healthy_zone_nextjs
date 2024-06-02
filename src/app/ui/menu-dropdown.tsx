@@ -34,9 +34,9 @@ export default function MenuDropdown({ items }: Props) {
 
             <div ref={dropdownRef} className={clsx(!show && "hidden", " right-[3.5rem] top--6 absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44")}>
                 <ul className="py-2 text-sm text-gray-700">
-                    {items.map((item: any) => {
+                    {items.map((item: any, index: number) => {
                         return (
-                            <li>
+                            <li key={index}>
                                 <Link href={item.href} className="block px-4 py-2 hover:bg-gray-100">{item.title}</Link>
                             </li>
                         )

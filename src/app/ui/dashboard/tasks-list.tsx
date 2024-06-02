@@ -14,9 +14,9 @@ export function TasksList({ tasks }: Props) {
     return (
         <div className="gap-3 flex flex-col">
             {
-                tasks.map(task => {
+                tasks.map((task, index: number) => {
                     return (
-                        <Link href={task.redirect}>
+                        <Link key={index} href={task.redirect}>
                             <div key={task.id} className={'w-full min-h-[40px] bg-white rounded-xl p-2 flex gap-2 items-center'}>
                                 <div className="w-full">
                                     <h3 className='text-base font-semibold'>{task.title}</h3>
