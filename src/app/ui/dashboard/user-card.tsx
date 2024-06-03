@@ -4,8 +4,7 @@ import MenuDropdown from "../menu-dropdown";
 type Props = {
     user: {
         id: string | number;
-        first_name: string;
-        last_name: string;
+        edited_name: string;
         city: string;
         country: string;
         description: string;
@@ -17,7 +16,6 @@ type Props = {
 }
 
 export function UserCard({ user }: Props) {
-    const initials = user.first_name.split("")[0] + "." + user.last_name.split("")[0];
 
     return (
         <div className="text-sm leading-6">
@@ -29,7 +27,7 @@ export function UserCard({ user }: Props) {
                     <Image src={user.profile_picture || "/imgs/blank-profile-pic.jpeg"} alt={user.first_name + " picture profile"} width={56} height={56} className="flex-none w-14 h-14 rounded-full object-cover" />
                     <div className="flex-auto">
                         <div className="text-base text-slate-900 font-semibold dark:text-slate-200">
-                            {initials}
+                            {user.edited_name}
                         </div>
                         <div className="mt-0.5 dark:text-slate-300">
                             {user.country}
