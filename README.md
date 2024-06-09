@@ -1,3 +1,36 @@
+## 360 Healthy Zone webapp
+
+### Introduction
+<!-- Suggested code may be subject to a license. Learn more: ~LicenseLog:967864181. -->
+This is a Next.js project bootstrapped with [create-next-app](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## Features
+### Login
+...
+
+The following profiles are just for testing:
+
+Coach: tebebe5328@funvane.com / password
+Client: gaston.nicolas.morales.olivera@gmail.com / password
+
+### Registration
+...
+
+### Landing page
+...
+
+### Client dashboard
+...
+
+#### Exercises list
+...
+
+### Coach dashboard
+...
+
+#### Customers list
+...
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
