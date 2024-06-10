@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { useRouter } from "next/navigation";
-import NewTrainingDialog from "./new-training.dialog";
+import SelectTrainingModal from "./select-training.dialog";
 
 
 const CustomerCard = ({ client }: any) => {
@@ -42,7 +42,7 @@ const CustomerCard = ({ client }: any) => {
         </DropdownMenu>
       </div>
     </div>
-    <NewTrainingDialog/>
+    <SelectTrainingModal/>
     </>
   );
 };
