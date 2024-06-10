@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { useRouter } from "next/navigation";
+import NewTrainingDialog from "./new-training.dialog";
 
 
 const CustomerCard = ({ client }: any) => {
@@ -15,12 +16,11 @@ const CustomerCard = ({ client }: any) => {
     const router = useRouter();
     const handleNewTrainingClick = () => {
         console.log("Hola como estas")
-      router.push("/coach/dashboard/customers",{
-        query: { newTraining: "true" },
-      });
+      router.push("?new-training=true");
     };
 
   return (
+    <>
     <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-white m-2">
       <div className="flex items-center">
         <div className="ml-4">
@@ -42,6 +42,8 @@ const CustomerCard = ({ client }: any) => {
         </DropdownMenu>
       </div>
     </div>
+    <NewTrainingDialog/>
+    </>
   );
 };
 
