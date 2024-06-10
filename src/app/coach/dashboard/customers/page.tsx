@@ -12,7 +12,7 @@ export default async function Page({ }: Props) {
     return (
         <div className="gap-3">
             {stats.full_assignments.map((assigned: any) => {
-                return (<CustomerCard client={assigned.client}/>)
+                return (<CustomerCard key={assigned.id} client={assigned.client}/>)
             })}
         </div>
     )
