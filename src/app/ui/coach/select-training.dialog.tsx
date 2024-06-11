@@ -1,5 +1,6 @@
 "use client"
 import { getExercises } from '@/actions/trainings/get-exercises'
+import clsx from 'clsx';
 import { useEffect, useState } from 'react'
 
 export default function SelectTrainingModal() {
@@ -15,6 +16,21 @@ export default function SelectTrainingModal() {
     const [target, setTarget] = useState("")
     const [error, setError] = useState("");
     const [name, setName] = useState("")
+    const [selected, setSelected] = useState([]);
+
+    const handleSelect = (exercise: any) => {
+        setSelected((prevSelected: any) => {
+          if (prevSelected.some((s: any) => s.gifId === exercise.gifId)) {
+            return prevSelected.filter((s: any) => s.gifId !== exercise.gifId);
+          } else {
+            return [...prevSelected, exercise];
+          }
+        });
+      };
+
+      
+    const bucket = process.env.NEXT_PUBLIC_BASE_BUCKET_URL || "";
+  const folder = process.env.NEXT_PUBLIC_BUCKET_FOLDER_GIFS || "";
 
     const targets = ['abs',
         'quads',
@@ -60,8 +76,8 @@ export default function SelectTrainingModal() {
     }
 
     return (
-        <dialog id="select-modal" aria-modal="true" aria-labelledby="modal-headline" className="flex bg-black/50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-            <div className="relative p-4 w-full max-w-md max-h-full">
+        <dialog id="select-modal" aria-modal="true" aria-labelledby="modal-headline" className="flex bg-black/50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full max-h-full">
+            <div className="relative p-4 w-full max-w-md max-h-screen h-full overflow-y-auto">
                 <div className="relative bg-white rounded-lg shadow">
 
                     <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
@@ -101,19 +117,25 @@ export default function SelectTrainingModal() {
                         </div>
                     </form>
                     <div className="p-4 md:p-5">
-                        <p className="text-gray-500 mb-4">Select the following exercises to train:</p>
+                        {exercises.total !== 0 && <p className="text-gray-500 mb-4 text-sm">The order is defined by the selected items</p>}
                         <ul className="space-y-4 mb-4">
-                            {exercises.exercises.map((exercise: any) =>
-                                <li>
-                                    <input type="checkbox" id={exercise.gifId} name="job" value={exercise.gifId} className="hidden peer" />
-                                    <label htmlFor={exercise.gifId} className="inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-900 hover:bg-gray-100">
+                            {exercises.exercises.map((exercise: any) =>{
+                            const checked = selected.some((s:any) => s.gifId === exercise.gifId);
+                               return( 
+                               <li key={exercise.gifId} >
+                                    <input type="checkbox" id={exercise.gifId} name="job" value={exercise.gifId} className="hidden peer" onChange={() => handleSelect(exercise)} checked={checked}/>
+                                    <label htmlFor={exercise.gifId} className={clsx("inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-jungle-green-600 peer-checked:text-jungle-green-600 hover:text-gray-900 hover:bg-gray-100", checked && "border-jungle-green-600 text-jungle-green-600")}>
+                                    <img className='w-12 h-12 cover' src={`${bucket}${folder}/${exercise.gifId}.gif`} alt={exercise.name} />
                                         <div className="block">
                                             <div className="w-full text-lg font-semibold">{exercise.name}</div>
                                             <div className="w-full text-gray-500">{exercise.target}</div>
                                         </div>
                                         <svg className="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M1 5h12m0 0L9 1m4 4L9 9" /></svg>
                                     </label>
-                                </li>)}
+                                </li>)
+                            })}
+{/* Suggested code may be subject to a license. Learn more: ~LicenseLog:162677770. */}
+                                {exercises.total === 0 && <h3 className='text-center text-jungle-green-500 font-bold text-xl'>No exercises found...</h3>}
                         </ul>
 
                         <div className="flex flex-col items-center">
