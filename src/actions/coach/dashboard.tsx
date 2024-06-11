@@ -9,7 +9,6 @@ export async function getDashboardStats() {
         cookieStore.get("user")?.value || "{}"
     );
 
-    console.log("tokensito: ", tokenValue)
     try {
         const resp = await fetch(process.env.BASE_PATH + "/v1.0/coach/summary/by/" + user.coach.id, {
             method: "GET",

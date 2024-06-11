@@ -1,5 +1,4 @@
 "use client"
-// import { Badge } from "@radix-ui/themes";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import {
   DropdownMenu,
@@ -15,7 +14,7 @@ const CustomerCard = ({ client }: any) => {
     
     const router = useRouter();
     const handleNewTrainingClick = () => {
-        console.log("Hola como estas")
+      // Handle the new training click event here
       router.push("?new-training=true&client_id=" + client.id);
     };
 
