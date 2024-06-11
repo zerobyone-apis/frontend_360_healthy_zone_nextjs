@@ -16,7 +16,7 @@ const CustomerCard = ({ client }: any) => {
     const router = useRouter();
     const handleNewTrainingClick = () => {
         console.log("Hola como estas")
-      router.push("?new-training=true");
+      router.push("?new-training=true&client_id=" + client.id);
     };
 
   return (
