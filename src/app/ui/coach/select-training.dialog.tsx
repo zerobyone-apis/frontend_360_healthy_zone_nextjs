@@ -1,9 +1,11 @@
 "use client"
 import { getExercises } from '@/actions/trainings/get-exercises'
 import clsx from 'clsx';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react'
 
 export default function SelectTrainingModal() {
+    const searchparams = useSearchParams();
     const [exercises, setExercises] = useState({
         exercises: [],
         total: 0,
@@ -135,8 +137,7 @@ export default function SelectTrainingModal() {
                             {exercises.exercises.map((exercise: any) => {
                                 const checked = selected.some((s: any) => s.gifId === exercise.gifId);
                                 return (
-                                    <li key={exercise.gifId} >
-                                        <input type="checkbox" id={exercise.gifId} name="job" value={exercise.gifId} className="hidden peer" onChange={() => handleSelect(exercise)} checked={checked} />
+                                    <li key={exercise.gifId} role="checkbox" className="peer" onClick={() => handleSelect(exercise)} aria-checked={checked} >
                                         <label htmlFor={exercise.gifId} className={clsx("inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-jungle-green-600 peer-checked:text-jungle-green-600 hover:text-gray-900 hover:bg-gray-100", checked && "border-jungle-green-600 text-jungle-green-600")}>
                                             <img className='w-12 h-12 cover' src={`${bucket}${folder}/${exercise.gifId}.gif`} alt={exercise.name} />
                                             <div className="block text-left">
@@ -180,7 +181,7 @@ export default function SelectTrainingModal() {
 
 function SkeletonListExercises() {
     return (
-        <li role="status" className="max-w-sm animate-pulse">
+        <li role="status" className="max-w-sm animate-pulse" aria-disabled={true} aria-checked={false}>
             <label className={clsx("inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-jungle-green-600 peer-checked:text-jungle-green-600 hover:text-gray-900 hover:bg-gray-100")}>
                 <div className="flex items-center justify-center w-12 h-12 bg-gray-300 rounded">
                     <svg className="w-10 h-10 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
