@@ -71,7 +71,7 @@ export interface ExerciseDTO {
 	gifUrl?: string;
 }
 
-interface Training {
+export interface Training {
 	coach_id: number;
 	goal_id: number;
 	type: string;
@@ -84,13 +84,13 @@ interface Training {
 	daily_training_days: DailyTrainingDay[];
 }
 
-interface DailyTrainingDay {
+export interface DailyTrainingDay {
 	number_training_day: number;
 	selected_exercises: SelectedExercise[];
 	total_training_days: number;
 }
 
-interface SelectedExercise {
+export interface SelectedExercise {
 	name: string;
 	type: string;
 	description: string;
