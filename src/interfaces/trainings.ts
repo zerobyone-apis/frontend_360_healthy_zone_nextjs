@@ -70,3 +70,37 @@ export interface ExerciseDTO {
 	ready: boolean;
 	gifUrl?: string;
 }
+
+interface Training {
+	coach_id: number;
+	goal_id: number;
+	type: string;
+	training_status: string;
+	coach_plans: string;
+	description_training: string;
+	frequency: string;
+	init_on: string;
+	amount_of_days: number;
+	daily_training_days: DailyTrainingDay[];
+}
+
+interface DailyTrainingDay {
+	number_training_day: number;
+	selected_exercises: SelectedExercise[];
+	total_training_days: number;
+}
+
+interface SelectedExercise {
+	name: string;
+	type: string;
+	description: string;
+	series: number;
+	repetitions: number;
+	duration_in_seconds: number;
+	rest_in_seconds: number;
+	difficulty: number;
+	url_image: string;
+	is_completed: boolean;
+	created_on?: string | null;
+	updated_on?: string | null;
+}
