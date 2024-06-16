@@ -1,11 +1,12 @@
 "use client"
 import { getExercises } from '@/actions/trainings/get-exercises'
 import clsx from 'clsx';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react'
 
 export default function SelectTrainingModal() {
-    const searchparams = useSearchParams();
+    const searchParams = useSearchParams();
+    const router = useRouter();
     const [exercises, setExercises] = useState({
         exercises: [],
         total: 0,
@@ -15,9 +16,9 @@ export default function SelectTrainingModal() {
         limit: 10
     });
     const [page, setPage] = useState(1);
-    const [target, setTarget] = useState("")
+    const [target, setTarget] = useState("");
     const [error, setError] = useState("");
-    const [name, setName] = useState("")
+    const [name, setName] = useState("");
     const [selected, setSelected] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -31,11 +32,11 @@ export default function SelectTrainingModal() {
         });
     };
 
-
     const bucket = process.env.NEXT_PUBLIC_BASE_BUCKET_URL || "";
     const folder = process.env.NEXT_PUBLIC_BUCKET_FOLDER_GIFS || "";
 
-    const targets = ['abs',
+    const targets = [
+        'abs',
         'quads',
         'calves',
         'lats',
@@ -53,8 +54,8 @@ export default function SelectTrainingModal() {
         'forearms',
         'levator scapulae',
         'traps',
-        'abductors'];
-
+        'abductors'
+    ];
 
     function handleGetExercises() {
         setIsLoading(true);
@@ -64,14 +65,20 @@ export default function SelectTrainingModal() {
             .finally(() => setIsLoading(false))
     }
 
+    function handleClose() {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('select-exercises');
+        router.replace(url.toString(), { shallow: true });
+    }
+
     useEffect(() => {
         handleGetExercises();
-    }, [page])
+    }, [page]);
 
     useEffect(() => {
         setPage(1);
         handleGetExercises();
-    }, [name, target])
+    }, [name, target]);
 
     const startItem = (page - 1) * 10 + 1;
     const endItem = Math.min(page * 10, exercises.total);
@@ -80,22 +87,24 @@ export default function SelectTrainingModal() {
         return <div className="text-red-500">{error}</div>
     }
 
+    if (!searchParams.get('select-exercises')) return null;
+
     return (
         <dialog id="select-modal" aria-modal="true" aria-labelledby="modal-headline" className="flex bg-black/50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full max-h-full">
             <div className="relative p-4 w-full max-w-md max-h-screen h-full overflow-y-auto">
                 <div className="relative bg-white rounded-lg shadow">
-
                     <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                         <h3 className="text-lg font-semibold text-gray-900">
                             New Training
                         </h3>
-                        <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="select-modal">
+                        <button type="button"
+                            onClick={handleClose}
+                            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="select-modal">
                             <svg className="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                             </svg>
                             <span className="sr-only">Close modal</span>
                         </button>
-
                     </div>
                     <form className="max-w-lg mx-auto p-2">
                         <div className="flex">
@@ -156,19 +165,18 @@ export default function SelectTrainingModal() {
                             <span className="text-sm text-gray-700">
                                 Showing <span className="font-semibold text-gray-900">{startItem}</span> to <span className="font-semibold text-gray-900">{endItem}</span> of <span className="font-semibold text-gray-900">{exercises.total}</span> Entries
                             </span>
-
                             <div className="inline-flex mt-2 xs:mt-0">
-                                <button
-                                    onClick={() => setPage(page - 1)}
-                                    disabled={page === 1}
-                                    className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-90">
+                                <button onClick={() => setPage(page - 1)} disabled={page === 1} className="inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    <svg className="w-5 h-5 mr-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M12.293 14.707a1 1 0 0 0 1.414-1.414L9.414 9l4.293-4.293A1 1 0 0 0 12.293 3.293l-5 5a1 1 0 0 0 0 1.414l5 5Z" clipRule="evenodd" />
+                                    </svg>
                                     Prev
                                 </button>
-                                <button
-                                    onClick={() => setPage(page + 1)}
-                                    disabled={exercises.page === exercises.pages}
-                                    className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900">
+                                <button onClick={() => setPage(page + 1)} disabled={page === exercises.pages} className="inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-gray-800 border-0 border-l border-gray-700 rounded-r hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                     Next
+                                    <svg className="w-5 h-5 ml-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M7.707 14.707a1 1 0 0 1-1.414-1.414L10.586 9 6.293 4.707A1 1 0 0 1 7.707 3.293l5 5a1 1 0 0 1 0 1.414l-5 5Z" clipRule="evenodd" />
+                                    </svg>
                                 </button>
                             </div>
                         </div>
