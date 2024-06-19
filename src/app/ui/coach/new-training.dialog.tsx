@@ -1,57 +1,224 @@
-import React from 'react'
+"use client";
+import { CoachPlansServices, TrainingTypes } from "@/interfaces/trainings";
+import { trainingStore } from "@/stores/training.store";
+import { useEffect, useState } from "react";
 
-type Props = {}
+export default function NewTrainingDialog() {
+	const [counter, setCounter] = useState(1);
+	const [trainingType, setTrainingType] = useState<string>("");
+	const [coachPlans, setCoachPlans] = useState<string>("");
+	const [descriptionTraining, setDescription] = useState<string>("");
 
-export default function NewTrainingDialog({}: Props) {
-  return (
-    <div id="crud-modal" tabIndex={-1} aria-hidden="true" className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div className="relative p-4 w-full max-w-md max-h-full">
+	const goal = trainingStore((state: any) => state.currentGoal);
+	const setTraining = trainingStore((state: any) => state.setTraining);
+	const setOpenNewTraining = trainingStore(
+		(state: any) => state.setOpenNewTraining
+	);
+	const setOpenSelectTraining = trainingStore(
+		(state: any) => state.setOpenSelectTraining
+	);
 
-        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+	const handleNextStep = () => {
+		setTraining({
+			amount_of_days: counter,
+			coach_plans: coachPlans,
+			type: trainingType,
+			description_training: descriptionTraining,
+		});
+		setOpenNewTraining(false);
+		setOpenSelectTraining(true);
+	};
 
-            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Create New Product
-                </h3>
-                <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
-                    <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span className="sr-only">Close modal</span>
-                </button>
-            </div>
-            <form className="p-4 md:p-5">
-                <div className="grid gap-4 mb-4 grid-cols-2">
-                    <div className="col-span-2">
-                        <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                        <input type="text" name="name" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required/>
-                    </div>
-                    <div className="col-span-2 sm:col-span-1">
-                        <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                        <input type="number" name="price" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required/>
-                    </div>
-                    <div className="col-span-2 sm:col-span-1">
-                        <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                        <select id="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option selected>Select category</option>
-                            <option value="TV">TV/Monitors</option>
-                            <option value="PC">PC</option>
-                            <option value="GA">Gaming/Console</option>
-                            <option value="PH">Phones</option>
-                        </select>
-                    </div>
-                    <div className="col-span-2">
-                        <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Description</label>
-                        <textarea id="description" rows={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write product description here"></textarea>                    
-                    </div>
-                </div>
-                <button type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <svg className="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                    Add new product
-                </button>
-            </form>
-        </div>
-    </div>
-</div> 
-  )
+	const handleIncrement = () => {
+		if (counter >= 30) return;
+		setCounter(prevCounter => prevCounter + 1);
+	};
+
+	const handleDecrement = () => {
+		if (counter > 1) {
+			setCounter(prevCounter => prevCounter - 1);
+		}
+	};
+
+	return (
+		<dialog
+			id="crud-modal"
+			tabIndex={-1}
+			className="flex bg-black/50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full max-h-full"
+		>
+			<div className="relative p-4 w-full max-w-md max-h-full">
+				<div className="relative bg-white rounded-lg shadow">
+					<div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+						<h3 className="text-lg font-semibold text-gray-900">
+							New Training details
+						</h3>
+						<button
+							type="button"
+							className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+							data-modal-toggle="crud-modal"
+						>
+							<svg
+								className="w-3 h-3"
+								aria-hidden="true"
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 14 14"
+							>
+								<path
+									stroke="currentColor"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									strokeWidth="2"
+									d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+								/>
+							</svg>
+							<span className="sr-only">Close modal</span>
+						</button>
+					</div>
+					<div
+						className="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 m-2"
+						role="alert"
+					>
+						<svg
+							className="flex-shrink-0 inline w-4 h-4 me-3"
+							aria-hidden="true"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="currentColor"
+							viewBox="0 0 20 20"
+						>
+							<path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+						</svg>
+						<span className="sr-only">Info</span>
+						<div className="flex flex-col">
+							{goal && (
+								<>
+									<strong className="font-semibold">Goal Description:</strong>
+									<span className="font-medium">{goal.descriptionGoal}</span>
+								</>
+							)}
+						</div>
+					</div>
+					<form className="p-4 md:p-5">
+						<div className="grid gap-4 mb-4 grid-cols-2">
+							<div className="col-span-2 sm:col-span-1">
+								<label
+									htmlFor="quantity-input"
+									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+								>
+									Choose amount days:
+								</label>
+								<div className="relative flex items-center max-w-[8rem]">
+									<button
+										type="button"
+										id="decrement-button"
+										data-input-counter-decrement="quantity-input"
+										className="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+										onClick={handleDecrement}
+									>
+										<i className="bx bx-minus"></i>
+									</button>
+									<input
+										type="text"
+										id="quantity-input"
+										data-input-counter
+										data-input-counter-min="1"
+										data-input-counter-max="30"
+										aria-describedby="helper-text-explanation"
+										className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+										placeholder="999"
+										value={counter}
+										disabled={true}
+										required
+									/>
+									<button
+										type="button"
+										id="increment-button"
+										data-input-counter-increment="quantity-input"
+										className="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+										onClick={handleIncrement}
+									>
+										<i className="bx bx-plus"></i>
+									</button>
+								</div>
+							</div>
+							<div className="col-span-2 sm:col-span-1">
+								<label
+									htmlFor="category"
+									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+								>
+									Category
+								</label>
+								<select
+									id="category"
+									value={coachPlans}
+									className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+									onChange={e => setCoachPlans(e.target.value)}
+									required
+								>
+									<option value={""}>Select category</option>
+									<option value={CoachPlansServices.MUSCLE}>Muscle</option>
+									<option value={CoachPlansServices.RITMIA}>Ritmia</option>
+									<option value={CoachPlansServices.HIPERTROFIA}>
+										Hipertrofia
+									</option>
+									<option value={CoachPlansServices.NOT_APPLY}>
+										Not Apply
+									</option>
+								</select>
+							</div>
+							<div className="col-span-2 sm:col-span-1">
+								<label
+									htmlFor="trainingType"
+									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+								>
+									Training Type
+								</label>
+								<select
+									id="trainingType"
+									value={trainingType}
+									className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+									onChange={e => setTrainingType(e.target.value)}
+									required
+								>
+									<option value="">Select training type</option>
+									<option value={TrainingTypes.LOSE_WEIGHT}>Lose Weight</option>
+									<option value={TrainingTypes.INCREASE_MASS_MUSCLE}>
+										Increase Mass Muscle
+									</option>
+									<option value={TrainingTypes.LOSE_WEIGHT_HEALTHY_HABITS}>
+										Lose Weight Healthy Habits
+									</option>
+								</select>
+							</div>
+							<div className="col-span-2">
+								<label
+									htmlFor="description"
+									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+								>
+									Training Description
+								</label>
+								<textarea
+									id="description"
+									name={"description_training"}
+									value={descriptionTraining}
+									onChange={e => setDescription(e.target.value)}
+									rows={4}
+									className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+									placeholder="Write product description here"
+								></textarea>
+							</div>
+						</div>
+						<button
+							disabled={!trainingType || !coachPlans || !descriptionTraining}
+							onClick={handleNextStep}
+							className="text-white inline-flex w-full justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center gap-2 items-center"
+						>
+							Select daily training
+							<i className="bx bx-right-arrow-alt font-bold"></i>
+						</button>
+					</form>
+				</div>
+			</div>
+		</dialog>
+	);
 }
