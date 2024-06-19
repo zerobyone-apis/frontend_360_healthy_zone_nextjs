@@ -7,7 +7,6 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { useRouter } from "next/navigation";
-import SelectTrainingModal from "./select-training.dialog";
 
 
 const CustomerCard = ({ client }: any) => {
@@ -33,7 +32,7 @@ const CustomerCard = ({ client }: any) => {
           <DropdownMenuTrigger>
             <ChevronRightIcon className="w-5 h-5 text-gray-500" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="bg-white shadow-lg rounded-lg p-4">
+          <DropdownMenuContent className="bg-white shadow-lg rounded-lg p-4 gap-2">
             <DropdownMenuItem onClick={handleNewTrainingClick}>New Training</DropdownMenuItem>
             <DropdownMenuItem>View Trainings</DropdownMenuItem>
             <DropdownMenuItem >View Progress</DropdownMenuItem>
@@ -41,7 +40,6 @@ const CustomerCard = ({ client }: any) => {
         </DropdownMenu>
       </div>
     </div>
-    <SelectTrainingModal/>
     </>
   );
 };
