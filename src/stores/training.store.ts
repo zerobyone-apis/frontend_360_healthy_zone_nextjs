@@ -21,7 +21,7 @@ export const trainingStore = create((set) => ({
   setOpenNewTraining: (isOpen: boolean) => set((state: any) => ({ dialogs: { ...state.dialogs, newTraining: isOpen } })),
   setOpenSelectTraining: (isOpen: boolean) => set((state: any) => ({ dialogs: { ...state.dialogs, selectTraining: isOpen } })),
   setTraining: (training: any) => set((state: any)=> ({ training: {...state.training, ...training} })),
-  setCurrentGoal: (goal: any) => set({ currentGoal: goal, training: { ...goal }}),
+  setCurrentGoal: (goal: any) => set((state: any)=>({ currentGoal: goal, training: { ...state.training, goal_id: goal.id}})),
   removeTraining: () => set({ training: { coach_id: 0, goal_id: 0, type: "", training_status: "", coach_plans: "", description_training: "", frequency: "", init_on: "", amount_of_days: 0, daily_training_days: [] } }),
   clearCurrentGoal: () => set({ currentGoal: null }),
   
