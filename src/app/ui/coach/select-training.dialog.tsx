@@ -62,7 +62,34 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 
 	const handleCompleteTraining = () => {
 		if (!selected.length) return setError("Select at least one exercise");
-		handleComplete(selected);
+
+		const hasExercisesPerDay = selected.every(day => day.length > 0);
+		if (!hasExercisesPerDay) {
+			return setError("Select at least one exercise per day");
+		}
+
+		const formatedExercises = selected.map((day, index) => {
+			return {
+				number_training_day: index + 1,
+				total_training_days: training.amount_of_days,
+				selected_exercises: day.map((exercise: any) => {
+					return {
+						name: exercise.name,
+						type: exercise.target,
+						description: exercise.instructions.join("\n"),
+						series: 3,
+						repetitions: 15,
+						duration_in_seconds: 120,
+						rest_in_seconds: 30,
+						difficulty: 1,
+						url_image: `${process.env.NEXT_PUBLIC_BASE_BUCKET_URL}/${process.env.NEXT_PUBLIC_BUCKET_FOLDER_GIFS}/${exercise.gifId}.gif`,
+						is_completed: false,
+					};
+				}),
+			};
+		});
+
+		handleComplete(formatedExercises);
 	};
 
 	const bucket = process.env.NEXT_PUBLIC_BASE_BUCKET_URL || "";
