@@ -13,6 +13,7 @@ export default function NewTrainingDialog({ handleNext }: Props) {
 	const [trainingType, setTrainingType] = useState<string>("");
 	const [coachPlans, setCoachPlans] = useState<string>("");
 	const [descriptionTraining, setDescription] = useState<string>("");
+	const [frequency, setFrequency] = useState<string>("");
 
 	const goal = trainingStore((state: any) => state.currentGoal);
 	const setTraining = trainingStore((state: any) => state.setTraining);
@@ -29,6 +30,7 @@ export default function NewTrainingDialog({ handleNext }: Props) {
 			coach_plans: coachPlans,
 			type: trainingType,
 			description_training: descriptionTraining,
+			frequency: frequency,
 		});
 		handleNext();
 	};
@@ -195,6 +197,30 @@ export default function NewTrainingDialog({ handleNext }: Props) {
 									</option>
 								</select>
 							</div>
+							<div className="col-span-2 sm:col-span-1">
+								<label
+									htmlFor="frequency"
+									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+								>
+									Training Frequency
+								</label>
+								<select
+									id="frequency"
+									value={frequency}
+									className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+									onChange={e => setFrequency(e.target.value)}
+									required
+								>
+									<option value="">Select </option>
+									<option value="1 per week">1 Per Week</option>
+									<option value="2 per week">2 Per Week</option>
+									<option value="3 per week">3 Per Week </option>
+									<option value="4 per week">4 Per Week </option>
+									<option value="5 per week">5 Per Week </option>
+									<option value="6 per week">6 Per Week </option>
+									<option value="All in a row">All in a row </option>
+								</select>
+							</div>
 							<div className="col-span-2">
 								<label
 									htmlFor="description"
@@ -216,7 +242,12 @@ export default function NewTrainingDialog({ handleNext }: Props) {
 
 						<button
 							type="button"
-							disabled={!trainingType || !coachPlans || !descriptionTraining}
+							disabled={
+								!trainingType ||
+								!coachPlans ||
+								!descriptionTraining ||
+								!frequency
+							}
 							onClick={handleNextStep}
 							className="text-white inline-flex w-full justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center gap-2 items-center"
 						>
