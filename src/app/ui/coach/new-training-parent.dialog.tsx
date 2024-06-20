@@ -39,9 +39,9 @@ export default function NewTrainingDialogParent({}: Props) {
 		setOpenDialog("select");
 	};
 
-	const handleComplete = (data: Training) => {
+	const handleComplete = (data: any) => {
 		console.log("NewTrainingDialogParent -> data", data);
-		setTraining(data);
+		setTraining({ ...training, daily_training_days: data });
 		setOpenDialog(null);
 		router.replace("/coach/dashboard/customers", { shallow: true });
 		console.log("NewTrainingDialogParent -> training", training);
