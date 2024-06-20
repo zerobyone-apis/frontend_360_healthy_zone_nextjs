@@ -1,15 +1,16 @@
 "use client";
 import { getExercises } from "@/actions/trainings/get-exercises";
 import clsx from "clsx";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ExerciseListSkeleton } from "./exercise-list-skeleton";
+import { trainingStore } from "@/stores/training.store";
 
 type Props = {
 	handleComplete: (data: any) => void;
 };
 
 export default function SelectTrainingModal({ handleComplete }: Props) {
-	const searchParams = useSearchParams();
 	const router = useRouter();
 	const [exercises, setExercises] = useState({
 		exercises: [],
@@ -24,17 +25,44 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 	const [target, setTarget] = useState("");
 	const [error, setError] = useState("");
 	const [name, setName] = useState("");
-	const [selected, setSelected] = useState([]);
+	const [selected, setSelected] = useState<any[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 
+	const training = trainingStore((state: any) => state.training);
+
+	const [currentDay, setCurrentDay] = useState<number>(1);
+
 	const handleSelect = (exercise: any) => {
-		setSelected((prevSelected: any) => {
-			if (prevSelected.some((s: any) => s.gifId === exercise.gifId)) {
-				return prevSelected.filter((s: any) => s.gifId !== exercise.gifId);
-			} else {
-				return [...prevSelected, exercise];
+		setSelected(prevSelected => {
+			let updatedSelected = [...prevSelected];
+			const dayIndex = currentDay - 1;
+
+			if (!updatedSelected[dayIndex]) {
+				updatedSelected[dayIndex] = [];
 			}
+
+			let daySelected = [...updatedSelected[dayIndex]];
+			const exerciseIndex = daySelected.findIndex(
+				(s: any) => s.gifId === exercise.gifId
+			);
+
+			if (exerciseIndex == -1) {
+				daySelected.push(exercise);
+			} else {
+				daySelected = daySelected.filter(
+					(s: any) => s.gifId !== exercise.gifId
+				);
+			}
+
+			updatedSelected[dayIndex] = [...daySelected];
+
+			return updatedSelected;
 		});
+	};
+
+	const handleCompleteTraining = () => {
+		if (!selected.length) return setError("Select at least one exercise");
+		handleComplete(selected);
 	};
 
 	const bucket = process.env.NEXT_PUBLIC_BASE_BUCKET_URL || "";
@@ -73,9 +101,17 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 	}
 
 	function handleClose() {
-		const url = new URL(window.location.href);
-		url.searchParams.delete("select-exercises");
-		router.replace(url.toString(), { shallow: true });
+		router.replace("/coach/dashboard/customers", { shallow: true });
+	}
+
+	const amountOfDays = training.amount_of_days;
+	let dayOptions = [];
+	for (let i = 1; i <= amountOfDays; i++) {
+		dayOptions.push(
+			<option key={i} value={i}>
+				Day {i} - Total Exercises [{selected[i - 1]?.length || 0}]
+			</option>
+		);
 	}
 
 	useEffect(() => {
@@ -89,12 +125,6 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 
 	const startItem = (page - 1) * 10 + 1;
 	const endItem = Math.min(page * 10, exercises.total);
-
-	if (error) {
-		return <div className="text-red-500">{error}</div>;
-	}
-
-	if (!searchParams.get("select-exercises")) return null;
 
 	return (
 		<dialog
@@ -133,14 +163,25 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 						</button>
 					</div>
 					<form className="max-w-lg mx-auto p-2">
-						<div className="flex">
+						<div className="col-span-2 sm:col-span-1 mb-2">
+							<select
+								id="category"
+								value={currentDay}
+								className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+								onChange={e => setCurrentDay(Number(e.target.value))}
+								required
+							>
+								{dayOptions}
+							</select>
+						</div>
+						<div className="flex p-2">
 							<select
 								id="dropdown"
 								data-dropdown-toggle="dropdown"
 								onChange={e => setTarget(e.target.value)}
-								className="flex-shrink-0 z-10 w-2 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100"
+								className="flex-shrink-0 z-10 w-[150px] inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100"
 							>
-								<option>All targets</option>
+								<option value={""}>All targets</option>
 								{targets.map(target => (
 									<option key={target} value={target}>
 										{target}
@@ -157,31 +198,15 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 									className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
 									placeholder="Search by exercise name"
 								/>
-								<button
-									type="submit"
-									className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-								>
-									<svg
-										className="w-4 h-4"
-										aria-hidden="true"
-										xmlns="http://www.w3.org/2000/svg"
-										fill="none"
-										viewBox="0 0 20 20"
-									>
-										<path
-											stroke="currentColor"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth="2"
-											d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-										/>
-									</svg>
-									<span className="sr-only">Search</span>
-								</button>
 							</div>
 						</div>
 					</form>
 					<div className="p-4 md:p-5">
+						{error && (
+							<div className="p-4 bg-red-100 text-red-700 rounded-lg mb-4">
+								{error}
+							</div>
+						)}
 						{exercises.total !== 0 && (
 							<p className="text-gray-500 mb-4 text-sm">
 								The order is defined by the selected items
@@ -190,18 +215,30 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 						<ul className="space-y-4 mb-4">
 							{isLoading && (
 								<>
-									<SkeletonListExercises />
-									<SkeletonListExercises />
-									<SkeletonListExercises />
-									<SkeletonListExercises />
-									<SkeletonListExercises />
-									<SkeletonListExercises />
+									<ExerciseListSkeleton />
+									<ExerciseListSkeleton />
+									<ExerciseListSkeleton />
+									<ExerciseListSkeleton />
+									<ExerciseListSkeleton />
+									<ExerciseListSkeleton />
+									<ExerciseListSkeleton />
 								</>
 							)}
 							{exercises.exercises.map((exercise: any) => {
-								const checked = selected.some(
-									(s: any) => s.gifId === exercise.gifId
-								);
+								const checked =
+									selected.length &&
+									selected[currentDay - 1]?.length > 0 &&
+									selected[currentDay - 1].some(
+										(s: any) => s.gifId === exercise.gifId
+									);
+								let index = null;
+								if (checked) {
+									//find the index of the selected exercise
+									index = selected[currentDay - 1].findIndex(
+										(s: any) => s.gifId === exercise.gifId
+									);
+									index = index + 1;
+								}
 								return (
 									<li
 										key={exercise.gifId}
@@ -231,21 +268,27 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 													{exercise.target}
 												</div>
 											</div>
-											<svg
-												className="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500"
-												aria-hidden="true"
-												xmlns="http://www.w3.org/2000/svg"
-												fill="none"
-												viewBox="0 0 14 10"
-											>
-												<path
-													stroke="currentColor"
-													strokeLinecap="round"
-													strokeLinejoin="round"
-													strokeWidth={2}
-													d="M1 5h12m0 0L9 1m4 4L9 9"
-												/>
-											</svg>
+											{index ? (
+												<div className="p-2 bg-jungle-green-500 text-white rounded-full">
+													{index}
+												</div>
+											) : (
+												<svg
+													className="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500"
+													aria-hidden="true"
+													xmlns="http://www.w3.org/2000/svg"
+													fill="none"
+													viewBox="0 0 14 10"
+												>
+													<path
+														stroke="currentColor"
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														strokeWidth={2}
+														d="M1 5h12m0 0L9 1m4 4L9 9"
+													/>
+												</svg>
+											)}
 										</label>
 									</li>
 								);
@@ -310,61 +353,16 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 								</button>
 							</div>
 						</div>
-						<button className="text-white inline-flex w-full justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center gap-2 items-center">
-							Create training
+						<button
+							onClick={handleCompleteTraining}
+							className="text-white inline-flex w-full justify-center mt-2 bg-jungle-green-700 hover:bg-jungle-green-800 focus:ring-4 focus:outline-none focus:ring-jungle-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center gap-2 items-center"
+						>
 							<i className="bx bx-check font-bold"></i>
+							Create training
 						</button>
 					</div>
 				</div>
 			</div>
 		</dialog>
-	);
-}
-
-function SkeletonListExercises() {
-	return (
-		<li
-			role="status"
-			className="max-w-sm animate-pulse"
-			aria-disabled={true}
-			aria-checked={false}
-		>
-			<label
-				className={clsx(
-					"inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-jungle-green-600 peer-checked:text-jungle-green-600 hover:text-gray-900 hover:bg-gray-100"
-				)}
-			>
-				<div className="flex items-center justify-center w-12 h-12 bg-gray-300 rounded">
-					<svg
-						className="w-10 h-10 text-gray-200 dark:text-gray-600"
-						aria-hidden="true"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="currentColor"
-						viewBox="0 0 20 18"
-					>
-						<path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
-					</svg>
-				</div>
-				<div className="block">
-					<div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
-					<div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[100px]"></div>
-				</div>
-				<svg
-					className="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500"
-					aria-hidden="true"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 14 10"
-				>
-					<path
-						stroke="currentColor"
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						strokeWidth={2}
-						d="M1 5h12m0 0L9 1m4 4L9 9"
-					/>
-				</svg>
-			</label>
-		</li>
 	);
 }
