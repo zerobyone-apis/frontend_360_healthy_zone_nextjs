@@ -1,9 +1,14 @@
 "use client";
 import { CoachPlansServices, TrainingTypes } from "@/interfaces/trainings";
 import { trainingStore } from "@/stores/training.store";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function NewTrainingDialog() {
+type Props = {
+	handleNext: () => void;
+};
+
+export default function NewTrainingDialog({ handleNext }: Props) {
 	const [counter, setCounter] = useState(1);
 	const [trainingType, setTrainingType] = useState<string>("");
 	const [coachPlans, setCoachPlans] = useState<string>("");
@@ -11,12 +16,12 @@ export default function NewTrainingDialog() {
 
 	const goal = trainingStore((state: any) => state.currentGoal);
 	const setTraining = trainingStore((state: any) => state.setTraining);
-	const setOpenNewTraining = trainingStore(
-		(state: any) => state.setOpenNewTraining
-	);
-	const setOpenSelectTraining = trainingStore(
-		(state: any) => state.setOpenSelectTraining
-	);
+
+	const router = useRouter();
+
+	function handleClose() {
+		router.replace("/coach/dashboard/customers", { shallow: true });
+	}
 
 	const handleNextStep = () => {
 		setTraining({
@@ -25,8 +30,7 @@ export default function NewTrainingDialog() {
 			type: trainingType,
 			description_training: descriptionTraining,
 		});
-		setOpenNewTraining(false);
-		setOpenSelectTraining(true);
+		handleNext();
 	};
 
 	const handleIncrement = () => {
@@ -55,6 +59,7 @@ export default function NewTrainingDialog() {
 						<button
 							type="button"
 							className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+							onClick={handleClose}
 							data-modal-toggle="crud-modal"
 						>
 							<svg
@@ -208,7 +213,9 @@ export default function NewTrainingDialog() {
 								></textarea>
 							</div>
 						</div>
+
 						<button
+							type="button"
 							disabled={!trainingType || !coachPlans || !descriptionTraining}
 							onClick={handleNextStep}
 							className="text-white inline-flex w-full justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center gap-2 items-center"
