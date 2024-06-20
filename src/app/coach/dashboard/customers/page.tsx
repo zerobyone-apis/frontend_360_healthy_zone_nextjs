@@ -12,10 +12,6 @@ export default function Page() {
 		});
 	}, []);
 
-	const handleNewTrainingClick = () => {
-		// Handle the new training click event
-	};
-
 	if (!stats) return null;
 	return (
 		<div className="gap-3">

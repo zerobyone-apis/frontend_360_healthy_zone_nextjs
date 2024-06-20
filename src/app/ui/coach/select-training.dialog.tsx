@@ -136,7 +136,10 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 	for (let i = 1; i <= amountOfDays; i++) {
 		dayOptions.push(
 			<option key={i} value={i}>
-				Day {i} - Total Exercises [{selected[i - 1]?.length || 0}]
+				Day {i} -{" "}
+				{selected[i - 1]?.length
+					? "Exercises selected " + selected[i - 1].length
+					: "No exercises selected"}
 			</option>
 		);
 	}
@@ -172,20 +175,7 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 							className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center"
 							data-modal-toggle="select-modal"
 						>
-							<svg
-								className="w-3 h-3"
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 14 14"
-							>
-								<path
-									stroke="currentColor"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth="2"
-									d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-								/>
-							</svg>
+							<i className="bx bx-x font-bold text-xl"></i>
 							<span className="sr-only">Close modal</span>
 						</button>
 					</div>
@@ -300,21 +290,7 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 													{index}
 												</div>
 											) : (
-												<svg
-													className="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500"
-													aria-hidden="true"
-													xmlns="http://www.w3.org/2000/svg"
-													fill="none"
-													viewBox="0 0 14 10"
-												>
-													<path
-														stroke="currentColor"
-														strokeLinecap="round"
-														strokeLinejoin="round"
-														strokeWidth={2}
-														d="M1 5h12m0 0L9 1m4 4L9 9"
-													/>
-												</svg>
+												<i className="bx bx-right-arrow-alt font-bold"></i>
 											)}
 										</label>
 									</li>
@@ -345,18 +321,7 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 									disabled={page === 1}
 									className="inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
 								>
-									<svg
-										className="w-5 h-5 mr-2"
-										fill="currentColor"
-										xmlns="http://www.w3.org/2000/svg"
-										viewBox="0 0 20 20"
-									>
-										<path
-											fillRule="evenodd"
-											d="M12.293 14.707a1 1 0 0 0 1.414-1.414L9.414 9l4.293-4.293A1 1 0 0 0 12.293 3.293l-5 5a1 1 0 0 0 0 1.414l5 5Z"
-											clipRule="evenodd"
-										/>
-									</svg>
+									<i className="bx bx-chevron-left text-sm"></i>
 									Prev
 								</button>
 								<button
@@ -365,18 +330,7 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 									className="inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-gray-800 border-0 border-l border-gray-700 rounded-r hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
 								>
 									Next
-									<svg
-										className="w-5 h-5 ml-2"
-										fill="currentColor"
-										xmlns="http://www.w3.org/2000/svg"
-										viewBox="0 0 20 20"
-									>
-										<path
-											fillRule="evenodd"
-											d="M7.707 14.707a1 1 0 0 1-1.414-1.414L10.586 9 6.293 4.707A1 1 0 0 1 7.707 3.293l5 5a1 1 0 0 1 0 1.414l-5 5Z"
-											clipRule="evenodd"
-										/>
-									</svg>
+									<i className="bx bx-chevron-right text-sm"></i>
 								</button>
 							</div>
 						</div>
