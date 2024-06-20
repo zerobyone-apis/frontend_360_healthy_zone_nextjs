@@ -1,32 +1,21 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import NewTrainingDialog from "./new-training.dialog";
 import SelectTrainingModal from "./select-training.dialog";
 import { Training } from "@/interfaces/trainings";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getGoals } from "@/actions/goals/get-goals";
 import { trainingStore } from "@/stores/training.store";
 
 type Props = {};
 
 export default function NewTrainingDialogParent({}: Props) {
-	const training = trainingStore((state: any) => state);
+	const training = trainingStore((state: any) => state.training);
+	const [openDialog, setOpenDialog] = useState<"new" | "select" | null>(null);
 	const setTraining = trainingStore((state: any) => state.setTraining);
-	const isOpenNewTraining = trainingStore(
-		(state: any) => state.dialogs.newTraining
-	);
-	const isOpenSelectTraining = trainingStore(
-		(state: any) => state.dialogs.selectTraining
-	);
-	const setOpenNewTraining = trainingStore(
-		(state: any) => state.setOpenNewTraining
-	);
-	const setOpenSelectTraining = trainingStore(
-		(state: any) => state.setOpenSelectTraining
-	);
-
 	const setCurrentGoal = trainingStore((state: any) => state.setCurrentGoal);
 	const searchParams = useSearchParams();
+	const router = useRouter();
 
 	useEffect(() => {
 		if (searchParams.get("client_id") && searchParams.get("new-training")) {
@@ -35,28 +24,33 @@ export default function NewTrainingDialogParent({}: Props) {
 				getGoals(clientId).then(goals => {
 					if (goals.length > 0) {
 						setCurrentGoal(goals[0]);
-						console.log("NewTrainingDialogParent -> goals", goals);
 					}
 				});
 			}
 
 			// Open new training dialog
-			setOpenNewTraining(true);
+			setOpenDialog("new");
 		} else {
-			setOpenNewTraining(false);
-			setOpenSelectTraining(false);
+			setOpenDialog(null);
 		}
 	}, [searchParams]);
-	console.log("NewTrainingDialogParent -> isOpen", isOpenNewTraining);
+
+	const handleNext = () => {
+		setOpenDialog("select");
+	};
 
 	const handleComplete = (data: Training) => {
+		console.log("NewTrainingDialogParent -> data", data);
 		setTraining(data);
-		setOpenSelectTraining(true);
+		setOpenDialog(null);
+		router.replace("/coach/dashboard/customers", { shallow: true });
+		console.log("NewTrainingDialogParent -> training", training);
 	};
+
 	return (
 		<>
-			{isOpenNewTraining && <NewTrainingDialog />}
-			{isOpenSelectTraining && (
+			{openDialog == "new" && <NewTrainingDialog handleNext={handleNext} />}
+			{openDialog == "select" && (
 				<SelectTrainingModal handleComplete={handleComplete} />
 			)}
 		</>
