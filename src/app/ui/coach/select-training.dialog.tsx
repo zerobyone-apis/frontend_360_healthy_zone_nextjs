@@ -77,9 +77,9 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 						name: exercise.name,
 						type: exercise.target,
 						description: exercise.instructions.join("\n"),
-						series: 3,
-						repetitions: 15,
-						duration_in_seconds: 120,
+						series: exercise.series,
+						repetitions: exercise.repetitions,
+						duration_in_seconds: exercise.duration_in_seconds,
 						rest_in_seconds: 30,
 						difficulty: 1,
 						url_image: `${process.env.NEXT_PUBLIC_BASE_BUCKET_URL}/${process.env.NEXT_PUBLIC_BUCKET_FOLDER_GIFS}/${exercise.gifId}.gif`,
@@ -261,10 +261,10 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 										key={exercise.gifId}
 										role="checkbox"
 										className="peer"
-										onClick={() => handleSelect(exercise)}
 										aria-checked={checked}
 									>
 										<label
+											onClick={() => handleSelect(exercise)}
 											htmlFor={exercise.gifId}
 											className={clsx(
 												"inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-jungle-green-600 peer-checked:text-jungle-green-600 hover:text-gray-900 hover:bg-gray-100",
@@ -293,6 +293,106 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 												<i className="bx bx-right-arrow-alt font-bold"></i>
 											)}
 										</label>
+										{checked ? (
+											<div className="relative bottom-3 inline-flex">
+												<select
+													id="small"
+													value={selected[currentDay - 1][index - 1].series}
+													onClick={e => e.stopPropagation()}
+													onChange={e => {
+														const newSelected = [...selected];
+														newSelected[currentDay - 1][index - 1].series =
+															Number(e.target.value);
+														if (newSelected[currentDay - 1][index - 1].series) {
+															newSelected[currentDay - 1][
+																index - 1
+															].duration_in_seconds = "";
+														}
+														setSelected([...newSelected]);
+														e.stopPropagation();
+													}}
+													className="block p-2 mb-6 text-sm text-gray-900 border-e-gray-100 border border-gray-300  bg-gray-50 rounded-s-lg focus:ring-blue-500 focus:border-blue-500 "
+												>
+													<option>Series</option>
+													<option value={1}>1</option>
+													<option value={2}>2</option>
+													<option value={3}>3</option>
+													<option value={5}>5</option>
+													<option value={8}>8</option>
+													<option value={10}>10</option>
+												</select>
+												<select
+													id="small"
+													value={
+														selected[currentDay - 1][index - 1].repetitions
+													}
+													onClick={e => e.stopPropagation()}
+													onChange={e => {
+														const newSelected = [...selected];
+														newSelected[currentDay - 1][index - 1].repetitions =
+															Number(e.target.value);
+														if (
+															newSelected[currentDay - 1][index - 1].repetitions
+														) {
+															newSelected[currentDay - 1][
+																index - 1
+															].duration_in_seconds = "";
+														}
+														setSelected([...newSelected]);
+														e.stopPropagation();
+													}}
+													className="block p-2 mb-6 text-sm  border-s-gray-50 border-s-2  border border-gray-300 border-e-2 rounded-e-lg text-gray-900 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
+												>
+													<option>Repetitions</option>
+													<option value={3}>x3</option>
+													<option value={5}>x5</option>
+													<option value={8}>x8</option>
+													<option value={10}>x10</option>
+													<option value={12}>x12</option>
+													<option value={15}>x15</option>
+													<option value={20}>x20</option>
+													<option value={25}>x25</option>
+													<option value={30}>x30</option>
+												</select>
+												<select
+													id="small"
+													value={
+														selected[currentDay - 1][index - 1]
+															.duration_in_seconds
+													}
+													onClick={e => e.stopPropagation()}
+													onChange={e => {
+														const newSelected = [...selected];
+														newSelected[currentDay - 1][
+															index - 1
+														].duration_in_seconds = Number(e.target.value);
+														if (
+															newSelected[currentDay - 1][index - 1]
+																.duration_in_seconds
+														) {
+															newSelected[currentDay - 1][
+																index - 1
+															].repetitions = "";
+															newSelected[currentDay - 1][index - 1].series =
+																"";
+														}
+														setSelected([...newSelected]);
+														e.stopPropagation();
+													}}
+													className="block p-2 mb-6 max-w-full w-32 text-sm text-gray-900 rounded-lg ml-2 border-2 border-gray-300  bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+												>
+													<option>Duration in seconds</option>
+													<option value={10}>10 seconds</option>
+													<option value={15}>15 seconds</option>
+													<option value={20}>20 seconds</option>
+													<option value={25}>25 seconds</option>
+													<option value={30}>30 seconds</option>
+													<option value={45}>45 seconds</option>
+													<option value={60}>60 seconds</option>
+													<option value={120}>120 seconds</option>
+												</select>
+											</div>
+										) : null}
 									</li>
 								);
 							})}
@@ -319,7 +419,7 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 								<button
 									onClick={() => setPage(page - 1)}
 									disabled={page === 1}
-									className="inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+									className="inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900"
 								>
 									<i className="bx bx-chevron-left text-sm"></i>
 									Prev
@@ -327,7 +427,7 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 								<button
 									onClick={() => setPage(page + 1)}
 									disabled={page === exercises.pages}
-									className="inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-gray-800 border-0 border-l border-gray-700 rounded-r hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+									className="inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-gray-800 border-0 border-l border-gray-700 rounded-r hover:bg-gray-900"
 								>
 									Next
 									<i className="bx bx-chevron-right text-sm"></i>
