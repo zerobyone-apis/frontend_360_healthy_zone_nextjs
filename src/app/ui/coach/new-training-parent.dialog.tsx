@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import NewTrainingDialog from "./new-training.dialog";
 import SelectTrainingModal from "./select-training.dialog";
-import { Training } from "@/interfaces/trainings";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getGoals } from "@/actions/goals/get-goals";
 import { trainingStore } from "@/stores/training.store";
