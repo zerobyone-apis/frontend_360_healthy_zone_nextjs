@@ -5,6 +5,8 @@ import SelectTrainingModal from "./select-training.dialog";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getGoals } from "@/actions/goals/get-goals";
 import { trainingStore } from "@/stores/training.store";
+import { createTraining } from "@/actions/trainings/create-training";
+import { toast } from "react-toastify";
 
 type Props = {};
 
@@ -38,11 +40,21 @@ export default function NewTrainingDialogParent({}: Props) {
 		setOpenDialog("select");
 	};
 
-	const handleComplete = (data: any) => {
+	const handleComplete = async (data: any) => {
 		setTraining({ ...training, daily_training_days: [...data] });
 		setOpenDialog(null);
-		router.replace("/coach/dashboard/customers", { shallow: true });
-		console.log("NewTrainingDialogParent -> training", training);
+		try {
+			console.log("training data", data);
+			await createTraining({
+				clientID: searchParams.get("client_id") as string,
+				training,
+			});
+			toast.success("Training created successfully");
+			return router.replace("/coach/dashboard/customers", { shallow: true });
+		} catch (e) {
+			toast.error("Error creating training");
+			console.log(e);
+		}
 	};
 
 	return (
