@@ -75,7 +75,7 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 				selected_exercises: day.map((exercise: any) => {
 					return {
 						name: exercise.name,
-						type: exercise.target,
+						type: exercise.target.toUpperCase(),
 						description: exercise.instructions.join("\n"),
 						series: exercise.series,
 						repetitions: exercise.repetitions,
