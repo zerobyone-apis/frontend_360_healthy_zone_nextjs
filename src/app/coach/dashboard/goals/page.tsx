@@ -1,5 +1,6 @@
 import { getDashboardStats } from "@/actions/coach/dashboard";
 import { SummaryCoach } from "@/interfaces/summary_coach";
+import Link from "next/link";
 
 export default async function Page() {
 	const stats: SummaryCoach = await getDashboardStats();
@@ -7,14 +8,16 @@ export default async function Page() {
 	if (!stats) return null;
 	return (
 		<section>
-			<div className="inline-flex justify-between w-full mb-5">
+			<div className="inline-flex justify-between w-full mb-5 p-5">
 				<h1 className="text-xl text-jungle-green-700 font-bold">Goals</h1>
-				<button
+				<Link
+					href="/coach/dashboard/goals?new-goal"
 					type="button"
 					className="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
 				>
+					<i className="bx bx-plus me-1"></i>
 					New Goal
-				</button>
+				</Link>
 			</div>
 
 			<div className="grid grid-cols-1 gap-4">
@@ -94,27 +97,30 @@ export default async function Page() {
 								className="inline-flex rounded-md justify-end w-full"
 								role="group"
 							>
-								<button
+								<Link
+									href={`/coach/dashboard/goals?details&goal_id=${goal.id}`}
 									type="button"
 									className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
 								>
 									<i className="bx bx-detail"></i>
 									Details
-								</button>
-								<button
+								</Link>
+								<Link
+									href={`/coach/dashboard/goals?edit&goal_id=${goal.id}`}
 									type="button"
 									className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-jungle-green-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
 								>
 									<i className="bx bxs-edit"></i>
 									Edit
-								</button>
-								<button
+								</Link>
+								<Link
+									href={`/coach/dashboard/goals?confirm-delete&goal_id=${goal.id}`}
 									type="button"
 									className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
 								>
 									<i className="bx bx-trash"></i>
 									Delete
-								</button>
+								</Link>
 							</div>
 						</div>
 					);
