@@ -1,44 +1,72 @@
-"use server"
-import { getDashboardStats } from '@/actions/coach/dashboard'
-import PieChart from '@/app/ui/pie-chart'
-import Table from '@/app/ui/table'
-import ProgressCard from '../../ui/dashboard/progress-card'
+"use server";
+import { getDashboardStats } from "@/actions/coach/dashboard";
+import PieChart from "@/app/ui/pie-chart";
+import Table from "@/app/ui/table";
+import ProgressCard from "../../ui/dashboard/progress-card";
 
 function convertToCustomerTableValues(customers: any) {
-    return customers.map((customer: any) => {
-        const client_status = customer.client.client_status ? customer.client.client_status.replaceAll("_", " ") : ""
-        return {
-            items: [customer.client.edited_name, customer.client.country, customer.client.training.length, client_status, "Details"],
-            redirectTo: "/coach/dashboard/customers?id=" + customer.id
-        }
-    })
+	return customers.map((customer: any) => {
+		const client_status = customer.client.client_status
+			? customer.client.client_status.replaceAll("_", " ")
+			: "";
+		return {
+			items: [
+				customer.client.edited_name,
+				customer.client.country,
+				customer.client.training.length,
+				client_status,
+				"Details",
+			],
+			redirectTo: "/coach/dashboard/customers?id=" + customer.id,
+		};
+	});
 }
 
 export default async function Page() {
-    const stats = await getDashboardStats();
-    console.log(stats.full_assignments[0].client)
-    let tableValues = [];
-    if(stats.full_assignments) tableValues = convertToCustomerTableValues(stats.full_assignments);
-    const pieChartValue = {
-        series: [stats.total_completed_assignments, stats.total_in_progress_assignments, stats.total_ready_to_start_assignments],
-        colors: ["#a0b43b", "#16BDCA", "#9061F9"],
-        labels: ["Completed", "In progress", "Ready to start"]
-    }
-    return (
-        <div className='h-full grid grid-cols-3 gap-2'>
-            <div className='col-span-3'>
-                {tableValues.length && <Table
-                    header={["Name", "Country", "Trainings", "Status"]}
-                    searchbox={false}
-                    values={tableValues} />}
-            </div>
-            <div className="md:col-span-1 col-span-3">
-                <ProgressCard bcolor="bg-android-green-500" tcolor="text-android-green-500" target={stats.custom.customers_limit}
-                    percent={stats.custom.customers_percent} currentProgress={stats.custom.customers} title="Customers" icon="bx bxs-user-detail" />
-            </div>
-            <div className="md:col-span-2 col-span-3">
-                <PieChart stats={pieChartValue} title="Assignaments" redirect="/coach/dashboard/customers" />
-            </div>
-        </div>
-    )
+	const stats = await getDashboardStats();
+	let tableValues = [];
+	if (stats.full_assignments)
+		tableValues = convertToCustomerTableValues(stats.full_assignments);
+	const pieChartValue = {
+		series: [
+			stats.total_completed_assignments,
+			stats.total_in_progress_assignments,
+			stats.total_ready_to_start_assignments,
+		],
+		colors: ["#a0b43b", "#16BDCA", "#9061F9"],
+		labels: ["Completed", "In progress", "Ready to start"],
+	};
+
+	if (!stats) return null;
+	return (
+		<div className="h-full grid grid-cols-3 gap-2">
+			<div className="col-span-3">
+				{tableValues.length && (
+					<Table
+						header={["Name", "Country", "Trainings", "Status"]}
+						searchbox={false}
+						values={tableValues}
+					/>
+				)}
+			</div>
+			<div className="md:col-span-1 col-span-3">
+				<ProgressCard
+					bcolor="bg-android-green-500"
+					tcolor="text-android-green-500"
+					target={stats.custom.customers_limit}
+					percent={stats.custom.customers_percent}
+					currentProgress={stats.custom.customers}
+					title="Customers"
+					icon="bx bxs-user-detail"
+				/>
+			</div>
+			<div className="md:col-span-2 col-span-3">
+				<PieChart
+					stats={pieChartValue}
+					title="Assignaments"
+					redirect="/coach/dashboard/customers"
+				/>
+			</div>
+		</div>
+	);
 }
