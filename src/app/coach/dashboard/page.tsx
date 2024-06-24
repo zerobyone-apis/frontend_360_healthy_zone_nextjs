@@ -6,8 +6,9 @@ import ProgressCard from '../../ui/dashboard/progress-card'
 
 function convertToCustomerTableValues(customers: any) {
     return customers.map((customer: any) => {
+        const client_status = customer.client.client_status ? customer.client.client_status.replaceAll("_", " ") : ""
         return {
-            items: [customer.client.first_name + "." + customer.client.last_name.split("")[0], customer.client.country, customer.client.training.length, customer.client_status.replaceAll("_", " "), "Details"],
+            items: [customer.client.edited_name, customer.client.country, customer.client.training.length, client_status, "Details"],
             redirectTo: "/coach/dashboard/customers?id=" + customer.id
         }
     })
@@ -15,7 +16,9 @@ function convertToCustomerTableValues(customers: any) {
 
 export default async function Page() {
     const stats = await getDashboardStats();
-    const tableValues = convertToCustomerTableValues(stats.full_assignments);
+    console.log(stats.full_assignments[0].client)
+    let tableValues = [];
+    if(stats.full_assignments) tableValues = convertToCustomerTableValues(stats.full_assignments);
     const pieChartValue = {
         series: [stats.total_completed_assignments, stats.total_in_progress_assignments, stats.total_ready_to_start_assignments],
         colors: ["#a0b43b", "#16BDCA", "#9061F9"],
@@ -24,10 +27,10 @@ export default async function Page() {
     return (
         <div className='h-full grid grid-cols-3 gap-2'>
             <div className='col-span-3'>
-                <Table
+                {tableValues.length && <Table
                     header={["Name", "Country", "Trainings", "Status"]}
                     searchbox={false}
-                    values={tableValues} />
+                    values={tableValues} />}
             </div>
             <div className="md:col-span-1 col-span-3">
                 <ProgressCard bcolor="bg-android-green-500" tcolor="text-android-green-500" target={stats.custom.customers_limit}

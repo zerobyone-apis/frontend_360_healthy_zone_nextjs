@@ -31,9 +31,14 @@ export const login = async ({ email, password }: login) => {
 		// adding cookies...
 		const sevenDays = 168 * 60 * 60 * 1000;
 		const cookieStore = cookies();
+		if(body.user.roles === "COACH") delete body.coach.clients;
+		if(body.user.roles === "NUTRITIONIST") delete body.nutritionist.clients;
+
 		cookieStore.set("user", JSON.stringify(body), {
 			expires: Date.now() + sevenDays,
 		});
+		
+		console.log("login body:", body);
 		cookieStore.set("token", token, { expires: Date.now() + sevenDays });
 
 		return body;

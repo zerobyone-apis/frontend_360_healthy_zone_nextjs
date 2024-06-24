@@ -15,9 +15,6 @@ export function middleware(request: NextRequest) {
 
 	const pathname = request.nextUrl.pathname;
 
-	console.log("current token", currentToken);
-	console.log("actual path", request.nextUrl.pathname);
-
 	//Si es una persona intentando acceder al dashboard y no tiene token, lo enviamos al login de regreso.
 	if (
 		!currentToken &&

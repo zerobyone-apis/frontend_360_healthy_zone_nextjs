@@ -1,0 +1,11 @@
+{
+  "firebase_hosting": {},
+  "cloud_run_deploy": {
+    "lastDeployment": {
+      "region": "us-central1",
+      "url": "https://idx-frontend-360-healthy-zone-nextjs-132880-nljuosjydq-uc.a.run.app",
+      "serviceName": "idx-frontend-360-healthy-zone-nextjs-132880"
+    }
+  },
+  "gemini_api": {}
+}
