@@ -1,9 +1,37 @@
 "use server";
 import { TrainingResponseDto } from "@/interfaces/trainings";
 import mockup, { exercises_from_api, mock_daily_train } from "./mockup";
+import { cookies } from "next/headers";
 
-export async function getTrainingsByUserID(userID: number) {
-	return mockup;
+export async function getAllTrainings() {
+	const cookieStore = cookies();
+    const tokenValue = cookieStore.get("token")?.value || "";
+    const token = tokenValue;
+    const user = JSON.parse(
+        cookieStore.get("user")?.value || "{}"
+    );
+
+    try {
+        const resp = await fetch(
+            process.env.BASE_PATH + "/v1.0/training/client/" + user.client.id,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Cache-Control": "no-store",
+                    Authorization: token,
+                },
+                body: null,
+            }
+        );
+
+        const respi = await resp.json();
+        return respi;
+
+    } catch (error) {
+		console.log(error);	
+        return []
+    }
 }
 
 export async function getTrainingsID(trainingID: number) {
