@@ -63,12 +63,16 @@ export enum DayExercisesStatus {
 
 export interface ExerciseDTO {
 	name: string;
+	type: string;
 	description?: string;
 	series?: number | null;
 	duration_in_seconds?: number | null;
 	repetitions?: number | null;
+	rest_in_seconds: number;
+	difficulty: number;
 	ready: boolean;
-	gifUrl?: string;
+	url_image?: string;
+	is_completed: boolean;
 }
 
 export interface Training {
