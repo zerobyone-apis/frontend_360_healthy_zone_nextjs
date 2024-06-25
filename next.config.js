@@ -8,6 +8,11 @@ const nextConfig = {
 				port: "",
 				pathname: "/image/**",
 			},
+			{
+				protocol: "https",
+				hostname: "storage.googleapis.com",
+				port: "",
+			},
 		],
 	},
 	reactStrictMode: true,
