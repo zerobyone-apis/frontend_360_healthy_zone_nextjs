@@ -62,6 +62,8 @@ export enum DayExercisesStatus {
 }
 
 export interface ExerciseDTO {
+	exercise_id: string;
+	daily_train_id: string;
 	name: string;
 	type: string;
 	description?: string;
@@ -85,7 +87,7 @@ export interface Training {
 	frequency: string;
 	init_on: string;
 	amount_of_days: number;
-	daily_training_days: DailyTrainingDay[];
+	dailyTrainingDays: DailyTrainingDay[];
 }
 
 export interface DailyTrainingDay {

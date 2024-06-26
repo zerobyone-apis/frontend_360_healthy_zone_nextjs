@@ -41,7 +41,7 @@ export default function NewTrainingDialogParent({}: Props) {
 	};
 
 	const handleComplete = async (data: any) => {
-		setTraining({ ...training, daily_training_days: [...data] });
+		setTraining({ ...training, dailyTrainingDays: [...data] });
 		setOpenDialog(null);
 		try {
 			console.log("training data", data);
