@@ -1,4 +1,4 @@
-import { ExerciseDTO } from "@/interfaces/trainings";
+import { SelectedExercise } from "@/interfaces/trainings";
 import Image from "next/image";
 import React from "react";
 import { SeeMoreText } from "../../see-more-text";
@@ -6,7 +6,7 @@ import { SeeMoreText } from "../../see-more-text";
 export default function ExercisesTimeline({
 	exercises,
 }: {
-	exercises: ExerciseDTO[];
+	exercises: SelectedExercise[];
 }) {
 	return (
 		<ol className="relative border-s border-gray-200">
@@ -21,8 +21,12 @@ export default function ExercisesTimeline({
 					<h3 className="text-lg font-semibold text-gray-900 ">
 						{exercise.name}
 					</h3>
+					{/* DELETE DEFAULT IMAGE */}
 					<Image
-						src={exercise.url_image || ""}
+						src={
+							exercise.url_image ||
+							"https://storage.googleapis.com/avance-clientes/exercises-imgs/ec3bb682-8f8a-4671-a22f-85ed9d1847d0.gif"
+						}
 						alt={""}
 						width={318}
 						height={159}
