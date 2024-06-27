@@ -42,7 +42,7 @@ export async function getAllTrainings() {
 export async function getTrainingsID(trainingID: number) {
 	//TODO
 //delete this const and use the function from the server
-const dailyTrainingDays = [
+const daily_training_days = [
     {
       "number_training_day": 1,
       "total_training_days": 2,
@@ -135,7 +135,7 @@ const dailyTrainingDays = [
 		let trainings = await getAllTrainings();
 		let training = trainings.find((training: any) => training.training_id == trainingID);
 
-		// training.dailyTrainingDays = dailyTrainingDays;
+		// training.daily_training_days = daily_training_days;
 		console.log(training)
 		return training;
 	}catch(error){
@@ -151,7 +151,7 @@ export async function getExerciseDay(number_day: string, training_id: string) {
 	// Funcion hardcoded...
 	let training: any = await new Promise(async (resolve, _reject) => {
 		let trainingResponse = await getTrainingsID(Number(training_id));
-		let dailyTraining = trainingResponse.dailyTrainingDays.find(
+		let dailyTraining = trainingResponse.daily_training_days.find(
 			(day: any) => day.number_training_day == Number(number_day)
 		);
 		//fragmentando ejercicios y descansos:

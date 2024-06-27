@@ -87,13 +87,18 @@ export interface Training {
 	frequency: string;
 	init_on: string;
 	amount_of_days: number;
-	dailyTrainingDays: DailyTrainingDay[];
+	daily_training_days: DailyTrainingDay[];
 }
 
 export interface DailyTrainingDay {
 	number_training_day: number;
 	selected_exercises: SelectedExercise[];
 	total_training_days: number;
+	training_id: number | string;
+	id: number | string;
+	is_day_completed: boolean;
+	created_on: string;
+	updated_on: string;
 }
 
 export interface SelectedExercise {
