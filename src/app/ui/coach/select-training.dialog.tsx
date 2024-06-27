@@ -82,7 +82,7 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 						duration_in_seconds: exercise.duration_in_seconds,
 						rest_in_seconds: 30,
 						difficulty: 1,
-						url_image: `${process.env.NEXT_PUBLIC_BASE_BUCKET_URL}/${process.env.NEXT_PUBLIC_BUCKET_FOLDER_GIFS}/${exercise.gifId}.gif`,
+						url_image: `${process.env.NEXT_PUBLIC_BASE_BUCKET_URL}/${process.env.NEXT_PUBLIC_BUCKET_FOLDER_GIFS}${exercise.gifId}.gif`,
 						is_completed: false,
 					};
 				}),
