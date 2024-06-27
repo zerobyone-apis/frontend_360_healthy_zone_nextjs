@@ -2,9 +2,22 @@ import CounterChart from "@/app/ui/dashboard/counter-chart";
 import { getAllTrainings } from "@/actions/trainings";
 import TrainingResumeCard from "@/app/ui/dashboard/trainings/training-resume-card";
 import Image from "next/image";
+import { Button } from "@/app/ui/button";
 
 export default async function Page() {
 	const trainings: any | null = await getAllTrainings();
+	if (!trainings.length || !trainings)
+		return (
+			<div className="flex justify-center items-center flex-col h-full text-center">
+				<h1 className="text-xl font-bold">Trainings not ready yet</h1>
+				<p className="text-gray-500">
+					Please wait a few days while we prepare your training plan
+				</p>
+				<Button className="bg-jungle-green-500 rounded text-white font-bold mt-3">
+					Dashboard
+				</Button>
+			</div>
+		);
 
 	return (
 		<div className="grid grid-cols-4 gap-2">
