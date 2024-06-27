@@ -23,10 +23,7 @@ export default function ExercisesTimeline({
 					</h3>
 					{/* DELETE DEFAULT IMAGE */}
 					<Image
-						src={
-							exercise.url_image ||
-							"https://storage.googleapis.com/avance-clientes/exercises-imgs/ec3bb682-8f8a-4671-a22f-85ed9d1847d0.gif"
-						}
+						src={exercise.url_image || "/imgs/placeholder_not_found.png"}
 						alt={""}
 						width={318}
 						height={159}
