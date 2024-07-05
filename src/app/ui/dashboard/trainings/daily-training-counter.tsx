@@ -1,5 +1,5 @@
 import React from "react";
-import { format, addDays } from "date-fns";
+import { addDays } from "date-fns";
 import { DailyTrainingDay } from "@/interfaces/trainings";
 
 const dayLabels = ["S", "M", "T", "W", "T", "F", "S"];
