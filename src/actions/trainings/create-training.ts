@@ -16,8 +16,6 @@ export async function createTraining({clientID, training}: {clientID: string, tr
     training.coach_plans = training.coach_plans.replaceAll(" ", "_");
     training.type = training.type.replaceAll(" ", "_");
 
-    console.log("Creating training for client: ", clientID);
-    console.log("Training: ", training);
     try {
         const resp = await fetch(process.env.BASE_PATH + "/v1.0/training/create/client/" + clientID , {
             method: "POST",
@@ -30,10 +28,11 @@ export async function createTraining({clientID, training}: {clientID: string, tr
         });
         let body = await resp.json();
         console.log(resp.status);
-        if(resp.status !== 200) {
+        if(resp.status !== 201) {
             throw new Error(body.message);
         }
         
+        console.log("Training results")
         console.log(body);
 
         return body;
