@@ -146,13 +146,13 @@ const daily_training_days = [
 	
 }
 
-export async function getExerciseDay(number_day: string, training_id: string) {
+export async function getExerciseDay(day_id: string, training_id: string) {
 
 	// Funcion hardcoded...
 	let training: any = await new Promise(async (resolve, _reject) => {
 		let trainingResponse = await getTrainingsID(Number(training_id));
 		let dailyTraining = trainingResponse.daily_training_days.find(
-			(day: any) => day.number_training_day == Number(number_day)
+			(day: any) => day.id == day_id
 		);
 		//fragmentando ejercicios y descansos:
 		let exercisesAndRests: any = [
