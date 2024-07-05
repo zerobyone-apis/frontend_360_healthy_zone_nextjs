@@ -12,8 +12,8 @@ type Props = {};
 
 export default function NewTrainingDialogParent({}: Props) {
 	const training = trainingStore((state: any) => state.training);
+	const resetTraining = trainingStore((state: any) => state.resetTraining);
 	const [openDialog, setOpenDialog] = useState<"new" | "select" | null>(null);
-	const setTraining = trainingStore((state: any) => state.setTraining);
 	const setCurrentGoal = trainingStore((state: any) => state.setCurrentGoal);
 	const searchParams = useSearchParams();
 	const router = useRouter();
@@ -41,15 +41,14 @@ export default function NewTrainingDialogParent({}: Props) {
 	};
 
 	const handleComplete = async (data: any) => {
-		setTraining({ ...training, daily_training_days: [...data] });
-		setOpenDialog(null);
 		try {
-			console.log("training data", data);
 			await createTraining({
 				clientID: searchParams.get("client_id") as string,
-				training,
+				training: { ...training, ...data },
 			});
 			toast.success("Training created successfully");
+			setOpenDialog(null);
+			resetTraining();
 			return router.replace("/coach/dashboard/customers", { shallow: true });
 		} catch (e) {
 			toast.error("Error creating training");
