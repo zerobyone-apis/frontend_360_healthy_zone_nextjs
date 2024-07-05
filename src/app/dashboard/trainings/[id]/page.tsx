@@ -50,14 +50,12 @@ export default async function Page({ params }: { params: { id: string } }) {
 				</div>
 
 				<div className="col-span-4 md:col-span-3">
-					<ExercisesTimeline
-						exercises={training?.daily_training_days[0].selected_exercises}
-					/>
+					<ExercisesTimeline exercises={nextDay?.selected_exercises || []} />
 				</div>
 				<div className="hidden col-span-1 md:block"></div>
 			</div>
 			<div className="w-full flex justify-center">
-				<Link href={currentPath + "/in-progress/1"}>
+				<Link href={currentPath + "/in-progress/" + nextDay?.id}>
 					<Button className="md:hidden bg-teal-500 rounded text-white hover:bg-jungle-green-400 fixed md:bottom-4 bottom-20 font-sans font-bold gap-1">
 						<i className="bx bx-play text-2xl"></i>START TRAINING
 					</Button>
