@@ -15,6 +15,33 @@ export default function NewTrainingDialog({ handleNext }: Props) {
 	const [descriptionTraining, setDescription] = useState<string>("");
 	const [frequency, setFrequency] = useState<string>("");
 
+	// need to create a calculation for the amount of training days based on the frequency of the training and the duration of the training
+	const [amountOfTrainingDays, setAmountOfTrainingDays] = useState<number>(0);
+
+	useEffect(() => {
+		const amountOfTrainingDaysCalc = () => {
+			let frequencyNumber = 0;
+
+			if (frequency === "All in a row") {
+				return counter;
+			} else {
+				frequencyNumber = parseInt(frequency.split(" ")[0]);
+				if (
+					(counter < 7 && frequencyNumber < counter) ||
+					counter === frequencyNumber
+				) {
+					return frequencyNumber;
+				}
+				if (counter < 7 && frequencyNumber > counter) {
+					return counter;
+				}
+				// rounded to the nearest whole number
+				return Math.round((counter * frequencyNumber) / 7);
+			}
+		};
+		setAmountOfTrainingDays(amountOfTrainingDaysCalc());
+	}, [counter, frequency]);
+
 	const goal = trainingStore((state: any) => state.currentGoal);
 	const setTraining = trainingStore((state: any) => state.setTraining);
 
@@ -26,7 +53,8 @@ export default function NewTrainingDialog({ handleNext }: Props) {
 
 	const handleNextStep = () => {
 		setTraining({
-			amount_of_days: counter,
+			training_duration_days: counter,
+			amount_of_training_days: amountOfTrainingDays,
 			coach_plans: coachPlans,
 			type: trainingType,
 			description_training: descriptionTraining,
@@ -112,7 +140,7 @@ export default function NewTrainingDialog({ handleNext }: Props) {
 									htmlFor="quantity-input"
 									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 								>
-									Choose amount days:
+									Duration in days:
 								</label>
 								<div className="relative flex items-center max-w-[8rem]">
 									<button
@@ -132,7 +160,7 @@ export default function NewTrainingDialog({ handleNext }: Props) {
 										data-input-counter-max="30"
 										aria-describedby="helper-text-explanation"
 										className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-										placeholder="999"
+										placeholder="60"
 										value={counter}
 										disabled={true}
 										required
@@ -147,6 +175,30 @@ export default function NewTrainingDialog({ handleNext }: Props) {
 										<i className="bx bx-plus"></i>
 									</button>
 								</div>
+							</div>
+							<div className="col-span-2 sm:col-span-1">
+								<label
+									htmlFor="frequency"
+									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+								>
+									Training Frequency
+								</label>
+								<select
+									id="frequency"
+									value={frequency}
+									className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+									onChange={e => setFrequency(e.target.value)}
+									required
+								>
+									<option value="">Select </option>
+									<option value="1 per week">1 Per Week</option>
+									<option value="2 per week">2 Per Week</option>
+									<option value="3 per week">3 Per Week </option>
+									<option value="4 per week">4 Per Week </option>
+									<option value="5 per week">5 Per Week </option>
+									<option value="6 per week">6 Per Week </option>
+									<option value="All in a row">All in a row </option>
+								</select>
 							</div>
 							<div className="col-span-2 sm:col-span-1">
 								<label
@@ -197,30 +249,6 @@ export default function NewTrainingDialog({ handleNext }: Props) {
 									</option>
 								</select>
 							</div>
-							<div className="col-span-2 sm:col-span-1">
-								<label
-									htmlFor="frequency"
-									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-								>
-									Training Frequency
-								</label>
-								<select
-									id="frequency"
-									value={frequency}
-									className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-									onChange={e => setFrequency(e.target.value)}
-									required
-								>
-									<option value="">Select </option>
-									<option value="1 per week">1 Per Week</option>
-									<option value="2 per week">2 Per Week</option>
-									<option value="3 per week">3 Per Week </option>
-									<option value="4 per week">4 Per Week </option>
-									<option value="5 per week">5 Per Week </option>
-									<option value="6 per week">6 Per Week </option>
-									<option value="All in a row">All in a row </option>
-								</select>
-							</div>
 							<div className="col-span-2">
 								<label
 									htmlFor="description"
@@ -251,7 +279,7 @@ export default function NewTrainingDialog({ handleNext }: Props) {
 							onClick={handleNextStep}
 							className="text-white inline-flex w-full justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center gap-2 items-center"
 						>
-							Select daily training
+							Select Exercises ({amountOfTrainingDays || 0} days)
 							<i className="bx bx-right-arrow-alt font-bold"></i>
 						</button>
 					</form>
