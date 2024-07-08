@@ -60,7 +60,9 @@ export default function Page({}: Props) {
 					})
 				) : (
 					<div className="flex flex-col gap-2 justify-center items-center h-full">
-						<h3 className="text-lg">It's time to assign some trainings 💪</h3>
+						<h3 className="text-lg">
+							It&apos;s time to assign some trainings 💪
+						</h3>
 						<p className="text-sm text-gray-500">
 							Assign a training to a customer to view it here
 						</p>
