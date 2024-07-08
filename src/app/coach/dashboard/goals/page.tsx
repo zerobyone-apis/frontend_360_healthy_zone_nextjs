@@ -33,7 +33,13 @@ export default async function Page({
 						const assignment = stats.full_assignments.find(
 							assignament => Number(assignament.client.id) == goal.client_id
 						);
-						return <CustomerGoalCard assignment={assignment} goal={goal} />;
+						return (
+							<CustomerGoalCard
+								key={goal.id}
+								assignment={assignment}
+								goal={goal}
+							/>
+						);
 					})}
 				</div>
 			</section>

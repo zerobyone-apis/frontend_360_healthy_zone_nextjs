@@ -52,6 +52,7 @@ export default function Page({}: Props) {
 					trainings.map((training: any) => {
 						return (
 							<CustomerTrainingCard
+								key={training.training_id}
 								training={training}
 								assignment={training.client_info}
 							/>
