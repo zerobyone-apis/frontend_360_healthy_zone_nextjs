@@ -49,7 +49,7 @@ export default function NewTrainingDialogParent({}: Props) {
 			toast.success("Training created successfully");
 			setOpenDialog(null);
 			resetTraining();
-			return router.replace("/coach/dashboard/customers", { shallow: true });
+			return router.replace("/coach/dashboard/trainings", { shallow: true });
 		} catch (e) {
 			toast.error("Error creating training");
 			console.log(e);
