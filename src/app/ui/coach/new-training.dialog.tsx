@@ -48,7 +48,7 @@ export default function NewTrainingDialog({ handleNext }: Props) {
 	const router = useRouter();
 
 	function handleClose() {
-		router.replace("/coach/dashboard/customers", { shallow: true });
+		router.replace("/coach/dashboard/trainings", { shallow: true });
 	}
 
 	const handleNextStep = () => {
