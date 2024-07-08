@@ -62,13 +62,19 @@ export enum DayExercisesStatus {
 }
 
 export interface ExerciseDTO {
+	exercise_id: string;
+	daily_train_id: string;
 	name: string;
+	type: string;
 	description?: string;
 	series?: number | null;
 	duration_in_seconds?: number | null;
 	repetitions?: number | null;
+	rest_in_seconds: number;
+	difficulty: number;
 	ready: boolean;
-	gifUrl?: string;
+	url_image?: string;
+	is_completed: boolean;
 }
 
 export interface Training {
@@ -88,6 +94,11 @@ export interface DailyTrainingDay {
 	number_training_day: number;
 	selected_exercises: SelectedExercise[];
 	total_training_days: number;
+	training_id: number | string;
+	id: number | string;
+	is_day_completed: boolean;
+	created_on: string;
+	updated_on: string;
 }
 
 export interface SelectedExercise {

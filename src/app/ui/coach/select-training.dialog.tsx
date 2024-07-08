@@ -12,6 +12,8 @@ type Props = {
 
 export default function SelectTrainingModal({ handleComplete }: Props) {
 	const router = useRouter();
+	const setTraining = trainingStore((state: any) => state.setTraining);
+
 	const [exercises, setExercises] = useState({
 		exercises: [],
 		total: 0,
@@ -60,7 +62,7 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 		});
 	};
 
-	const handleCompleteTraining = () => {
+	const handleCompleteTraining = async () => {
 		if (!selected.length) return setError("Select at least one exercise");
 
 		const hasExercisesPerDay = selected.every(day => day.length > 0);
@@ -71,7 +73,7 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 		const formatedExercises = selected.map((day, index) => {
 			return {
 				number_training_day: index + 1,
-				total_training_days: training.amount_of_days,
+				total_training_days: training.amount_of_training_days,
 				selected_exercises: day.map((exercise: any) => {
 					return {
 						name: exercise.name,
@@ -82,14 +84,14 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 						duration_in_seconds: exercise.duration_in_seconds,
 						rest_in_seconds: 30,
 						difficulty: 1,
-						url_image: `${process.env.NEXT_PUBLIC_BASE_BUCKET_URL}/${process.env.NEXT_PUBLIC_BUCKET_FOLDER_GIFS}/${exercise.gifId}.gif`,
+						url_image: `${bucket}${folder}/${exercise.gifId}.gif`,
 						is_completed: false,
 					};
 				}),
 			};
 		});
 
-		handleComplete(formatedExercises);
+		handleComplete({ daily_training_days: [...formatedExercises] });
 	};
 
 	const bucket = process.env.NEXT_PUBLIC_BASE_BUCKET_URL || "";
@@ -131,7 +133,7 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 		router.replace("/coach/dashboard/customers", { shallow: true });
 	}
 
-	const amountOfDays = training.amount_of_days;
+	const amountOfDays = training.amount_of_training_days;
 	let dayOptions = [];
 	for (let i = 1; i <= amountOfDays; i++) {
 		dayOptions.push(

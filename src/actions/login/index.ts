@@ -47,6 +47,18 @@ export const login = async ({ email, password }: login) => {
 			delete body.admin;
 		}
 
+		if(body.user.roles === "CLIENT") {
+			delete body.nutritionist;
+			delete body.coach;
+			delete body.admin;
+			delete body.client.trainings;
+			delete body.client.goals;
+			delete body.client.training;
+			delete body.client.diets;
+			delete body.client.goalClients;
+		}
+
+
 		cookieStore.set("user", JSON.stringify(body), {
 			expires: Date.now() + sevenDays,
 		});

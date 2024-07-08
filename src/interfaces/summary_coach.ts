@@ -44,7 +44,7 @@ interface Training {
     training_status: string | null;
     type: string;
     description_training: string;
-    dailyTrainingDays: DailyTrainingDay[];
+    daily_training_days: DailyTrainingDay[];
     amount_of_days: string;
     frequency: string;
     init_on: string | null;

@@ -1,38 +1,35 @@
 "use server"
-import { Training } from "@/interfaces/trainings";
+
 import { cookies } from "next/headers";
 
-export async function createTraining({clientID, training}: {clientID: string, training: Training}) {
+export async function fetchTemplate() {
     const cookieStore = cookies();
+
+    //getting the token from the cookie
     const tokenValue = cookieStore.get("token")?.value || "";
     const token = tokenValue;
+
+    //getting the user from the cookie
     const user = JSON.parse(
         cookieStore.get("user")?.value || "{}"
     );
-    const coach_id = user.coach.id;
-
-    //formatting the training object
-    training.coach_id = coach_id;
-    training.coach_plans = training.coach_plans.replaceAll(" ", "_");
-    training.type = training.type.replaceAll(" ", "_");
 
     try {
-        const resp = await fetch(process.env.BASE_PATH + "/v1.0/training/create/client/" + clientID , {
-            method: "POST",
+        const resp = await fetch(process.env.BASE_PATH + "/this/would/be/your/path/" /* + user.client.id or some param */, {
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: token,
             },
-            body: JSON.stringify(training),
+            body: /* body here if required */ null,
             cache: "no-store",
         });
         let body = await resp.json();
         console.log(resp.status);
-        if(resp.status !== 201) {
+        if(resp.status !== 200) {
             throw new Error(body.message);
         }
         
-        console.log("Training results")
         console.log(body);
 
         return body;
