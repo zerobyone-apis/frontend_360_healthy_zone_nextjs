@@ -2,6 +2,7 @@
 import { getDashboardStats } from "@/actions/coach/dashboard";
 import CustomerTrainingCard from "@/app/ui/coach/customer-training-card";
 import NewTrainingDialogParent from "@/app/ui/coach/new-training-parent.dialog";
+import TrainingDetailsDialog from "@/app/ui/coach/training-details.dialog";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -29,6 +30,8 @@ export default function Page({}: Props) {
 	}, []);
 
 	const isNewTraining = searchParams.get("new-training");
+	const showTrainingDetails = searchParams.get("details");
+	const trainingId = searchParams.get("training_id");
 	const full_assignments = stats?.full_assignments || [];
 
 	if (!full_assignments.length) return null;
@@ -78,6 +81,13 @@ export default function Page({}: Props) {
 			</div>
 			{isNewTraining && full_assignments.length && (
 				<SelectCustomerDialog customers={full_assignments} />
+			)}
+			{showTrainingDetails && trainingId && (
+				<TrainingDetailsDialog
+					training={trainings.find(
+						(train: any) => train.training_id == trainingId
+					)}
+				/>
 			)}
 			<NewTrainingDialogParent />
 		</section>

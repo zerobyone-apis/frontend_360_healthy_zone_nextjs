@@ -39,7 +39,7 @@ export async function getAllTrainings() {
 
 
 
-export async function getTrainingsID(trainingID: number) {
+export async function getTrainingsID(trainingID: number | string) {
 	//TODO
 //delete this const and use the function from the server
 const daily_training_days = [
