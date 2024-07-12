@@ -1,11 +1,14 @@
 "use client";
 import { getDashboardStats } from "@/actions/coach/dashboard";
+import { deactivateTraining } from "@/actions/trainings/deactivate-training";
 import CustomerTrainingCard from "@/app/ui/coach/customer-training-card";
 import NewTrainingDialogParent from "@/app/ui/coach/new-training-parent.dialog";
 import TrainingDetailsDialog from "@/app/ui/coach/training-details.dialog";
+import ConfirmationDialog from "@/app/ui/confirmation-dialog";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 type Props = {};
 
@@ -13,6 +16,7 @@ export default function Page({}: Props) {
 	const [stats, setStats] = useState<any>(null);
 	const [trainings, setTrainings] = useState<any>([]);
 	const searchParams = useSearchParams();
+	const router = useRouter();
 
 	useEffect(() => {
 		getDashboardStats().then(data => {
@@ -31,8 +35,23 @@ export default function Page({}: Props) {
 
 	const isNewTraining = searchParams.get("new-training");
 	const showTrainingDetails = searchParams.get("details");
+	const confirmDelete = searchParams.get("confirm-delete");
 	const trainingId = searchParams.get("training_id");
 	const full_assignments = stats?.full_assignments || [];
+
+	const confirmDeactivateTraining = async () => {
+		// Deactivate training
+		if (!trainingId) return;
+		try {
+			await deactivateTraining(trainingId);
+			toast.success("Training deactivated successfully");
+		} catch (e) {
+			console.error(e);
+			toast.error("Failed to deactivate training");
+		}
+
+		router.push("/coach/dashboard/trainings", { replace: true });
+	};
 
 	if (!full_assignments.length) return null;
 	return (
@@ -81,6 +100,19 @@ export default function Page({}: Props) {
 			</div>
 			{isNewTraining && full_assignments.length && (
 				<SelectCustomerDialog customers={full_assignments} />
+			)}
+			{confirmDelete && trainingId && (
+				<ConfirmationDialog
+					canClose={true}
+					confirmAction={confirmDeactivateTraining}
+					cancelAction={() =>
+						router.push("/coach/dashboard/trainings", { replace: true })
+					}
+					handleClose={() =>
+						router.push("/coach/dashboard/trainings", { replace: true })
+					}
+					title={"Are you sure you want to deactivate this training?"}
+				/>
 			)}
 			{showTrainingDetails && trainingId && (
 				<TrainingDetailsDialog
