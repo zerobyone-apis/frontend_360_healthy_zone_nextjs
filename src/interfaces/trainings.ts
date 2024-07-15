@@ -78,6 +78,7 @@ export interface ExerciseDTO {
 }
 
 export interface Training {
+	training_id: number| string;
 	coach_id: number;
 	goal_id: number;
 	type: string;
@@ -86,7 +87,8 @@ export interface Training {
 	description_training: string;
 	frequency: string;
 	init_on: string;
-	amount_of_days: number;
+	amount_of_training_days: number;
+	training_duration_days: number;
 	daily_training_days: DailyTrainingDay[];
 }
 

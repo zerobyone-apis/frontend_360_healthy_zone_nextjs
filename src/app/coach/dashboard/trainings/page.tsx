@@ -1,10 +1,14 @@
 "use client";
 import { getDashboardStats } from "@/actions/coach/dashboard";
+import { deactivateTraining } from "@/actions/trainings/deactivate-training";
 import CustomerTrainingCard from "@/app/ui/coach/customer-training-card";
 import NewTrainingDialogParent from "@/app/ui/coach/new-training-parent.dialog";
+import TrainingDetailsDialog from "@/app/ui/coach/training-details.dialog";
+import ConfirmationDialog from "@/app/ui/confirmation-dialog";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 type Props = {};
 
@@ -12,16 +16,14 @@ export default function Page({}: Props) {
 	const [stats, setStats] = useState<any>(null);
 	const [trainings, setTrainings] = useState<any>([]);
 	const searchParams = useSearchParams();
+	const router = useRouter();
 
 	useEffect(() => {
-		getDashboardStats().then(data => {
+		getDashboardStats().then((data: any) => {
 			setStats((prev: any) => ({ ...prev, ...data }));
 			data.goals_created.forEach((goal: any) => {
 				const complete_training_list = goal.trainings.map((training: any) => {
-					const client = data.full_assignments.find(
-						(assignment: any) => assignment.client.id === goal.client_id
-					);
-					return { ...training, client_info: { ...client.client } };
+					return { ...training, client_info: { ...goal.client } };
 				});
 				setTrainings([...trainings, ...complete_training_list]);
 			});
@@ -29,7 +31,24 @@ export default function Page({}: Props) {
 	}, []);
 
 	const isNewTraining = searchParams.get("new-training");
+	const showTrainingDetails = searchParams.get("details");
+	const confirmDelete = searchParams.get("confirm-delete");
+	const trainingId = searchParams.get("training_id");
 	const full_assignments = stats?.full_assignments || [];
+
+	const confirmDeactivateTraining = async () => {
+		// Deactivate training
+		if (!trainingId) return;
+		try {
+			await deactivateTraining(trainingId);
+			toast.success("Training deactivated successfully");
+		} catch (e) {
+			console.error(e);
+			toast.error("Failed to deactivate training");
+		}
+
+		router.push("/coach/dashboard/trainings", { replace: true });
+	};
 
 	if (!full_assignments.length) return null;
 	return (
@@ -40,14 +59,14 @@ export default function Page({}: Props) {
 					<Link
 						href="?new-training=true"
 						type="button"
-						className="px-3 py-2 text-xs font-medium text-center hover:text-white border border-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+						className="px-3 py-2 text-xs font-medium text-center bg-white hover:text-white border border-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
 					>
 						<i className="bx bx-plus me-1"></i>
 						New training
 					</Link>
 				</div>
 			</div>
-			<div className="gap-3 p-5">
+			<div className="gap-5 p-5 flex-col flex">
 				{trainings.length ? (
 					trainings.map((training: any) => {
 						return (
@@ -76,6 +95,27 @@ export default function Page({}: Props) {
 					</div>
 				)}
 			</div>
+
+			{confirmDelete && trainingId && (
+				<ConfirmationDialog
+					canClose={true}
+					confirmAction={confirmDeactivateTraining}
+					cancelAction={() =>
+						router.push("/coach/dashboard/trainings", { replace: true })
+					}
+					handleClose={() =>
+						router.push("/coach/dashboard/trainings", { replace: true })
+					}
+					title={"Are you sure you want to deactivate this training?"}
+				/>
+			)}
+			{showTrainingDetails && trainingId && (
+				<TrainingDetailsDialog
+					training={trainings.find(
+						(train: any) => train.training_id == trainingId
+					)}
+				/>
+			)}
 			{isNewTraining && full_assignments.length && (
 				<SelectCustomerDialog customers={full_assignments} />
 			)}

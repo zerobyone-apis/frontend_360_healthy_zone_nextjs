@@ -1,6 +1,7 @@
-import { getExerciseDay } from "@/actions/trainings";
+import { getExerciseDay, getTrainingsID } from "@/actions/trainings";
 import { Button } from "@/app/ui/button";
 import TrainingParent from "@/app/ui/dashboard/trainings/training-parent";
+import { Training } from "@/interfaces/trainings";
 import Link from "next/link";
 
 type Props = {
@@ -9,7 +10,7 @@ type Props = {
 
 export default async function Page({ params }: Props) {
 	const exercises = await getExerciseDay(params.day, params.id);
-
+	const training: Training = await getTrainingsID(params.id);
 	return (
 		<div
 			className="fixed top-0 left-0 z-50 h-full p-4 w-full max-w-full bg-white"
@@ -41,7 +42,10 @@ export default async function Page({ params }: Props) {
 				 *  Pantalla de descanso
 				 *  Pantalla de entrenamiento
 				 */}
-				<TrainingParent exercises={exercises.exercises}></TrainingParent>
+				<TrainingParent
+					exercises={exercises.exercises}
+					training={training}
+				></TrainingParent>
 			</div>
 		</div>
 	);

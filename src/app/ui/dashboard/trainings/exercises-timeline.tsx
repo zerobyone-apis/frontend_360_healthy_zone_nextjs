@@ -28,7 +28,7 @@ export default function ExercisesTimeline({
 						width={318}
 						height={159}
 					></Image>
-					<div className="w-full md:w-[50%]">
+					<div className="w-full md:w[80%]">
 						<SeeMoreText
 							textClasses={
 								"mb-4 text-base font-normal text-gray-500 whitespace-pre-line"

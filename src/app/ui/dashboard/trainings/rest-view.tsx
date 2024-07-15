@@ -1,9 +1,7 @@
 "use client";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Button } from "../../button";
-import { useSound } from "use-sound";
 
 type Props = {
 	restInSeconds: number;
@@ -16,8 +14,8 @@ export default function RestView({
 	setCurrentIndex,
 	nextExercise,
 }: Props) {
+	console.log("RestView");
 	let timer = 0;
-	// const [nextExerciseAudio] = useSound("/audios/training/next_exercise_will_start.mp3");
 	const nextExerciseAudio = new Audio(
 		"/audios/training/next_exercise_will_start.mp3"
 	);
