@@ -78,6 +78,7 @@ export interface ExerciseDTO {
 }
 
 export interface Training {
+	training_id: number| string;
 	coach_id: number;
 	goal_id: number;
 	type: string;

@@ -74,28 +74,20 @@ export default function CustomerGoalCard({ goal, assignment }: Props) {
 			</p>
 			<div className="inline-flex rounded-md justify-end w-full" role="group">
 				<Link
-					href={`/coach/dashboard/goals?details=true&goal_id=${goal.id}`}
+					href={`/coach/dashboard/goals/${goal.id}`}
 					type="button"
 					className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
 				>
 					<i className="bx bx-detail"></i>
-					Details
-				</Link>
-				<Link
-					href={`/coach/dashboard/goals?edit=true&goal_id=${goal.id}`}
-					type="button"
-					className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-jungle-green-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
-				>
-					<i className="bx bxs-edit"></i>
-					Edit
+					Details & Progress
 				</Link>
 				<Link
 					href={`/coach/dashboard/goals?confirm-delete=true&goal_id=${goal.id}`}
 					type="button"
 					className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
 				>
-					<i className="bx bx-trash"></i>
-					Delete
+					<i className="bx bx-x"></i>
+					Deactivate
 				</Link>
 			</div>
 		</div>

@@ -16,6 +16,12 @@ export default function TrainingDetailsDialog({
 	};
 	const [selectedDay, setSelectedDay] = useState(0); // 0 is the first day
 	let days = [];
+
+	// sort the days by the day number
+	training.daily_training_days.sort(
+		(a, b) => a.number_training_day - b.number_training_day
+	);
+
 	for (let i = 0; i < training.amount_of_training_days; i++) {
 		days.push(
 			<span

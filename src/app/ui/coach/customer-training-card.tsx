@@ -7,6 +7,14 @@ type Props = {
 };
 
 export default function CustomerTrainingCard({ training, assignment }: Props) {
+	const completedDailyTraining = training.daily_training_days.filter(
+		(daily: any) => daily.is_day_completed
+	).length;
+
+	const progress = completedDailyTraining
+		? (completedDailyTraining * 100) / training.amount_of_training_days
+		: 0;
+
 	return (
 		<div
 			key={training.training_id}
@@ -36,13 +44,13 @@ export default function CustomerTrainingCard({ training, assignment }: Props) {
 				{training.description_training}
 			</p>
 			<div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
-				{/* REMPLAZAR POR PORCENTAJE CALCULADO */}
 				<div
 					className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-					style={{ width: "20%" }}
+					style={{
+						width: (progress > 0 ? progress : 5) + "%",
+					}}
 				>
-					{" "}
-					{20}%
+					{progress} %
 				</div>
 			</div>
 			<p className="text-sm">
@@ -114,11 +122,19 @@ export default function CustomerTrainingCard({ training, assignment }: Props) {
 					Details
 				</Link>
 				<Link
+					href={`/coach/dashboard/trainings?progress=true&training_id=${training.training_id}`}
+					type="button"
+					className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+				>
+					<i className="bx bx-trending-up mr-1"></i>
+					Progress
+				</Link>
+				<Link
 					href={`/coach/dashboard/trainings?confirm-delete=true&training_id=${training.training_id}`}
 					type="button"
 					className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
 				>
-					<i className="bx bxs-x"></i>
+					<i className="bx bx-x mr-1"></i>
 					Deactivate
 				</Link>
 			</div>

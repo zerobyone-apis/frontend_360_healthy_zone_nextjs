@@ -6,6 +6,10 @@ import { Button } from "@/app/ui/button";
 
 export default async function Page() {
 	const trainings: any | null = await getAllTrainings();
+	const trainingCompletedLength = trainings.filter(
+		(training: any) => training.isCompleted
+	).length;
+
 	if (!trainings.length || !trainings)
 		return (
 			<div className="flex justify-center items-center flex-col h-full text-center">
@@ -39,7 +43,7 @@ export default async function Page() {
 					bg="bg-jungle-green-100"
 					border="border-jungle-green-500"
 					title="COMPLETED ✅"
-					count={trainings.length}
+					count={trainingCompletedLength}
 				/>
 
 				<CounterChart

@@ -1,20 +1,88 @@
+"use client";
 import { getTrainingsID } from "@/actions/trainings";
+import { trainingMarkInProgress } from "@/actions/trainings/training-in-progress";
 import { Button } from "@/app/ui/button";
-import DailyTrainingCounter from "@/app/ui/dashboard/trainings/daily-training-counter";
 import ExercisesTimeline from "@/app/ui/dashboard/trainings/exercises-timeline";
-import TrainingDifficultyCard from "@/app/ui/dashboard/trainings/training-difficulty-card";
 import { Training } from "@/interfaces/trainings";
-import Link from "next/link";
+import clsx from "clsx";
+import { useParams, useRouter } from "next/navigation";
+import { ReactElement, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-export default async function Page({ params }: { params: { id: string } }) {
-	const training: Training = await getTrainingsID(Number(params.id));
-	// take the daily train day ID for the next day to be completed
-	let nextDay = null;
-	nextDay = training?.daily_training_days.find(day => !day.is_day_completed);
-	console.log(nextDay?.id);
-
+export default function Page() {
+	const params = useParams();
+	const router = useRouter();
+	const [training, setTraining] = useState<Training>();
+	const [selectedDay, setSelectedDay] = useState(0); // 0 is the first day
+	const [loading, setLoading] = useState(true);
 	const currentPath = "/dashboard/trainings/" + params.id;
 
+	useEffect(() => {
+		const id = params.id;
+		if (!id || typeof id !== "string") return;
+		getTrainingsID(id)
+			.then((data: Training) => {
+				data.daily_training_days.sort(
+					(a, b) => a.number_training_day - b.number_training_day
+				);
+
+				const selectedIndex = data.daily_training_days.findIndex(
+					day => !day.is_day_completed
+				);
+				if (selectedIndex !== -1) setSelectedDay(selectedIndex);
+
+				setTraining(data);
+			})
+			.catch(console.error)
+			.finally(() => setLoading(false));
+	}, []);
+
+	let days: ReactElement[] = [];
+
+	if (training) {
+		for (let i = 0; i < training.amount_of_training_days; i++) {
+			const day = training.daily_training_days[i];
+			days.push(
+				<span
+					key={i}
+					onClick={() => {
+						setSelectedDay(i);
+					}}
+					className={clsx(
+						"bg-gray-100 text-xs font-medium me-2 px-2.5 text-nowrap py-0.5 h-6 rounded-full cursor-pointer",
+						"hover:border-blue-600 hover:bg-blue-400 hover:text-white ease-in-out transition-all duration-200",
+						day?.is_day_completed && ["bg-green-400", "text-white"],
+						selectedDay === i && "border border-blue-400 text-blue-800"
+					)}
+				>
+					Day {i + 1}
+				</span>
+			);
+		}
+	}
+
+	// take the daily train day ID for the next day to be completed
+	const nextDay = training?.daily_training_days[selectedDay];
+
+	//handler click on start training
+	const handleStartTraining = async () => {
+		if (!nextDay) return;
+
+		// if the training is not in progress, then start it.
+		if (!training.init_on) {
+			try {
+				await trainingMarkInProgress(training.training_id);
+			} catch (error) {
+				console.error(error);
+				toast.error("Error starting training");
+				throw new Error("Error starting training");
+			}
+		}
+
+		router.push(currentPath + "/in-progress/" + nextDay.id);
+	};
+
+	if (loading) return <div>Loading...</div>;
 	if (!training)
 		return (
 			<div>
@@ -35,18 +103,28 @@ export default async function Page({ params }: { params: { id: string } }) {
 				</div>
 
 				<div className="col-span-4 md:col-span-1 gap-4 flex flex-col">
-					<DailyTrainingCounter
-						daily_training_days={training.daily_training_days}
-					/>
-					{/* <TrainingDifficultyCard
-						days_remaining={training.amount_of_days}
-						difficulty={difficulty}
-					/> */}
-					<Link href={currentPath + "/in-progress/" + nextDay?.id}>
-						<Button className="hidden bg-teal-500 rounded text-white hover:bg-jungle-green-400 font-sans font-bold gap-1 md:flex justify-center">
-							<i className="bx bx-play text-2xl"></i>START TRAINING
-						</Button>
-					</Link>
+					<div className="inline-flex md:flex-wrap gap-1 overflow-auto md:overflow-auto max-w-full">
+						{days}
+					</div>
+					<Button
+						disabled={!nextDay || nextDay.is_day_completed}
+						onClick={handleStartTraining}
+						className={clsx(
+							"hidden md:flex justify-center rounded font-sans font-bold gap-1",
+							!nextDay?.is_day_completed
+								? "bg-teal-500 text-white hover:bg-jungle-green-400 "
+								: "bg-gray-400 cursor-not-allowed"
+						)}
+					>
+						{nextDay?.is_day_completed ? (
+							"DAY COMPLETED"
+						) : (
+							<>
+								<i className="bx bx-play text-2xl"></i>
+								START TRAINING
+							</>
+						)}
+					</Button>
 				</div>
 
 				<div className="col-span-4 md:col-span-3">
@@ -55,11 +133,25 @@ export default async function Page({ params }: { params: { id: string } }) {
 				<div className="hidden col-span-1 md:block"></div>
 			</div>
 			<div className="w-full flex justify-center">
-				<Link href={currentPath + "/in-progress/" + nextDay?.id}>
-					<Button className="md:hidden bg-teal-500 rounded text-white hover:bg-jungle-green-400 fixed md:bottom-4 bottom-20 font-sans font-bold gap-1">
-						<i className="bx bx-play text-2xl"></i>START TRAINING
-					</Button>
-				</Link>
+				<Button
+					disabled={!nextDay || nextDay.is_day_completed}
+					onClick={handleStartTraining}
+					className={clsx(
+						"md:hidden rounded fixed md:bottom-4 bottom-20 font-sans font-bold gap-1",
+						!nextDay?.is_day_completed
+							? "bg-teal-500 text-white hover:bg-jungle-green-400 "
+							: "bg-gray-400 cursor-not-allowed"
+					)}
+				>
+					{nextDay?.is_day_completed ? (
+						"DAY COMPLETED"
+					) : (
+						<>
+							<i className="bx bx-play text-2xl"></i>
+							START TRAINING
+						</>
+					)}
+				</Button>
 			</div>
 		</>
 	);

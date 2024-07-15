@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import NewTrainingDialog from "./new-training.dialog";
 import SelectTrainingModal from "./select-training.dialog";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getGoals } from "@/actions/goals/get-goals";
 import { trainingStore } from "@/stores/training.store";
 import { createTraining } from "@/actions/trainings/create-training";
 import { toast } from "react-toastify";
+import { getLatestGoalByClientID } from "@/actions/goals/get-latest-goal";
 
 type Props = {};
 
@@ -15,6 +15,7 @@ export default function NewTrainingDialogParent({}: Props) {
 	const resetTraining = trainingStore((state: any) => state.resetTraining);
 	const [openDialog, setOpenDialog] = useState<"new" | "select" | null>(null);
 	const setCurrentGoal = trainingStore((state: any) => state.setCurrentGoal);
+	const [goal, setGoal] = useState<any>(null);
 	const searchParams = useSearchParams();
 	const router = useRouter();
 
@@ -22,9 +23,10 @@ export default function NewTrainingDialogParent({}: Props) {
 		if (searchParams.get("client_id") && searchParams.get("new-training")) {
 			const clientId = parseInt(searchParams.get("client_id") as string);
 			if (clientId) {
-				getGoals(clientId).then(goals => {
-					if (goals.length > 0) {
-						setCurrentGoal(goals[0]);
+				getLatestGoalByClientID(clientId).then(goal => {
+					if (goal) {
+						setCurrentGoal(goal);
+						setGoal(goal);
 					}
 				});
 			}
@@ -49,7 +51,10 @@ export default function NewTrainingDialogParent({}: Props) {
 			toast.success("Training created successfully");
 			setOpenDialog(null);
 			resetTraining();
-			return router.replace("/coach/dashboard/trainings", { shallow: true });
+			router.push("/coach/dashboard/trainings");
+			setTimeout(() => {
+				window.location.reload();
+			}, 100);
 		} catch (e) {
 			toast.error("Error creating training");
 			console.log(e);
@@ -58,7 +63,9 @@ export default function NewTrainingDialogParent({}: Props) {
 
 	return (
 		<>
-			{openDialog == "new" && <NewTrainingDialog handleNext={handleNext} />}
+			{openDialog == "new" && goal && (
+				<NewTrainingDialog handleNext={handleNext} goal={goal} />
+			)}
 			{openDialog == "select" && (
 				<SelectTrainingModal handleComplete={handleComplete} />
 			)}

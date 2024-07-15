@@ -1,11 +1,13 @@
+// /v1.0/professional/goal/latest/by/client/1
+
 "use server";
 import { GoalResponseDTO } from "@/interfaces/goals";
 import { cookies } from "next/headers";
 
 //based on the bellow code, create a function that will return the goals
-export async function getGoals(
+export async function getLatestGoalByClientID(
 	clientID: number | string
-): Promise<GoalResponseDTO[] | Array<never>> {
+): Promise<GoalResponseDTO | null> {
 	const cookieStore = cookies();
 	const tokenValue = cookieStore.get("token")?.value || "";
 	const token = tokenValue;
@@ -13,7 +15,7 @@ export async function getGoals(
 	try {
 		const resp = await fetch(
 			process.env.BASE_PATH +
-				"/v1.0/professional/goal/all/by/client/" +
+				"/v1.0/professional/goal/latest/by/client/" +
 				clientID,
 			{
 				method: "GET",
@@ -29,6 +31,6 @@ export async function getGoals(
 		return body;
 	} catch (error) {
 		console.log(error);
-		return [];
+		return null;
 	}
 }

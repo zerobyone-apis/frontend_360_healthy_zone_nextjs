@@ -19,14 +19,11 @@ export default function Page({}: Props) {
 	const router = useRouter();
 
 	useEffect(() => {
-		getDashboardStats().then(data => {
+		getDashboardStats().then((data: any) => {
 			setStats((prev: any) => ({ ...prev, ...data }));
 			data.goals_created.forEach((goal: any) => {
 				const complete_training_list = goal.trainings.map((training: any) => {
-					const client = data.full_assignments.find(
-						(assignment: any) => assignment.client.id === goal.client_id
-					);
-					return { ...training, client_info: { ...client.client } };
+					return { ...training, client_info: { ...goal.client } };
 				});
 				setTrainings([...trainings, ...complete_training_list]);
 			});
@@ -62,14 +59,14 @@ export default function Page({}: Props) {
 					<Link
 						href="?new-training=true"
 						type="button"
-						className="px-3 py-2 text-xs font-medium text-center hover:text-white border border-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+						className="px-3 py-2 text-xs font-medium text-center bg-white hover:text-white border border-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
 					>
 						<i className="bx bx-plus me-1"></i>
 						New training
 					</Link>
 				</div>
 			</div>
-			<div className="gap-3 p-5">
+			<div className="gap-5 p-5 flex-col flex">
 				{trainings.length ? (
 					trainings.map((training: any) => {
 						return (
@@ -98,9 +95,7 @@ export default function Page({}: Props) {
 					</div>
 				)}
 			</div>
-			{isNewTraining && full_assignments.length && (
-				<SelectCustomerDialog customers={full_assignments} />
-			)}
+
 			{confirmDelete && trainingId && (
 				<ConfirmationDialog
 					canClose={true}
@@ -120,6 +115,9 @@ export default function Page({}: Props) {
 						(train: any) => train.training_id == trainingId
 					)}
 				/>
+			)}
+			{isNewTraining && full_assignments.length && (
+				<SelectCustomerDialog customers={full_assignments} />
 			)}
 			<NewTrainingDialogParent />
 		</section>

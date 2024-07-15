@@ -6,14 +6,17 @@ import { useEffect, useState } from "react";
 
 type Props = {
 	handleNext: () => void;
+	goal: any;
 };
 
-export default function NewTrainingDialog({ handleNext }: Props) {
+export default function NewTrainingDialog({ handleNext, goal }: Props) {
+	const frequencyForm = goal.client.customForm.formMap.frequency || "";
+
 	const [counter, setCounter] = useState(1);
 	const [trainingType, setTrainingType] = useState<string>("");
 	const [coachPlans, setCoachPlans] = useState<string>("");
 	const [descriptionTraining, setDescription] = useState<string>("");
-	const [frequency, setFrequency] = useState<string>("");
+	const [frequency, setFrequency] = useState<string>(frequencyForm);
 
 	// need to create a calculation for the amount of training days based on the frequency of the training and the duration of the training
 	const [amountOfTrainingDays, setAmountOfTrainingDays] = useState<number>(0);
@@ -42,7 +45,6 @@ export default function NewTrainingDialog({ handleNext }: Props) {
 		setAmountOfTrainingDays(amountOfTrainingDaysCalc());
 	}, [counter, frequency]);
 
-	const goal = trainingStore((state: any) => state.currentGoal);
 	const setTraining = trainingStore((state: any) => state.setTraining);
 
 	const router = useRouter();
@@ -185,6 +187,7 @@ export default function NewTrainingDialog({ handleNext }: Props) {
 								</label>
 								<select
 									id="frequency"
+									disabled={!!frequencyForm}
 									value={frequency}
 									className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
 									onChange={e => setFrequency(e.target.value)}

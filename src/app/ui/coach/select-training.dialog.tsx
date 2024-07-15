@@ -12,7 +12,6 @@ type Props = {
 
 export default function SelectTrainingModal({ handleComplete }: Props) {
 	const router = useRouter();
-	const setTraining = trainingStore((state: any) => state.setTraining);
 
 	const [exercises, setExercises] = useState({
 		exercises: [],

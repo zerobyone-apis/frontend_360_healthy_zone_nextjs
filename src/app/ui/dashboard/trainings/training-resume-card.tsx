@@ -13,7 +13,9 @@ export default function TrainingResumeCard({
 	training: TrainingResponseDto;
 }) {
 	const trainingObjectStyles = TrainingResumeCardStyles;
-	const trainingStatus = training.training_status || "CREATED";
+	const trainingStatus = training.isCompleted
+		? "COMPLETED"
+		: training.training_status || "CREATED";
 	return (
 		<Link
 			href={{

@@ -15,8 +15,10 @@ export default function DialogsWrapper() {
 		deactivateGoal(Number(goalId))
 			.then(() => {
 				router.push("/coach/dashboard/goals");
+				setTimeout(() => {
+					window.location.reload();
+				}, 100);
 				toast.success("Goal deleted successfully");
-				router.refresh();
 			})
 			.catch(() => {
 				toast.error("Error deleting goal");
