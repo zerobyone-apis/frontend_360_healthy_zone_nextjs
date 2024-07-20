@@ -28,11 +28,12 @@ export const registration = async ({
 				phone,
 			}),
 		});
-
+		if(!resp.ok) return null;
 		let respi = await resp.json();
 		return respi;
 	} catch (error) {
-		return console.log(error);
+		console.log(error)
+		return null
 	}
 };
 
@@ -62,9 +63,11 @@ export const professionalRegistration = async ({
 			}
 		);
 
+		if(!resp.ok) return null;
 		let respi = await resp.json();
 		return respi;
 	} catch (error) {
-		return console.log(error);
+		console.log(error)
+		return null
 	}
 };

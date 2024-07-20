@@ -62,7 +62,7 @@ export default function NewGoalDialog() {
 								>
 									<option value="">Select a client</option>
 									{stats?.full_assignments.map((assignment: any) => (
-										<option key={assignment.id} value={assignment.client.id}>
+										<option key={assignment.id} value={assignment}>
 											{assignment.client.edited_name}
 										</option>
 									))}

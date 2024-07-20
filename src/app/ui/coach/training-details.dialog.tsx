@@ -7,11 +7,16 @@ import { useState } from "react";
 
 export default function TrainingDetailsDialog({
 	training,
+	handleCloseOuter,
 }: {
 	training: Training;
+	handleCloseOuter?: () => void;
 }) {
 	const router = useRouter();
 	const handleClose = () => {
+		if (handleCloseOuter) {
+			return handleCloseOuter();
+		}
 		router.replace("/coach/dashboard/trainings", { shallow: true });
 	};
 	const [selectedDay, setSelectedDay] = useState(0); // 0 is the first day

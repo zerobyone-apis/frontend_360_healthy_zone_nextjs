@@ -48,6 +48,9 @@ export default function Page({}: Props) {
 		}
 
 		router.push("/coach/dashboard/trainings", { replace: true });
+		setTimeout(() => {
+			window.location.reload();
+		}, 100);
 	};
 
 	if (!full_assignments.length) return null;
