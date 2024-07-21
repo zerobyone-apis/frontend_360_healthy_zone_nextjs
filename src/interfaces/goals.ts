@@ -2,7 +2,7 @@ import { DietStatus, NutritionistPlansServices } from "./diets";
 import { CoachPlansServices, Training, TrainingStatus } from "./trainings";
 
 export interface ClientEdited {
-		id: number;
+		id: number | string;
 		edited_name: string;
 		city: string;
 		country: string;
@@ -10,6 +10,9 @@ export interface ClientEdited {
 		client_status: string;
 		nutritionist_id: number | null;
 		coach_id: number | null;
+		initial_height: number;
+        initial_weight: number;
+        current_weight: number;
 		goals: GoalResponseDTO[];
 		diets: any[]; // Replace with the appropriate type
 		training: any[]; // Replace with the appropriate type
@@ -85,9 +88,9 @@ export interface GoalNewDTO {
 	description_goal: string;
 	percentage_body_fat: number;
 	healthy_focus_description: string | null;
-	type: TypeGoals;
+	type: TypeGoals | string | null;
 	nutritionist_plans: NutritionistPlansServices | null;
-	trainer_plans: CoachPlansServices | null;
+	trainer_plans: CoachPlansServices | null | string;
 	amount_of_days: number;
 	initial_weight: number;
 	initial_height: number;

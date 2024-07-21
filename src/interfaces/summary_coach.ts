@@ -1,3 +1,5 @@
+import { ClientEdited } from "./goals";
+
 interface Client {
     id: number;
     edited_name: string;
@@ -16,7 +18,7 @@ interface Client {
 
 interface FullAssignment {
     id: string;
-    client: Client;
+    client: ClientEdited;
     created_on: string;
     updated_on: string | null;
     is_completed: boolean;

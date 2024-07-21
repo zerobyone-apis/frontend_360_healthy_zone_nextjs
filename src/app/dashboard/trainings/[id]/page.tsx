@@ -8,6 +8,7 @@ import clsx from "clsx";
 import { useParams, useRouter } from "next/navigation";
 import { ReactElement, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 export default function Page() {
 	const params = useParams();
@@ -102,15 +103,21 @@ export default function Page() {
 					</h5>
 				</div>
 
-				<div className="col-span-4 md:col-span-1 gap-4 flex flex-col">
+				<div className="col-span-4 md:col-span-1 gap-4 flex flex-col items-center">
 					<div className="inline-flex md:flex-wrap gap-1 overflow-auto md:overflow-auto max-w-full">
 						{days}
 					</div>
-					<Button
+					<motion.button
+						whileHover={{
+							scale: 1.2,
+							transition: { duration: 0.3 },
+						}}
+						onHoverStart={e => {}}
+						onHoverEnd={e => {}}
 						disabled={!nextDay || nextDay.is_day_completed}
 						onClick={handleStartTraining}
 						className={clsx(
-							"hidden md:flex justify-center rounded font-sans font-bold gap-1",
+							"hidden md:flex justify-center rounded font-sans font-bold gap-1 p-2 w-[80%]",
 							!nextDay?.is_day_completed
 								? "bg-teal-500 text-white hover:bg-jungle-green-400 "
 								: "bg-gray-400 cursor-not-allowed"
@@ -124,7 +131,7 @@ export default function Page() {
 								START TRAINING
 							</>
 						)}
-					</Button>
+					</motion.button>
 				</div>
 
 				<div className="col-span-4 md:col-span-3">
@@ -133,11 +140,17 @@ export default function Page() {
 				<div className="hidden col-span-1 md:block"></div>
 			</div>
 			<div className="w-full flex justify-center">
-				<Button
+				<motion.button
+					whileHover={{
+						scale: 1.2,
+						transition: { duration: 0.3 },
+					}}
+					onHoverStart={e => {}}
+					onHoverEnd={e => {}}
 					disabled={!nextDay || nextDay.is_day_completed}
 					onClick={handleStartTraining}
 					className={clsx(
-						"md:hidden rounded fixed md:bottom-4 bottom-20 font-sans font-bold gap-1",
+						"md:hidden rounded fixed md:bottom-4 bottom-20 font-sans font-bold gap-1 p-2 w-[40%]",
 						!nextDay?.is_day_completed
 							? "bg-teal-500 text-white hover:bg-jungle-green-400 "
 							: "bg-gray-400 cursor-not-allowed"
@@ -151,7 +164,7 @@ export default function Page() {
 							START TRAINING
 						</>
 					)}
-				</Button>
+				</motion.button>
 			</div>
 		</>
 	);
