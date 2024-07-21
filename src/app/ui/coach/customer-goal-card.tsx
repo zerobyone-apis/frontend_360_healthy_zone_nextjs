@@ -20,9 +20,13 @@ export default function CustomerGoalCard({ goal, assignment }: Props) {
 					<span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">
 						Completed
 					</span>
-				) : (
+				) : goal.isActive ? (
 					<span className="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">
 						In Progress
+					</span>
+				) : (
+					<span className="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">
+						Deactivated
 					</span>
 				)}
 			</div>

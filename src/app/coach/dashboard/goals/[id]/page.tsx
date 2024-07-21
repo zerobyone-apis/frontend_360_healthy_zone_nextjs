@@ -175,8 +175,8 @@ export default function Page() {
 					</h2>
 				</div>
 				<div className="col-span-3">
-					{progress?.map(p => (
-						<ProgressCard progress={p} key={p.id} />
+					{progress?.map((p, index) => (
+						<ProgressCard progress={p} key={index} />
 					))}
 				</div>
 			</div>

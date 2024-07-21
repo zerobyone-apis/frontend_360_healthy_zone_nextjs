@@ -16,6 +16,7 @@ export default function ProgressCard({ progress }: Props) {
 			if (pic)
 				photosFormatted.push(
 					<img
+						key={index}
 						src={pic}
 						alt={"training-pic-" + index}
 						className={clsx(

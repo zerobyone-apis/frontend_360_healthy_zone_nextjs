@@ -5,11 +5,7 @@ import CustomerGoalCard from "@/app/ui/coach/customer-goal-card";
 import { SummaryCoach } from "@/interfaces/summary_coach";
 import Link from "next/link";
 
-export default async function Page({
-	searchParams,
-}: {
-	searchParams: { [key: string]: string | string[] | undefined };
-}) {
+export default async function Page() {
 	const stats: SummaryCoach = await getDashboardStats();
 
 	if (!stats) return null;
