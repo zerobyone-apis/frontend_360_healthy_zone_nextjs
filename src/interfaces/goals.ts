@@ -1,49 +1,72 @@
 import { DietStatus, NutritionistPlansServices } from "./diets";
-import { CoachPlansServices, TrainingStatus } from "./trainings";
+import { CoachPlansServices, Training, TrainingStatus } from "./trainings";
+
+export interface ClientEdited {
+		id: number | string;
+		edited_name: string;
+		city: string;
+		country: string;
+		description: string | null;
+		client_status: string;
+		nutritionist_id: number | null;
+		coach_id: number | null;
+		initial_height: number;
+        initial_weight: number;
+        current_weight: number;
+		goals: GoalResponseDTO[];
+		diets: any[]; // Replace with the appropriate type
+		training: any[]; // Replace with the appropriate type
+		goalClients: {
+			id: number;
+			client_id: number;
+			target: string;
+			roles: string;
+			deadline: string;
+			created_on: string;
+			updated_on: string | null;
+			isActive: boolean;
+		}[];
+		customForm: {
+			id: number;
+			userId: number;
+			profileId: number;
+			formMap: {
+				[key: string]: string;
+			};
+			type: string;
+			created_on: string;
+			updated_on: string | null;
+			isActive: boolean;
+		};
+		isActive: boolean;
+}
 
 export interface GoalResponseDTO {
 	id: number;
-	client_id: number;
+	client: ClientEdited;
 	status: GoalStatus;
-	/** Descripcion del objetivo consiso, ej:
-	 *      Reducir un 8% del peso corporal en los próximos seis meses de manera sostenible y saludable.
-	 * */
 	descriptionGoal: string;
-	/** Tiempo dispuesto para completar el objetivo ej: 6 */
-	timeLapse: string;
-	/** Unidad de tiempo dispuesto para completar el objetivo ej: meses*/
-	timeUnit: string;
-	/** Porcentaje de perdida o ganancia de peso o musculo que se desea para esta meta EJ: 8% perdida de peso.*/
 	percentage: string;
-	/** Para entender el tipo de objetivo planteado ej:
-	 *      - Perdida de Peso
-	 *      - Alimentacion Saludable
-	 *      - Aumento de masa muscular
-	 *      - etc..
-	 * */
 	goalType: TypeGoals;
-	/** Descripcion del profesional sobre la recomendación que le otorgo al usuario*/
 	healthyFocusDescription: string;
-
-	/** Si tiene un plan marcado por la/el coach, cual plan es*/
 	trainerPlans: CoachPlansServices;
-	/** Si tiene un plan marcado por la/el nutricionista, cual plan es*/
+	trainings: Training[];
 	nutritionistPlans: NutritionistPlansServices;
-
-	/** Estado de la Dieta enviada por la/el nutriscionista*/
 	dietStatus: DietStatus;
-
-	/** Estado del Entrenamiento enviada por la/el Coach*/
 	trainingStatus: TrainingStatus;
-
-	/** Cuando se inicia el objetivo */
 	init_on: string;
-	/** Cuando finaliza el objetivo*/
 	end_on: string;
-
 	created_on: string;
 	updated_on: string;
 	isCompleted: boolean;
+	amountOfDays: string;
+	initial_weight: number;
+    initial_height: number;
+    current_weight: number;
+    target_weight: number;
+    initial_body_fat_percentage: number;
+    current_body_fat_percentage: number;
+    target_body_fat_percentage: number;
 }
 
 export enum GoalStatus {
@@ -59,4 +82,21 @@ export enum TypeGoals {
 	"LOSE_WEIGHT" = "LOSE WEIGHT",
 	"INCREASE_MASS_MUSCLE" = "INCREASE MASS MUSCLE",
 	"LOSE_WEIGHT_HEALTHY_HABITS" = "LOSE WEIGHT HEALTHY HABITS",
+}
+
+export interface GoalNewDTO {
+	description_goal: string;
+	percentage_body_fat: number;
+	healthy_focus_description: string | null;
+	type: TypeGoals | string | null;
+	nutritionist_plans: NutritionistPlansServices | null;
+	trainer_plans: CoachPlansServices | null | string;
+	amount_of_days: number;
+	initial_weight: number;
+	initial_height: number;
+	initial_body_fat_percentage: number;
+	current_weight: number;
+	target_weight: number;
+	current_body_fat_percentage: number;
+	target_body_fat_percentage: number;
 }

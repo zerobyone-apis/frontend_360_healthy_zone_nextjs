@@ -1,5 +1,5 @@
-export default async function Loading() {
-    return (
-        <div>Loading...</div>
-    )
+import LoadingPage from "@/app/ui/loading.page";
+
+export default function Loading() {
+	return <LoadingPage message={"Loading diets"} />;
 }

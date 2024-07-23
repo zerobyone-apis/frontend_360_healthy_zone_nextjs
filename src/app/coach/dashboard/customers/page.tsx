@@ -6,13 +6,25 @@ import Link from "next/link";
 
 export default function Page() {
 	const [stats, setStats] = useState<any>(null);
+	const [error, setError] = useState<boolean>(false);
 	useEffect(() => {
-		getDashboardStats().then(data => {
-			setStats(data);
-		});
+		getDashboardStats()
+			.then(data => {
+				setStats(data);
+			})
+			.catch(e => {
+				console.error(e);
+				setError(true);
+			});
 	}, []);
 
-	if (!stats) return null;
+	if (!stats || error)
+		return (
+			<div className="flex flex-col gap-2 justify-center items-center h-full">
+				<h3 className="text-lg">An error occurred while fetching data</h3>
+				<p className="text-sm text-gray-500">Please try again later.</p>
+			</div>
+		);
 	return (
 		<section>
 			<div className="gap-2 flex flex-col md:inline-flex md:flex-row justify-between w-full mb-5 p-5">

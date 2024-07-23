@@ -16,10 +16,10 @@ export async function deactivateTraining(id: string | number) {
             body: null,
             cache: "no-store",
         });
-        let body = await resp.json();
+        let body = await resp.text();
         console.log(resp.status);
         if(!resp.ok || resp.status !== 200) {
-            throw new Error(body.message || "Failed to deactivate training");
+            throw new Error(body || "Failed to deactivate training");
         }
 
         return true;

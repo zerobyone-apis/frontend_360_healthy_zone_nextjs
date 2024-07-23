@@ -4,9 +4,14 @@ import React from "react";
 type Props = {
 	training: any;
 	assignment: any;
+	showActions?: boolean;
 };
 
-export default function CustomerTrainingCard({ training, assignment }: Props) {
+export default function CustomerTrainingCard({
+	training,
+	assignment,
+	showActions = true,
+}: Props) {
 	const completedDailyTraining = training.daily_training_days.filter(
 		(daily: any) => daily.is_day_completed
 	).length;
@@ -28,12 +33,16 @@ export default function CustomerTrainingCard({ training, assignment }: Props) {
 						.replace(/\b\w/g, (l: any) => l.toUpperCase())}
 				</h3>
 				{training.isCompleted ? (
-					<span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">
+					<span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full flex items-center">
 						Completed
 					</span>
-				) : (
-					<span className="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">
+				) : training.isActive ? (
+					<span className="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full flex items-center">
 						{training.init_on ? "In progress" : "Not started"}
+					</span>
+				) : (
+					<span className="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full flex items-center">
+						Deactivated
 					</span>
 				)}
 			</div>
@@ -112,32 +121,26 @@ export default function CustomerTrainingCard({ training, assignment }: Props) {
 					  })
 					: "Pending yet"}
 			</p>
-			<div className="inline-flex rounded-md justify-end w-full" role="group">
-				<Link
-					href={`/coach/dashboard/trainings?details=true&training_id=${training.training_id}`}
-					type="button"
-					className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
-				>
-					<i className="bx bx-detail"></i>
-					Details
-				</Link>
-				<Link
-					href={`/coach/dashboard/trainings?progress=true&training_id=${training.training_id}`}
-					type="button"
-					className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
-				>
-					<i className="bx bx-trending-up mr-1"></i>
-					Progress
-				</Link>
-				<Link
-					href={`/coach/dashboard/trainings?confirm-delete=true&training_id=${training.training_id}`}
-					type="button"
-					className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
-				>
-					<i className="bx bx-x mr-1"></i>
-					Deactivate
-				</Link>
-			</div>
+			{showActions && (
+				<div className="inline-flex rounded-md justify-end w-full" role="group">
+					<Link
+						href={`?details=true&training_id=${training.training_id}`}
+						type="button"
+						className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+					>
+						<i className="bx bx-detail"></i>
+						Details
+					</Link>
+					<Link
+						href={`?confirm-delete=true&training_id=${training.training_id}`}
+						type="button"
+						className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+					>
+						<i className="bx bx-x mr-1"></i>
+						Deactivate
+					</Link>
+				</div>
+			)}
 		</div>
 	);
 }
