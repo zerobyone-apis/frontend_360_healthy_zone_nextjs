@@ -20,6 +20,20 @@ export default function Page() {
 	const router = useRouter();
 
 	async function handleSignupForm() {
+		if (
+			!userdata.user ||
+			!userdata.password ||
+			!userdata.repass ||
+			!userdata.first_name ||
+			!userdata.last_name ||
+			!userdata.phone
+		) {
+			return toast.error("Please fill all the fields");
+		}
+
+		if (userdata.password !== userdata.repass) {
+			return toast.error("Passwords do not match");
+		}
 		try {
 			const resp = await registration(userdata);
 			if (resp) {
@@ -97,7 +111,7 @@ export default function Page() {
 										setUserData({ ...userdata, phone: e.target.value })
 									}
 									className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-									placeholder="Doe"
+									placeholder="(+1) 555-555-5555"
 									required
 								/>
 							</div>
@@ -181,7 +195,7 @@ export default function Page() {
 								onClick={handleSignupForm}
 								className="col-span-2 w-full text-white bg-jungle-green-600 hover:bg-jungle-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
 							>
-								Sign in
+								Sign up
 							</button>
 							<p className="text-sm font-light text-gray-500 ">
 								Have an account already?{" "}
@@ -189,7 +203,7 @@ export default function Page() {
 									href={"/login"}
 									className="font-medium text-jungle-green-600 hover:underline"
 								>
-									Sign in
+									Sign up
 								</Link>
 							</p>
 						</form>

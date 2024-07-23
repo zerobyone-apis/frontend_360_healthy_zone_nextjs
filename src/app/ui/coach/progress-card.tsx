@@ -39,7 +39,7 @@ export default function ProgressCard({ progress }: Props) {
 		}
 	}
 	return (
-		<div className="w-full shadow bg-white p-2 rounded">
+		<div className="w-full shadow bg-white p-5 rounded">
 			<div className="inline-flex justify-between w-full">
 				<div className="-space-x-2 rtl:space-x-reverse inline-flex">
 					{photosFormatted}

@@ -6,9 +6,36 @@ import { SummaryCoach } from "@/interfaces/summary_coach";
 import Link from "next/link";
 
 export default async function Page() {
-	const stats: SummaryCoach = await getDashboardStats();
+	let stats: SummaryCoach;
+	try {
+		stats = await getDashboardStats();
+	} catch (e) {
+		console.error(e);
+		return (
+			<div className="flex flex-col gap-2 justify-center items-center h-full">
+				<h3 className="text-lg">An error occurred while fetching data</h3>
+				<p className="text-sm text-gray-500">Please try again later.</p>
+			</div>
+		);
+	}
 
-	if (!stats) return null;
+	if (!stats) {
+		return (
+			<div className="flex flex-col gap-2 justify-center items-center h-full">
+				<h3 className="text-lg">It&apos;s time to assign some goals 💪</h3>
+				<p className="text-sm text-gray-500">
+					Assign a goal to a customer and view it here.
+				</p>
+				<Link
+					href="?new-training=true"
+					type="button"
+					className="px-4 py-3 text-sm font-bold text-center hover:text-white border text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+				>
+					Assign New Goal
+				</Link>
+			</div>
+		);
+	}
 	return (
 		<>
 			<section>

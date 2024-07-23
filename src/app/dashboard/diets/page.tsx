@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import { User } from "@/interfaces/user";
 import { DietResponseDTO } from "@/interfaces/diets";
 import DietCounterChart from "@/app/ui/dashboard/counter-chart";
+import Image from "next/image";
 
 export default function Page() {
 	const [diets, setDiets] = useState<any[]>([]);
@@ -28,6 +29,18 @@ export default function Page() {
 
 	return (
 		<div className="grid grid-cols-4 gap-2">
+			<div className="col-span-4 max-h-40">
+				<div className="absolute w-full flex justify-center items-center h-40">
+					<h3 className="text-3xl font-bold text-white">DIETS</h3>
+				</div>
+				<Image
+					src={"/imgs/brooke-lark-jUPOXXRNdcA-unsplash.webp"}
+					height={3648}
+					width={5472}
+					alt="Athletic man with a woman coach training"
+					className="h-full object-cover rounded-xl"
+				></Image>
+			</div>
 			<div className="col-span-4 md:col-span-1 grid grid-cols-2 max-h-[100px] gap-1 md:gap-2">
 				<DietCounterChart
 					cols="col-span-1 md:col-span-2"
@@ -47,8 +60,8 @@ export default function Page() {
 			</div>
 			<div className="flex flex-col gap-3 col-span-4 md:col-span-3 md:max-h-full md:overflow">
 				{diets.length > 0 &&
-					diets.map((diet: DietResponseDTO) => (
-						<DietResumeCard key={diet.diet_id} diet={diet} />
+					diets.map((diet: DietResponseDTO, index: number) => (
+						<DietResumeCard key={diet.diet_id} diet={diet} index={index} />
 					))}
 			</div>
 		</div>

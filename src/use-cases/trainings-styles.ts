@@ -1,7 +1,7 @@
 export const TrainingResumeCardStyles = {
 	COMPLETED: {
-		card: "border-jungle-green-400 bg-jungle-green-100",
-		label: "border-b-4 border-jungle-green-500",
+		card: "border-jungle-green-400 bg-white",
+		label: "border-b-4 border-jungle-green-500 hover:bg-jungle-green-500 hover:text-white transition",
 		labelText: "text-green",
 	},
 	CREATED: {
@@ -20,7 +20,7 @@ export const TrainingResumeCardStyles = {
 		labelText: "",
 	},
 	"NOT APPLY": {
-		card: "border-red-360-400 bg-red-360-200",
+		card: "border-red-360-400 bg-gray-50",
 		label: "border-b-4 border-red-360-500",
 		labelText: "",
 	},
@@ -31,7 +31,7 @@ export const TrainingResumeCardStyles = {
 	},
 	IsNotActive: "bg-slate-300",
 	CANCELED: {
-		card: "border-red-360-400 bg-red-360-100",
+		card: "border-red-360-400 bg-gray-50",
 		label: "border-b-4 border-red-500",
 		labelText: "text-red-500",
 	},

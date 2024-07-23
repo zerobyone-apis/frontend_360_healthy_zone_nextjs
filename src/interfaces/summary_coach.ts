@@ -78,12 +78,18 @@ interface Goal {
     updated_on: string;
     isCompleted: boolean;
 }
-
-export interface SummaryCoach {
+type Custom = {
+    custom:{
+    customers: string;
+    customers_limit: string;
+    customers_percent: number;
+    }
+}
+export interface SummaryCoach extends Custom  {
     total_completed_assignments: number;
     total_in_progress_assignments: number;
     total_ready_to_start_assignments: number;
     remaining_clients: string;
     full_assignments: FullAssignment[];
     goals_created: Goal[];
-}
+} 
