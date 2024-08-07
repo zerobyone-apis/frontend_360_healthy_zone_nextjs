@@ -6,7 +6,6 @@ export function middleware(request: NextRequest) {
 	const currentToken = request.cookies.get("token")?.value
 		? parseJwt(request.cookies.get("token")?.value || "")
 		: "";
-	console.log("current token:", currentToken);
 	const Roles: any = {
 		COACH: "/coach/dashboard",
 		CLIENT: "/dashboard",
