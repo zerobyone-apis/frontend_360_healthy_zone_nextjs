@@ -1,4 +1,5 @@
 import { GoalResponseDTO } from "./goals";
+import { ProgressResponseDTO } from "./progress";
 
 export interface SummaryAdmin {
     amount_of_active_users: number;
@@ -36,7 +37,7 @@ export interface UserMetrics {
 
 export interface AdminActionsSummary {
     "to_approval_notifications": any[],
-    "to_approvals_client_progresses": any[],
+    "to_approvals_client_progresses": ProgressResponseDTO[],
     "to_assign_clients_to_professionals": Customer[]
 }
 

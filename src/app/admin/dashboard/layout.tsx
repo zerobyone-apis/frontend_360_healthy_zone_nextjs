@@ -10,32 +10,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 		{
 			icon: "bx bxs-dashboard text-2xl",
 			title: "Dashboard",
-			redirect: "/coach/dashboard",
+			redirect: "/admin/dashboard",
 		},
 		{
-			icon: "bx bxs-user-detail text-xl",
-			title: "My Customers",
-			redirect: "/coach/dashboard/customers",
+			icon: "bx bx-spreadsheet text-xl",
+			title: "Pending actions",
+			redirect: "/admin/dashboard/pending-actions",
 		},
 		{
-			icon: "bx bx-run text-xl",
-			title: "Trainings",
-			redirect: "/coach/dashboard/trainings",
+			icon: "bx bxs-group text-xl",
+			title: "Users List",
+			redirect: "/admin/dashboard/users-list",
 		},
-		{
-			icon: "bx bxs-flag-checkered text-xl",
-			title: "Goals",
-			redirect: "/coach/dashboard/goals",
-		},
-		// {
-		//     icon: 'bx bxs-message-rounded-dots text-xl',
-		//     title: "Chats",
-		//     redirect: "/coach/dashboard/chat"
-		// },
 		{
 			icon: "bx bxs-cog text-xl",
 			title: "Settings",
-			redirect: "/coach/dashboard/settings",
+			redirect: "/admin/dashboard/settings",
 		},
 	];
 

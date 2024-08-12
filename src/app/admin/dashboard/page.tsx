@@ -61,14 +61,17 @@ export default async function Page() {
 				<AmountCardRedirect
 					title="Notifications to approve"
 					content={actions.to_approval_notifications.length}
+					redirectTo="/admin/dashboard/pending-actions?tab=notifications"
 				/>
 				<AmountCardRedirect
 					title="Client progress to approve"
 					content={actions.to_approvals_client_progresses.length}
+					redirectTo="/admin/dashboard/pending-actions?tab=progress"
 				/>
 				<AmountCardRedirect
 					title="Clients to assign"
 					content={actions.to_assign_clients_to_professionals.length}
+					redirectTo="/admin/dashboard/pending-actions?tab=clients"
 				/>
 			</div>
 		</section>
