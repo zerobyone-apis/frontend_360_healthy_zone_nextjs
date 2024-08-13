@@ -6,10 +6,10 @@ export function middleware(request: NextRequest) {
 	const currentToken = request.cookies.get("token")?.value
 		? parseJwt(request.cookies.get("token")?.value || "")
 		: "";
-
 	const Roles: any = {
 		COACH: "/coach/dashboard",
 		CLIENT: "/dashboard",
+		ADMIN: "/admin/dashboard",
 		NUTRITIONIST: "/nutritionist/dashboard",
 	};
 
@@ -18,11 +18,12 @@ export function middleware(request: NextRequest) {
 	//Si es una persona intentando acceder al dashboard y no tiene token, lo enviamos al login de regreso.
 	if (
 		!currentToken &&
-		(request.nextUrl.pathname.startsWith("/dashboard") ||
+		(request.nextUrl.pathname.startsWith(Roles.CLIENT) ||
 			request.nextUrl.pathname.startsWith(
-				"/coach/dashboard" ||
-					request.nextUrl.pathname.startsWith("/nutritionist/dashboard")
-			))
+				Roles.COACH) ||
+					request.nextUrl.pathname.startsWith(Roles.NUTRITIONIST) ||
+					request.nextUrl.pathname.startsWith(Roles.ADMIN)
+			)
 	) {
 		return NextResponse.redirect(new URL("/login", request.url));
 	}
@@ -49,5 +50,6 @@ export const config = {
 		"/login/:path*",
 		"/coach/dashboard/:path*",
 		"/nutritionist/dashboard/:path*",
+		"/admin/dashboard/:path*",
 	],
 };

@@ -14,11 +14,9 @@ export type State = {
 
 export async function saveBasicInfo(_prevState: State, info: FormData) {
 	const cookieStore = cookies();
-	// const tokenValue = Crypto.decrypt(cookieStore.get("token")?.value || "");
 	const tokenValue = cookieStore.get("token")?.value || "";
 	const token = tokenValue;
 	const user = JSON.parse(
-		// Crypto.decrypt(cookieStore.get("user")?.value || "") || "{}"
 		cookieStore.get("user")?.value || "{}"
 	);
 
