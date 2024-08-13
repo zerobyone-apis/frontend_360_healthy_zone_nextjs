@@ -33,6 +33,6 @@ export async function getAllProfiles(): Promise<ProfileDto[]> {
 
         return body;
     } catch (error) {
-        return false;
+        throw new Error("Error getting profiles info")
     }
 }
