@@ -23,14 +23,9 @@ export function Hero() {
 						Unlock Your Path to Wellness
 					</h1>
 					<p className="text-android-green-50 text-xl font-light">
-						Connect with Expert Nutritionists and Trainers through Our Web
-						Application for a Healthier, Balanced Life.
+						This website is working in progress. Please come back on Agust 2024.
 					</p>
-					<Link href="/signup">
-						<Button className="bg-jungle-green-500 rounded uppercase text-white">
-							Registration here
-						</Button>
-					</Link>
+					{/* <Button className="bg-jungle-green-500 rounded uppercase text-white">Registration here</Button> */}
 				</div>
 			</div>
 		</section>
