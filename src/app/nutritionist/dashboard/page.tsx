@@ -48,7 +48,14 @@ export default async function Page() {
 		labels: ["Completed", "In progress", "Ready to start"],
 	};
 
-	if (!stats) return null;
+	if (!stats.full_assignments.length) {
+		return (
+			<div className="flex flex-col gap-2 justify-center items-center h-full">
+				<h3 className="text-lg">Wait until the admin assign a client to you</h3>
+				<p className="text-sm text-gray-500">Check this site again in a few days 💪</p>
+			</div>
+		)
+	}
 	return (
 		<div className="h-full grid grid-cols-3 gap-2">
 			<div className="col-span-3">
