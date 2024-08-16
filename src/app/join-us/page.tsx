@@ -18,15 +18,15 @@ export default function Page() {
         console.log("user data=> ", userdata)
         let resp = await professionalRegistration(userdata);
         console.log(resp);
-        if (resp.username) router.push("/registration-success");
+        if (resp.username) router.push("/success-registration");
         else toast.error("There was an internal error")
     }
 
     return (
-        <section className="bg-jungle-green-200 h-full ">
-            <Link href="/" className="hidden md:flex items-center mt-2 mb-6 text-2xl font-semibold text-gray-900 ">
+        <section className="bg-gray-50 h-full ">
+            < Link href="/" className="hidden md:flex items-center mt-2 mb-6 text-2xl font-semibold text-gray-900 " >
                 <Logo className="text-[4rem]" width="none"></Logo>
-            </Link>
+            </Link >
 
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
                 <div className="w-full sm:h-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
@@ -98,6 +98,6 @@ export default function Page() {
                 </div>
             </div>
             <ToastContainer />
-        </section>
+        </section >
     )
 }
