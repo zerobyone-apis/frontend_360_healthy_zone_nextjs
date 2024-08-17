@@ -1,4 +1,5 @@
 "use client"
+import { assignClientToProfessional } from "@/actions/admin/assign-professional";
 import { getAdminActionsSummary } from "@/actions/admin/dashboard/get-actions-summary";
 import { getCoachesList } from "@/actions/admin/get-coaches-list";
 import { getNutritionistsList } from "@/actions/admin/get-nutritionists-list";
@@ -7,6 +8,7 @@ import { CoachDto } from "@/interfaces/coach.dto";
 import { NutritionistDto } from "@/interfaces/nutritionist.dto";
 import { AdminActionsSummary } from "@/interfaces/summary_admin";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Page() {
     const [actions, setActions] = useState<AdminActionsSummary>();
@@ -129,8 +131,35 @@ function AssignModal({ client, handleClose }: { client?: any, handleClose: () =>
     }, []);
 
 
-    const handleSelect = (professional_id: string | number) => {
-        console.log(professional_id);
+    const handleSelect = async (professional_id: string | number) => {
+        let obj: { coach_id: string | number | null, nutritionist_id: string | number | null } = {
+            coach_id: null,
+            nutritionist_id: null,
+        }
+
+        if (role === "coaches") {
+            obj.coach_id = professional_id;
+        } else {
+            obj.nutritionist_id = professional_id;
+        }
+        try {
+            await assignClientToProfessional({
+                client_id: client.id,
+                ...obj
+            });
+
+            toast.success("The client has been assigned to the professional");
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+
+            handleClose();
+        } catch (e) {
+            handleClose();
+            toast.error("Error assigning this client, please try later")
+        }
+
+
     }
 
     if (error) {
