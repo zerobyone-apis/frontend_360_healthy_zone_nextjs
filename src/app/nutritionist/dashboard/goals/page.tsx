@@ -58,9 +58,9 @@ export default async function Page() {
 				</div>
 
 				<div className="grid grid-cols-1 gap-4">
-					{stats.goals_created.map(goal => {
+					{stats.goals_created.map((goal: any) => {
 						const assignment = stats.full_assignments.find(
-							assignament => Number(assignament.client.id) == goal.client_id
+							(assignament: any) => Number(assignament.client.id) == goal.client_id
 						);
 						return (
 							<CustomerGoalCard
