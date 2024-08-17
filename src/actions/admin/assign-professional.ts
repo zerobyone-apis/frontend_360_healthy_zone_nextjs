@@ -50,7 +50,7 @@ export async function assignClientToProfessional({
 			}
 		);
 		let body = await resp.json();
-		if (resp.status !== 200) {
+		if (resp.status !== 200 && resp.status !== 201) {
 			throw new Error(body.message);
 		}
 
