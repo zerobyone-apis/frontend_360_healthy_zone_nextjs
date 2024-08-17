@@ -40,7 +40,7 @@ export async function assignClientToProfessional({
 		const resp = await fetch(
 			process.env.BASE_PATH + "/v1.0/assignments/create",
 			{
-				method: "GET",
+				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: token,
