@@ -22,10 +22,10 @@ export async function getDashboardStats(): Promise<any> {
 		);
 		let body = await resp.json();
 		body.custom = {
-			customers: body.remaining_clients.split("/")[0].slice(),
+			customers: body.full_assignments.length,
 			customers_limit: body.remaining_clients.split("/")[1].slice(),
 			customers_percent:
-				(Number(body.remaining_clients.split("/")[0].slice()) * 100) /
+				(Number(body.full_assignments.length) * 100) /
 				Number(body.remaining_clients.split("/")[1].slice()),
 		};
 
