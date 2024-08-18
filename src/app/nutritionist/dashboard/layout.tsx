@@ -36,7 +36,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 	return (
 		<>
-			<main className="h-screen grid grid-cols-12 bg-jungle-green-50">
+			<main className="h-screen grid grid-cols-12 bg-white">
 				<div className="col-span-2 md:flex md:justify-start  hidden h-full items-center">
 					<Sidebar list={navbarList} />
 				</div>
