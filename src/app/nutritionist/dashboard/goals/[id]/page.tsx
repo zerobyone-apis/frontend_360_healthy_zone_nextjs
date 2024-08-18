@@ -7,11 +7,10 @@ import { toast } from "react-toastify";
 import { getProgressByClientID } from "@/actions/goals/get-progress";
 import { ProgressResponseDTO } from "@/interfaces/progress";
 import Link from "next/link";
-import CustomerTrainingCard from "@/app/ui/coach/customer-training-card";
 import ConfirmationDialog from "@/app/ui/confirmation-dialog";
-import TrainingDetailsDialog from "@/app/ui/coach/training-details.dialog";
 import { deactivateTraining } from "@/actions/trainings/deactivate-training";
 import ProgressCard from "@/app/ui/coach/progress-card";
+import DietResumeCard from "@/app/ui/dashboard/diets/diet-resume-card";
 
 export default function Page() {
 	const router = useRouter();
@@ -30,7 +29,7 @@ export default function Page() {
 				return router.back();
 			}
 			//sort trainings by created date
-			goalResponse.trainings.sort((a, b) => {
+			goalResponse.diets.sort((a, b) => {
 				return (
 					new Date(a.created_on).getTime() - new Date(b.created_on).getTime()
 				);
@@ -65,14 +64,14 @@ export default function Page() {
 
 	const showTrainingDetails = searchParams.get("details");
 	const confirmDelete = searchParams.get("confirm-delete");
-	const trainingId = searchParams.get("training_id");
+	const dietID = searchParams.get("diet_id");
 	const trainingSelected =
-		goal?.trainings.find(train => train.training_id == trainingId) || null;
-	const confirmDeactivateTraining = async () => {
+		goal?.trainings.find(train => train.training_id == dietID) || null;
+	const confirmDeactivateDiet = async () => {
 		// Deactivate training
-		if (!trainingId) return;
+		if (!dietID) return;
 		try {
-			await deactivateTraining(trainingId);
+			await deactivateTraining(dietID);
 			toast.success("Training deactivated successfully");
 		} catch (e) {
 			console.error(e);
@@ -287,18 +286,13 @@ export default function Page() {
 			</div>
 			<div className="gap-5 flex-col flex m-5">
 				<h2 className="text-lg font-semibold text-jungle-green-700">
-					Trainings
+					Diets
 				</h2>
 
-				{goal.trainings.length ? (
-					goal.trainings.map((training: any) => {
+				{goal.diets.length ? (
+					goal.diets.map((diet: any, index) => {
 						return (
-							<CustomerTrainingCard
-								key={training.training_id}
-								training={training}
-								assignment={goal.client}
-								showActions={true}
-							/>
+							<DietResumeCard key={diet.diet_id} diet={diet} index={index} />
 						);
 					})
 				) : (
@@ -320,25 +314,17 @@ export default function Page() {
 				)}
 			</div>
 
-			{confirmDelete && trainingId && (
+			{confirmDelete && dietID && (
 				<ConfirmationDialog
 					canClose={true}
-					confirmAction={confirmDeactivateTraining}
+					confirmAction={confirmDeactivateDiet}
 					cancelAction={() => {
-						router.push("/coach/dashboard/goals/" + goal.id, { replace: true });
+						router.push("/nutritionist/dashboard/goals/" + goal.id, { replace: true });
 					}}
 					handleClose={() => {
-						router.push("/coach/dashboard/goals/" + goal.id, { replace: true });
+						router.push("/nutritionist/dashboard/goals/" + goal.id, { replace: true });
 					}}
 					title={"Are you sure you want to deactivate this training?"}
-				/>
-			)}
-			{showTrainingDetails && trainingSelected && (
-				<TrainingDetailsDialog
-					training={trainingSelected}
-					handleCloseOuter={() => {
-						router.push("/coach/dashboard/goals/" + goal.id, { replace: true });
-					}}
 				/>
 			)}
 		</section>
