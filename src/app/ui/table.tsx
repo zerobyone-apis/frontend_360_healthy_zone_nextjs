@@ -22,7 +22,7 @@ type Props = {
 export default function Table({ header, values, searchbox }: Props) {
     const router = useRouter();
     return (
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-white h-full">
             {searchbox && <div className="pb-4 bg-white dark:bg-gray-900">
                 <label className="sr-only">Search</label>
                 <div className="relative mt-1">
