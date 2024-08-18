@@ -58,7 +58,7 @@ export default async function Page() {
 	}
 	return (
 		<div className="h-full grid grid-cols-3 gap-2">
-			<div className="col-span-3">
+			<div className="col-span-3 h-full">
 				{tableValues.length && (
 					<Table
 						header={["Name", "Country", "Trainings", "Status"]}
@@ -82,7 +82,7 @@ export default async function Page() {
 				<PieChart
 					stats={pieChartValue}
 					title="Assignaments"
-					redirect="/coach/dashboard/customers"
+					redirect="/nutritionist/dashboard/customers"
 				/>
 			</div>
 		</div>
