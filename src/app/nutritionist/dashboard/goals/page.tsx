@@ -1,6 +1,6 @@
 "use server";
 import { getDashboardStats } from "@/actions/nutritionist/dashboard";
-import DialogsWrapper from "@/app/ui/coach/coach-goals-dialogs-wrapper";
+import DialogsWrapper from "@/app/ui/nutritionist/nutritionist-goals-dialogs-wrapper";
 import CustomerGoalCard from "@/app/ui/coach/customer-goal-card";
 import Link from "next/link";
 
