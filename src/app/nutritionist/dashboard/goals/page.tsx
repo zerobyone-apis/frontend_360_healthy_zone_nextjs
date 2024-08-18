@@ -67,6 +67,7 @@ export default async function Page() {
 								key={goal.id}
 								assignment={assignment}
 								goal={goal}
+								redirectTo={"/nutritionist/dashboard/goals"}
 							/>
 						);
 					})}
