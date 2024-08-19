@@ -1,31 +1,19 @@
 "use server";
 import { getDashboardStats } from "@/actions/nutritionist/dashboard";
-import PieChart from "@/app/ui/pie-chart";
-import Table from "@/app/ui/table";
-import ProgressCard from "../../ui/dashboard/progress-card";
-
-function convertToCustomerTableValues(customers: any) {
-	return customers.map((customer: any) => {
-		const client_status = customer.client.client_status
-			? customer.client.client_status.replaceAll("_", " ")
-			: "";
-		return {
-			items: [
-				customer.client.edited_name,
-				customer.client.country,
-				customer.client.training.length,
-				client_status,
-				"Details",
-			],
-			redirectTo: "/nutritionist/dashboard/customers?id=" + customer.id,
-		};
-	});
-}
+import UserMiniList from "@/app/ui/user-mini-list";
+import AmountCard from "@/app/ui/admin/amount-card";
 
 export default async function Page() {
 	let stats;
+	let totalGoals = 0;
+	let totalDiets = 0;
 	try {
 		stats = await getDashboardStats();
+		console.log(stats);
+		totalGoals = stats.goals_created.length;
+		stats.goals_created.forEach((goal: any) => {
+			totalDiets += goal.diets.length;
+		})
 	} catch (e) {
 		console.error(e);
 		return (
@@ -35,18 +23,6 @@ export default async function Page() {
 			</div>
 		);
 	}
-	let tableValues = [];
-	if (stats.full_assignments)
-		tableValues = convertToCustomerTableValues(stats.full_assignments);
-	const pieChartValue = {
-		series: [
-			stats.total_completed_assignments,
-			stats.total_in_progress_assignments,
-			stats.total_ready_to_start_assignments,
-		],
-		colors: ["#a0b43b", "#16BDCA", "#9061F9"],
-		labels: ["Completed", "In progress", "Ready to start"],
-	};
 
 	if (!stats.full_assignments.length) {
 		return (
@@ -54,36 +30,21 @@ export default async function Page() {
 				<h3 className="text-lg">Wait until the admin assign a client to you</h3>
 				<p className="text-sm text-gray-500">Check this site again in a few days 💪</p>
 			</div>
-		)
+		);
 	}
 	return (
-		<div className="h-full grid grid-cols-3 gap-2">
-			<div className="col-span-3 h-full">
-				{tableValues.length && (
-					<Table
-						header={["Name", "Country", "Trainings", "Status"]}
-						searchbox={false}
-						values={tableValues}
-					/>
-				)}
+		<div className="grid grid-cols-3 gap-4">
+			<div className="md:col-span-1 col-span-full gap-2 flex flex-col">
+				<AmountCard title={"Customers"} content={`${stats.full_assignments.length} / ${stats.custom.customers_limit}`} />
 			</div>
-			<div className="md:col-span-1 col-span-3">
-				<ProgressCard
-					bcolor="bg-android-green-500"
-					tcolor="text-android-green-500"
-					target={stats.custom.customers_limit}
-					percent={stats.custom.customers_percent}
-					currentProgress={stats.custom.customers}
-					title="Customers"
-					icon="bx bxs-user-detail"
-				/>
+			<div className="md:col-span-1 col-span-full gap-2 flex flex-col">
+				<AmountCard title={"Goals"} content={totalGoals} />
 			</div>
-			<div className="md:col-span-2 col-span-3">
-				<PieChart
-					stats={pieChartValue}
-					title="Assignaments"
-					redirect="/nutritionist/dashboard/customers"
-				/>
+			<div className="md:col-span-1 col-span-full gap-2 flex flex-col">
+				<AmountCard title={"Diets"} content={totalDiets} />
+			</div>
+			<div className="col-span-full">
+				<UserMiniList users={stats.full_assignments} redirect="/nutritionist/dashboard/customers" />
 			</div>
 		</div>
 	);
