@@ -3,8 +3,11 @@
 import { UserMetrics } from "@/interfaces/summary_admin";
 import { cookies } from "next/headers";
 
-type Params = {init_date: string, end_date: string}
-export async function getUserMetricsByDate ({init_date, end_date}: Params): Promise<UserMetrics[]> {
+type Params = { init_date: string; end_date: string };
+export async function getUserMetricsByDate({
+	init_date,
+	end_date,
+}: Params): Promise<UserMetrics[]> {
 	const cookieStore = cookies();
 
 	//getting the token from the cookie
@@ -22,9 +25,9 @@ export async function getUserMetricsByDate ({init_date, end_date}: Params): Prom
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: token,
-					"admin_id": user.admin.id,
-                    init_date,
-                    end_date
+					admin_id: user.admin.id,
+					init_date,
+					end_date,
 				},
 				body: /* body here if required */ null,
 				cache: "no-store",

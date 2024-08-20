@@ -14,10 +14,13 @@ export default function Page() {
     const [actions, setActions] = useState<AdminActionsSummary>();
     const [showAssignModal, setShowAssignModal] = useState(false);
     const [selectedClient, setSelectedClient] = useState<any>();
+    const [error, setError] = useState<boolean>(false);
 
     useEffect(() => {
         getAdminActionsSummary().then((data) => {
             setActions(data);
+        }).catch((e) => {
+            setError(true);
         });
     }, []);
 
@@ -87,6 +90,12 @@ export default function Page() {
         setSelectedClient(null);
     }
 
+    if (error) {
+        return (<div className="flex flex-col gap-2 justify-center items-center h-full">
+            <h3 className="text-lg">An error occurred while fetching data</h3>
+            <p className="text-sm text-gray-500">Please try again later.</p>
+        </div>)
+    }
     return (
         <div className="flex flex-col gap-3">
             {dataClients?.length ? <DataTable title={"Clients to assign: " + dataClients.length} headings={headingsClients} data={dataClients} actionTitle="Assign" actionFunction={assignClient}></DataTable> :
