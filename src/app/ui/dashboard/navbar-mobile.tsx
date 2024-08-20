@@ -30,7 +30,7 @@ function ListItem({ icon, title, redirect = "" }: ListItemInterface): any {
 			<Link key={redirect} href={redirect}>
 				<li
 					className={clsx(
-						"w-full flex gap-2 p-2 align center content-start text-center hover:text-black active:text-jungle-green-500 hover:bg-white active:bg-white rounded-full transition-colors justify-center",
+						"w-full flex gap-2 p-2 align-center content-start text-center hover:text-black active:text-jungle-green-500 hover:bg-white active:bg-white rounded-full transition-colors justify-center",
 						pathname == redirect
 							? "bg-white text-jungle-green-500"
 							: "text-white"

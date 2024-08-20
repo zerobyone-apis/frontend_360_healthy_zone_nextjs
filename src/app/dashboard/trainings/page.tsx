@@ -56,10 +56,11 @@ export default async function Page() {
 			</div>
 			<div className="flex flex-col gap-3 col-span-4 md:col-span-3 md:max-h-full md:overflow">
 				{trainings.length > 0 &&
-					trainings.map((training: any) => (
+					trainings.map((training: any, index: number) => (
 						<TrainingResumeCard
 							key={training.training_id}
 							training={training}
+							index={index}
 						/>
 					))}
 			</div>

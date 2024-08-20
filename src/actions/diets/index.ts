@@ -11,7 +11,7 @@ export async function getDietById(dietID: number) {
 	// funcion hardcoded
 	let diet: DietResponseDTO | null = await new Promise((resolve, _reject) => {
 		setTimeout(() => {
-			let dietResponse: DietResponseDTO | null =
+			let dietResponse: any =
 				mockup.find(data => data.diet_id === dietID) || null;
 			return resolve(dietResponse);
 		}, 2000);

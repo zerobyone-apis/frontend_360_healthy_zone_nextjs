@@ -31,15 +31,15 @@ export const login = async ({ email, password }: login) => {
 		// adding cookies...
 		const sevenDays = 168 * 60 * 60 * 1000;
 		const cookieStore = cookies();
-		
-		if(body.user.roles === "COACH") {
+
+		if (body.user.roles === "COACH") {
 			delete body.coach.clients;
 			delete body.coach.trainings;
 			delete body.nutritionist;
 			delete body.client;
 			delete body.admin;
-		};
-		if(body.user.roles === "NUTRITIONIST") {
+		}
+		if (body.user.roles === "NUTRITIONIST") {
 			delete body.nutritionist.clients;
 			delete body.nutritionist.diets;
 			delete body.coach;
@@ -47,7 +47,7 @@ export const login = async ({ email, password }: login) => {
 			delete body.admin;
 		}
 
-		if(body.user.roles === "CLIENT") {
+		if (body.user.roles === "CLIENT") {
 			delete body.nutritionist;
 			delete body.coach;
 			delete body.admin;
@@ -57,12 +57,16 @@ export const login = async ({ email, password }: login) => {
 			delete body.client.diets;
 			delete body.client.goalClients;
 		}
+		if (body.user.roles === "ADMIN") {
+			delete body.admin.assignments;
+		}
 
+		delete body.user.notifications;
 
 		cookieStore.set("user", JSON.stringify(body), {
 			expires: Date.now() + sevenDays,
 		});
-		
+
 		console.log("login body:", body);
 		cookieStore.set("token", token, { expires: Date.now() + sevenDays });
 

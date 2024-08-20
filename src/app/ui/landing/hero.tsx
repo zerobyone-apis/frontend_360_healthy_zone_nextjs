@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "../button";
 import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 

@@ -14,20 +14,26 @@ type Props = {};
 
 export default function Page({}: Props) {
 	const [stats, setStats] = useState<any>(null);
+	const [error, setError] = useState<boolean>(false);
 	const [trainings, setTrainings] = useState<any>([]);
 	const searchParams = useSearchParams();
 	const router = useRouter();
 
 	useEffect(() => {
-		getDashboardStats().then((data: any) => {
-			setStats((prev: any) => ({ ...prev, ...data }));
-			data.goals_created.forEach((goal: any) => {
-				const complete_training_list = goal.trainings.map((training: any) => {
-					return { ...training, client_info: { ...goal.client } };
+		getDashboardStats()
+			.then((data: any) => {
+				setStats((prev: any) => ({ ...prev, ...data }));
+				data.goals_created.forEach((goal: any) => {
+					const complete_training_list = goal.trainings.map((training: any) => {
+						return { ...training, client_info: { ...goal.client } };
+					});
+					setTrainings([...trainings, ...complete_training_list]);
 				});
-				setTrainings([...trainings, ...complete_training_list]);
+			})
+			.catch(e => {
+				console.error(e);
+				setError(true);
 			});
-		});
 	}, []);
 
 	const isNewTraining = searchParams.get("new-training");
@@ -48,9 +54,18 @@ export default function Page({}: Props) {
 		}
 
 		router.push("/coach/dashboard/trainings", { replace: true });
+		setTimeout(() => {
+			window.location.reload();
+		}, 100);
 	};
 
-	if (!full_assignments.length) return null;
+	if (!full_assignments.length || error)
+		return (
+			<div className="flex flex-col gap-2 justify-center items-center h-full">
+				<h3 className="text-lg">An error occurred while fetching data</h3>
+				<p className="text-sm text-gray-500">Please try again later.</p>
+			</div>
+		);
 	return (
 		<section>
 			<div className="gap-2 flex flex-col md:inline-flex md:flex-row justify-between w-full mb-5 p-5">

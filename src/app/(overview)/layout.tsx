@@ -4,7 +4,7 @@ import { Footer } from "../ui/landing/footer";
 export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<>
-			{/* <Navbar></Navbar> */}
+			<Navbar></Navbar>
 			{children}
 			<Footer></Footer>
 		</>

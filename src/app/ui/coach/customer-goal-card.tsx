@@ -1,12 +1,20 @@
+import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
 
 type Props = {
 	goal: any;
 	assignment: any;
+	redirectTo?: string;
+	showDeactivate?: boolean;
 };
 
-export default function CustomerGoalCard({ goal, assignment }: Props) {
+export default function CustomerGoalCard({
+	goal,
+	assignment,
+	redirectTo,
+	showDeactivate = true,
+}: Props) {
 	return (
 		<div key={goal.id} className="p-4 bg-white rounded-lg shadow-md space-y-2">
 			<div className="inline-flex justify-between w-full">
@@ -20,14 +28,18 @@ export default function CustomerGoalCard({ goal, assignment }: Props) {
 					<span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">
 						Completed
 					</span>
-				) : (
+				) : goal.isActive ? (
 					<span className="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">
 						In Progress
+					</span>
+				) : (
+					<span className="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">
+						Deactivated
 					</span>
 				)}
 			</div>
 			<p className="text-sm text-gray-600">
-				{assignment && assignment.client.edited_name}
+				{assignment && assignment.client?.edited_name}
 			</p>
 			<p className="text-sm font-semibold text-jungle-green-700">
 				{goal.descriptionGoal}
@@ -72,23 +84,32 @@ export default function CustomerGoalCard({ goal, assignment }: Props) {
 					month: "long",
 				})}
 			</p>
-			<div className="inline-flex rounded-md justify-end w-full" role="group">
+			<div className={"inline-flex rounded-md justify-end w-full"} role="group">
 				<Link
-					href={`/coach/dashboard/goals/${goal.id}`}
+					href={
+						redirectTo
+							? `${redirectTo}/${goal.id}`
+							: `/coach/dashboard/goals/${goal.id}`
+					}
 					type="button"
-					className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+					className={clsx(
+						"inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 rounded-s-lg",
+						!showDeactivate && "rounded-e-lg"
+					)}
 				>
 					<i className="bx bx-detail"></i>
 					Details & Progress
 				</Link>
-				<Link
-					href={`/coach/dashboard/goals?confirm-delete=true&goal_id=${goal.id}`}
-					type="button"
-					className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
-				>
-					<i className="bx bx-x"></i>
-					Deactivate
-				</Link>
+				{showDeactivate && (
+					<Link
+						href={`/coach/dashboard/goals?confirm-delete=true&goal_id=${goal.id}`}
+						type="button"
+						className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+					>
+						<i className="bx bx-x"></i>
+						Deactivate
+					</Link>
+				)}
 			</div>
 		</div>
 	);

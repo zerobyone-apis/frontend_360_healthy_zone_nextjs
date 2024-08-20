@@ -1,71 +1,53 @@
 "use server";
 import { getDashboardStats } from "@/actions/coach/dashboard";
-import PieChart from "@/app/ui/pie-chart";
-import Table from "@/app/ui/table";
-import ProgressCard from "../../ui/dashboard/progress-card";
-
-function convertToCustomerTableValues(customers: any) {
-	return customers.map((customer: any) => {
-		const client_status = customer.client.client_status
-			? customer.client.client_status.replaceAll("_", " ")
-			: "";
-		return {
-			items: [
-				customer.client.edited_name,
-				customer.client.country,
-				customer.client.training.length,
-				client_status,
-				"Details",
-			],
-			redirectTo: "/coach/dashboard/customers?id=" + customer.id,
-		};
-	});
-}
+import AmountCard from "@/app/ui/admin/amount-card";
+import UserMiniList from "@/app/ui/user-mini-list";
+import { cookies } from "next/headers";
 
 export default async function Page() {
-	const stats = await getDashboardStats();
-	let tableValues = [];
-	if (stats.full_assignments)
-		tableValues = convertToCustomerTableValues(stats.full_assignments);
-	const pieChartValue = {
-		series: [
-			stats.total_completed_assignments,
-			stats.total_in_progress_assignments,
-			stats.total_ready_to_start_assignments,
-		],
-		colors: ["#a0b43b", "#16BDCA", "#9061F9"],
-		labels: ["Completed", "In progress", "Ready to start"],
-	};
+	const cookieStore = cookies();
+	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
+	let stats;
+	let totalGoals = 0;
+	let totalTrainings = 0;
+
+	try {
+		stats = await getDashboardStats();
+		console.log(stats)
+		totalGoals = stats.goals_created.length;
+		stats.goals_created.forEach((goal: any) => {
+			totalTrainings += goal.trainings.length;
+		})
+	} catch (e) {
+		console.error(e);
+		return (
+			<div className="flex flex-col gap-2 justify-center items-center h-full">
+				<h3 className="text-lg">An error occurred while fetching data</h3>
+				<p className="text-sm text-gray-500">Please try again later.</p>
+			</div>
+		);
+	}
+
 
 	if (!stats) return null;
 	return (
-		<div className="h-full grid grid-cols-3 gap-2">
-			<div className="col-span-3">
-				{tableValues.length && (
-					<Table
-						header={["Name", "Country", "Trainings", "Status"]}
-						searchbox={false}
-						values={tableValues}
-					/>
-				)}
+		<div className="grid grid-cols-3 gap-4">
+			<div className="col-span-full p-2">
+				<h2 className="text-xl font-semibold ">Dashboard</h2>
+				<p className="text-sm">Welcome back, {user.coach.first_name}</p>
 			</div>
-			<div className="md:col-span-1 col-span-3">
-				<ProgressCard
-					bcolor="bg-android-green-500"
-					tcolor="text-android-green-500"
-					target={stats.custom.customers_limit}
-					percent={stats.custom.customers_percent}
-					currentProgress={stats.custom.customers}
-					title="Customers"
-					icon="bx bxs-user-detail"
-				/>
+
+			<div className="md:col-span-1 col-span-full gap-2 flex flex-col">
+				<AmountCard title={"Customers"} content={`${stats.full_assignments.length} / ${stats.custom.customers_limit}`} />
 			</div>
-			<div className="md:col-span-2 col-span-3">
-				<PieChart
-					stats={pieChartValue}
-					title="Assignaments"
-					redirect="/coach/dashboard/customers"
-				/>
+			<div className="md:col-span-1 col-span-full gap-2 flex flex-col">
+				<AmountCard title={"Goals"} content={totalGoals} />
+			</div>
+			<div className="md:col-span-1 col-span-full gap-2 flex flex-col">
+				<AmountCard title={"Trainings"} content={totalTrainings} />
+			</div>
+			<div className="col-span-full">
+				<UserMiniList users={stats.full_assignments} redirect="/nutritionist/dashboard/customers" />
 			</div>
 		</div>
 	);
