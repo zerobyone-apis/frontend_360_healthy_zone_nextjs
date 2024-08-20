@@ -1,44 +1,48 @@
-import { DietStatus, NutritionistPlansServices } from "./diets";
+import {
+	DietResponseDTO,
+	DietStatus,
+	NutritionistPlansServices,
+} from "./diets";
 import { CoachPlansServices, Training, TrainingStatus } from "./trainings";
 
 export interface ClientEdited {
-		id: number | string;
-		edited_name: string;
-		city: string;
-		country: string;
-		description: string | null;
-		client_status: string;
-		nutritionist_id: number | null;
-		coach_id: number | null;
-		initial_height: number;
-        initial_weight: number;
-        current_weight: number;
-		goals: GoalResponseDTO[];
-		diets: any[]; // Replace with the appropriate type
-		training: any[]; // Replace with the appropriate type
-		goalClients: {
-			id: number;
-			client_id: number;
-			target: string;
-			roles: string;
-			deadline: string;
-			created_on: string;
-			updated_on: string | null;
-			isActive: boolean;
-		}[];
-		customForm: {
-			id: number;
-			userId: number;
-			profileId: number;
-			formMap: {
-				[key: string]: string;
-			};
-			type: string;
-			created_on: string;
-			updated_on: string | null;
-			isActive: boolean;
-		};
+	id: number | string;
+	edited_name: string;
+	city: string;
+	country: string;
+	description: string | null;
+	client_status: string;
+	nutritionist_id: number | null;
+	coach_id: number | null;
+	initial_height: number;
+	initial_weight: number;
+	current_weight: number;
+	goals: GoalResponseDTO[];
+	diets: any[]; // Replace with the appropriate type
+	training: any[]; // Replace with the appropriate type
+	goalClients: {
+		id: number;
+		client_id: number;
+		target: string;
+		roles: string;
+		deadline: string;
+		created_on: string;
+		updated_on: string | null;
 		isActive: boolean;
+	}[];
+	customForm: {
+		id: number;
+		userId: number;
+		profileId: number;
+		formMap: {
+			[key: string]: string;
+		};
+		type: string;
+		created_on: string;
+		updated_on: string | null;
+		isActive: boolean;
+	};
+	isActive: boolean;
 }
 
 export interface GoalResponseDTO {
@@ -51,6 +55,7 @@ export interface GoalResponseDTO {
 	healthyFocusDescription: string;
 	trainerPlans: CoachPlansServices;
 	trainings: Training[];
+	diets: DietResponseDTO[];
 	nutritionistPlans: NutritionistPlansServices;
 	dietStatus: DietStatus;
 	trainingStatus: TrainingStatus;
@@ -61,12 +66,12 @@ export interface GoalResponseDTO {
 	isCompleted: boolean;
 	amountOfDays: string;
 	initial_weight: number;
-    initial_height: number;
-    current_weight: number;
-    target_weight: number;
-    initial_body_fat_percentage: number;
-    current_body_fat_percentage: number;
-    target_body_fat_percentage: number;
+	initial_height: number;
+	current_weight: number;
+	target_weight: number;
+	initial_body_fat_percentage: number;
+	current_body_fat_percentage: number;
+	target_body_fat_percentage: number;
 }
 
 export enum GoalStatus {

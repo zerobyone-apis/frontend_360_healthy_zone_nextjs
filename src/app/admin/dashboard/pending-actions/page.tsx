@@ -1,4 +1,5 @@
 "use client"
+import { assignClientToProfessional } from "@/actions/admin/assign-professional";
 import { getAdminActionsSummary } from "@/actions/admin/dashboard/get-actions-summary";
 import { getCoachesList } from "@/actions/admin/get-coaches-list";
 import { getNutritionistsList } from "@/actions/admin/get-nutritionists-list";
@@ -7,19 +8,21 @@ import { CoachDto } from "@/interfaces/coach.dto";
 import { NutritionistDto } from "@/interfaces/nutritionist.dto";
 import { AdminActionsSummary } from "@/interfaces/summary_admin";
 import { useEffect, useState } from "react";
-type Props = {};
+import { toast } from "react-toastify";
 
-export default function Page({ }: Props) {
+export default function Page() {
     const [actions, setActions] = useState<AdminActionsSummary>();
     const [showAssignModal, setShowAssignModal] = useState(false);
     const [selectedClient, setSelectedClient] = useState<any>();
+    const [error, setError] = useState<boolean>(false);
 
     useEffect(() => {
         getAdminActionsSummary().then((data) => {
             setActions(data);
+        }).catch((e) => {
+            setError(true);
         });
     }, []);
-
 
     // Clients to assign to professionals
 
@@ -87,6 +90,12 @@ export default function Page({ }: Props) {
         setSelectedClient(null);
     }
 
+    if (error) {
+        return (<div className="flex flex-col gap-2 justify-center items-center h-full">
+            <h3 className="text-lg">An error occurred while fetching data</h3>
+            <p className="text-sm text-gray-500">Please try again later.</p>
+        </div>)
+    }
     return (
         <div className="flex flex-col gap-3">
             {dataClients?.length ? <DataTable title={"Clients to assign: " + dataClients.length} headings={headingsClients} data={dataClients} actionTitle="Assign" actionFunction={assignClient}></DataTable> :
@@ -108,7 +117,6 @@ function CheckCard({ content }: { content: string }) {
 }
 
 function AssignModal({ client, handleClose }: { client?: any, handleClose: () => void }) {
-    const [selectedProfessional, setSelectedProfessional] = useState<any>();
     const [role, setRole] = useState<string>("");
     const [nutritionists, setNutritionists] = useState<NutritionistDto[]>([]);
     const [coaches, setCoaches] = useState<CoachDto[]>([]);
@@ -129,7 +137,48 @@ function AssignModal({ client, handleClose }: { client?: any, handleClose: () =>
             setError(true)
         })
 
-    }, [])
+    }, []);
+
+
+    const handleSelect = async (professional_id: string | number) => {
+        let obj: { coach_id: string | number | null, nutritionist_id: string | number | null } = {
+            coach_id: null,
+            nutritionist_id: null,
+        }
+
+        if (role === "coaches") {
+            obj.coach_id = professional_id;
+        } else {
+            obj.nutritionist_id = professional_id;
+        }
+        try {
+            await assignClientToProfessional({
+                client_id: client.id,
+                ...obj
+            });
+
+            toast.success("The client has been assigned to the professional");
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+
+            handleClose();
+        } catch (e) {
+            handleClose();
+            toast.error("Error assigning this client, please try later")
+        }
+
+
+    }
+
+    if (error) {
+        return (
+            <div className="flex flex-col gap-2 justify-center items-center h-full">
+                <h3 className="text-lg">An error occurred while fetching data</h3>
+                <p className="text-sm text-gray-500">Please try again later.</p>
+            </div>
+        )
+    }
 
     return (
         <dialog id="select-modal" tabIndex={-1} aria-hidden="false"
@@ -175,7 +224,9 @@ function AssignModal({ client, handleClose }: { client?: any, handleClose: () =>
                                 </>}
                             {role === "nutritionists" &&
                                 nutritionists.map((professional) =>
-                                    <li key={professional.email} className="inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-900 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
+                                    <li key={professional.email}
+                                        onClick={() => handleSelect(professional.id)}
+                                        className="inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-900 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
                                         <div className="block">
                                             <div className="w-full text-lg font-semibold">{professional.first_name}</div>
                                             <div className="w-full text-gray-500 dark:text-gray-400">{professional.email}</div>
@@ -184,7 +235,9 @@ function AssignModal({ client, handleClose }: { client?: any, handleClose: () =>
                                     </li>)
                             }
                             {role === "coaches" && coaches.map((professional) =>
-                                <li key={professional.email} className="inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-900 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
+                                <li key={professional.email}
+                                    onClick={() => handleSelect(professional.id)}
+                                    className="inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-900 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
                                     <div className="block">
                                         <div className="w-full text-lg font-semibold">{professional.first_name}</div>
                                         <div className="w-full text-gray-500 dark:text-gray-400">{professional.email}</div>

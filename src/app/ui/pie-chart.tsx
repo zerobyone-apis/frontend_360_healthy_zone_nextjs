@@ -85,7 +85,20 @@ export default function PieChart({ stats, title, redirect }: Props) {
         }
     }, [chartDiv]);
 
-
+    if (!stats.series.find((stat: number) => stat !== 0)) {
+        return (
+            <div className="max-w-sm h-[250px] bg-white rounded-xl shadow dark:bg-gray-800 p-4 md:p-6">
+                <div className="flex justify-between items-start w-full">
+                    <div className="flex-col items-center text-center">
+                        <div className="flex items-center mb-1">
+                            <h5 className="text-xl font-bold leading-none text-gray-900  me-1">{title}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div className='py-6 h-full flex justify-center items-center'> <h5 className='text-center font-bold text-gray-500 text-lg'>No stats to show yet 📊</h5></div>
+                <div className="py-6 hidden" ref={chartDiv}></div>
+            </div>)
+    }
     return (
         <div className="max-w-sm w-full bg-white rounded-xl shadow dark:bg-gray-800 p-4 md:p-6">
             <div className="flex justify-between items-start w-full">
@@ -100,6 +113,7 @@ export default function PieChart({ stats, title, redirect }: Props) {
                     </button>
                 </div>}
             </div>
+
             <div className="py-6" ref={chartDiv}></div>
         </div>
 

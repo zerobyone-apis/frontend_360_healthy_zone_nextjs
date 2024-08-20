@@ -7,9 +7,9 @@ export default function Page() {
   return (
     <main >
       <Hero />
-      <ContactForm />
       <AboutUS />
       <Pricing />
+      <ContactForm />
     </main>
   )
 }

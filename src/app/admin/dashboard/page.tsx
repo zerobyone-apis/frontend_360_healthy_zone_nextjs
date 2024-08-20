@@ -10,13 +10,22 @@ import { cookies } from "next/headers";
 export default async function Page() {
 	const cookieStore = cookies();
 	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
-	const stats = await getAdminDashboardStatus();
+	let stats, metrics, actions;
+
 	const { initDate, endDate } = getLast30Days();
-	const metrics = await getUserMetricsByDate({
-		init_date: initDate,
-		end_date: endDate,
-	});
-	const actions = await getAdminActionsSummary();
+	try {
+		stats = await getAdminDashboardStatus();
+		metrics = await getUserMetricsByDate({
+			init_date: initDate,
+			end_date: endDate,
+		});
+		actions = await getAdminActionsSummary();
+	} catch (e) {
+		return (<div className="flex flex-col gap-2 justify-center items-center h-full">
+			<h3 className="text-lg">An error occurred while fetching data</h3>
+			<p className="text-sm text-gray-500">Please try again later.</p>
+		</div>)
+	}
 
 	return (
 		<section className="grid grid-cols-4 gap-4">

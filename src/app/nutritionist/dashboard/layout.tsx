@@ -6,29 +6,29 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Layout({ children }: { children: React.ReactNode }) {
 	const navbarList = [
 		{
-			icon: "bx bxs-dashboard text-2xl",
+			icon: "bx bxs-dashboard text-xl",
 			title: "Dashboard",
-			redirect: "/coach/dashboard",
+			redirect: "/nutritionist/dashboard",
 		},
 		{
 			icon: "bx bxs-user-detail text-xl",
 			title: "My Customers",
-			redirect: "/coach/dashboard/customers",
+			redirect: "/nutritionist/dashboard/customers",
 		},
 		{
-			icon: "bx bx-run text-xl",
-			title: "Trainings",
-			redirect: "/coach/dashboard/trainings",
+			icon: "bx bxs-pear text-xl",
+			title: "Diets",
+			redirect: "/nutritionist/dashboard/diets",
 		},
 		{
 			icon: "bx bxs-flag-checkered text-xl",
 			title: "Goals",
-			redirect: "/coach/dashboard/goals",
+			redirect: "/nutritionist/dashboard/goals",
 		},
 		{
 			icon: "bx bxs-cog text-xl",
 			title: "Settings",
-			redirect: "/coach/dashboard/settings",
+			redirect: "/nutritionist/dashboard/settings",
 		},
 	];
 
