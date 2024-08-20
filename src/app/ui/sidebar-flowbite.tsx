@@ -1,10 +1,10 @@
 "use client"
 import React, { useState } from 'react'
-import { Navbar } from './dashboard/navbar';
 import clsx from 'clsx';
 import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 import { NotificationBell } from './notification-bell';
 import Link from 'next/link';
+import { signout } from '@/actions/dashboard/signout';
 
 type Props = {
     list: any[];
@@ -52,7 +52,7 @@ export default function Sidebar({ list }: Props) {
                         {
                             list.map((item, index) =>
                                 <li key={index}>
-                                    <Link href={item.redirect} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <Link href={item.redirect} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-jungle-green-100 dark:hover:bg-gray-700 group">
                                         <i className={clsx("flex-shrink-0 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white", item.icon)}></i>
                                         <span className="flex-1 ms-3 whitespace-nowrap">{item.title}</span>
                                         {item.badge && <span className={clsx("inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300", item.badgeClass)}>{item.badge}</span>}
@@ -60,6 +60,13 @@ export default function Sidebar({ list }: Props) {
                                 </li>
                             )
                         }
+                        <li>
+                            <button onClick={(() => signout())}
+                                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full text-start">
+                                <i className={clsx("flex-shrink-0 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white", "bx bx-log-out")}></i>
+                                <span className="flex-1 ms-3 whitespace-nowrap">Signout</span>
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </aside>
