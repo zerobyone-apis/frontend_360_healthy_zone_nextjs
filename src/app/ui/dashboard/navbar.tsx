@@ -4,9 +4,12 @@ import useOnClickOutside from "@/hooks/useOnClickOutside";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { NotificationBell } from "../notification-bell";
+import cookie from "js-cookie";
 
 export function Navbar() {
 	const [showProfileDrop, setShowProfileDrop] = useState(false);
+	// const profile = cookie.get('user');
+
 	return (
 		<nav className="w-full h-[70px] p-3  justify-end content-center flex">
 			{/* <form >
