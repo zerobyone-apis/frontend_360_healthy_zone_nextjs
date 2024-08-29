@@ -2,8 +2,12 @@
 import { getDashboardStats } from "@/actions/nutritionist/dashboard";
 import UserMiniList from "@/app/ui/user-mini-list";
 import AmountCard from "@/app/ui/admin/amount-card";
+import { cookies } from "next/headers";
 
 export default async function Page() {
+	const cookieStore = cookies();
+	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
+
 	let stats;
 	let totalGoals = 0;
 	let totalDiets = 0;
@@ -34,6 +38,11 @@ export default async function Page() {
 	}
 	return (
 		<div className="grid grid-cols-3 gap-4">
+			<div className="col-span-full p-2">
+				<h2 className="text-xl font-semibold ">Dashboard</h2>
+				<p className="text-sm">Welcome back, {user.nutritionist.first_name}</p>
+			</div>
+
 			<div className="md:col-span-1 col-span-full gap-2 flex flex-col">
 				<AmountCard title={"Customers"} content={`${stats.full_assignments.length} / ${stats.custom.customers_limit}`} />
 			</div>

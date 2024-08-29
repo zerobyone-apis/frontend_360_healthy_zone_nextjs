@@ -73,6 +73,6 @@ export const login = async ({ email, password }: login) => {
 		return body;
 	} catch (error) {
 		console.log(error);
-		return false;
+		throw new Error("Error trying to login");
 	}
 };

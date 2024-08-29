@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default function NewTrainingDialog({ handleNext, goal }: Props) {
-	const frequencyForm = goal.client.customForm.formMap.frequency || "";
+	const frequencyForm = goal.client?.customForm?.formMap.frequency || "";
 
 	const [counter, setCounter] = useState(1);
 	const [trainingType, setTrainingType] = useState<string>("");
