@@ -121,7 +121,7 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 	function handleGetExercises() {
 		setIsLoading(true);
 		getExercises({ limit: 10, page, name, target })
-			.then(res => {
+			.then((res: any) => {
 				if (res) setExercises(res);
 			})
 			.catch(err => setError(err))
@@ -270,7 +270,7 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 											className={clsx(
 												"inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-jungle-green-600 peer-checked:text-jungle-green-600 hover:text-gray-900 hover:bg-gray-100",
 												checked &&
-													"border-jungle-green-600 text-jungle-green-600"
+												"border-jungle-green-600 text-jungle-green-600"
 											)}
 										>
 											<img
