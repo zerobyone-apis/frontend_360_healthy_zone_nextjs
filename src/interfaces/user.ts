@@ -19,6 +19,7 @@ export interface User {
 	client: object | null;
 	nutritionist: object | null;
 	coach: object | null;
+	admin: object | null;
 }
 
 export enum COUNTRIES {
