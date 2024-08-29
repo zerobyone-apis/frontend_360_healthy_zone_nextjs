@@ -32,7 +32,7 @@ export default function DietResumeCard({
 				)
 			)}
 		>
-			{diet.type}
+			{diet.type.replaceAll("_", " ")}
 			<div className=" pt-1 flex flex-col items-start gap-2">
 				<span className="text-sm">{diet.description_diet}</span>
 				<div className="flex justify-between w-full">
