@@ -3,22 +3,82 @@ import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
 import { getNotificationsByUser } from "@/actions/users/get-notifications-by-user";
-import { NotificationDto } from "@/interfaces";
+import { NotificationDto, ROLES, User } from "@/interfaces";
 import { calculateDaysDifference } from "@/utils/daysDifference";
+import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
 import Link from "next/link";
+import Cookies from "js-cookie";
+import { toast } from "react-toastify";
+
 type Props = {};
 
 export function NotificationBell({ }: Props) {
+
+	const user: User = JSON.parse(Cookies.get("user") || "{}");
+	const token: string = Cookies.get("token") || "";
+	const userId = user.user.userId
+	const userEmail = user.user.email;
+
 	const [toggle, setToggle] = useState(false);
 	const [notifications, setNotifications] = useState<NotificationDto[]>();
 	const ref = React.useRef(null);
 	useOnClickOutside(ref, () => setToggle(false));
 
 
+	function wsConnect() {
+
+		const socketUrl: string = process.env.NEXT_PUBLIC_BASE_PATH + "/ws-conn"
+		var socket = new SockJS(socketUrl);
+		const stompClient = Stomp.over(socket);
+
+		var header = {
+			"Access-Control-Allow-Origin": "*",
+			"X-User": userId,
+			"X-Email": userEmail,
+			"jwt-token": token
+		}
+
+		stompClient.connect(header, (frame: any) => {
+			console.log('Connected: ' + frame);
+
+			if (user.admin == null) {
+				stompClient.subscribe('/notifications/messages', function (message) { //  para todos..
+					console.log(message);
+					toast(message.body)
+				});
+			}
+
+
+			stompClient.subscribe('/user/notifications/user-message',  // este de aca es por USER ID
+				function (message) {
+					toast.success(message.body);
+				});
+
+
+			stompClient.subscribe('/notifications/notif', function (message) {
+				console.log(message);
+			});
+
+
+			stompClient.subscribe('/user/notifications/user-notif', function (message) {
+				console.log(message);
+			});
+		});
+	}
+
+
 	useEffect(() => {
+
+		// WEBSOCKET CONNECTION
+		wsConnect();
+
 		getNotificationsByUser().then((notifications) => {
 			setNotifications(notifications);
-		})
+		}).catch((e) => {
+			setNotifications([]);
+		});
+
 	}, []);
 	return (
 		<>
