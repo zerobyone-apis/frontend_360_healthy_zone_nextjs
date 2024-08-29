@@ -16,9 +16,7 @@ export async function saveBasicInfo(_prevState: State, info: FormData) {
 	const cookieStore = cookies();
 	const tokenValue = cookieStore.get("token")?.value || "";
 	const token = tokenValue;
-	const user = JSON.parse(
-		cookieStore.get("user")?.value || "{}"
-	);
+	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
 
 	const userbody: BasicInfo = {
 		first_name: info.get("first_name")?.toString() || "",
@@ -29,7 +27,7 @@ export async function saveBasicInfo(_prevState: State, info: FormData) {
 
 	try {
 		const resp = await fetch(
-			process.env.BASE_PATH + "/v1.0/profile/update/" + user.user.userId,
+			process.env.BASE_PATH + "/v1.0/profile/update/" + user.user.profileId,
 			{
 				method: "PUT",
 				headers: {

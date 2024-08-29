@@ -17,8 +17,8 @@ export function NotificationBell({ }: Props) {
 
 	const user: User = JSON.parse(Cookies.get("user") || "{}");
 	const token: string = Cookies.get("token") || "";
-	const userId = user.user.userId
-	const userEmail = user.user.email;
+	const userId = user.user?.userId || "";
+	const userEmail = user.user?.email || "";
 
 	const [toggle, setToggle] = useState(false);
 	const [notifications, setNotifications] = useState<NotificationDto[]>();
