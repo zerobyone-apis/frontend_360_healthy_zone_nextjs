@@ -1,14 +1,6 @@
 "use server";
-import fs from "fs/promises";
-import path from "path";
 import exercisesList from "./exercises.data";
 
-const dataFilePath = path.join(
-	process.cwd(),
-	"public",
-	"data",
-	"exercises.json"
-);
 type Params = {
 	limit?: number;
 	page?: number;
@@ -21,38 +13,33 @@ export async function getExercises({
 	target = "",
 	name = "",
 }: Params) {
-	try {
-		const exercises = exercisesList;
+	const exercises = exercisesList;
 
-		const startIndex = (page - 1) * limit;
-		const endIndex = page * limit;
+	const startIndex = (page - 1) * limit;
+	const endIndex = page * limit;
 
-		let filteredExercises = exercises;
+	let filteredExercises = exercises;
 
-		if (target) {
-			filteredExercises = filteredExercises.filter(
-				(exercise: any) => exercise.target === target
-			);
-		}
-
-		if (name) {
-			filteredExercises = filteredExercises.filter((exercise: any) =>
-				exercise.name.toLowerCase().includes(name.toLowerCase())
-			);
-		}
-
-		const paginatedExercises = filteredExercises.slice(startIndex, endIndex);
-
-		return {
-			exercises: paginatedExercises,
-			total: filteredExercises.length,
-			showing: paginatedExercises.length,
-			pages: Math.ceil(filteredExercises.length / limit),
-			page: page,
-			limit: limit,
-		};
-	} catch (error) {
-		console.error("Error reading exercises file:", error);
-		return null;
+	if (target) {
+		filteredExercises = filteredExercises.filter(
+			(exercise: any) => exercise.target === target
+		);
 	}
+
+	if (name) {
+		filteredExercises = filteredExercises.filter((exercise: any) =>
+			exercise.name.toLowerCase().includes(name.toLowerCase())
+		);
+	}
+
+	const paginatedExercises = filteredExercises.slice(startIndex, endIndex);
+
+	return {
+		exercises: paginatedExercises,
+		total: filteredExercises.length,
+		showing: paginatedExercises.length,
+		pages: Math.ceil(filteredExercises.length / limit),
+		page: page,
+		limit: limit,
+	};
 }
