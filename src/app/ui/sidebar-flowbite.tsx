@@ -121,15 +121,15 @@ function ProfileDropdown({ show = false }) {
                         role="menuitem"
                         id="menu-item-1"
                     >
-                        Support
+                        Edit Custom Form
                     </Link>
                     <Link
                         href="/"
-                        className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                        className="text-gray-700 block px-4 py-2 text-sm hover:bg-jungle-green-200"
                         role="menuitem"
                         id="menu-item-2"
                     >
-                        License
+                        Subscription
                     </Link>
                     <button
                         className="text-gray-700 block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
