@@ -33,7 +33,7 @@ export default function CustomerCard({ client, list }: Props) {
 					</div>
 					<div className="flex items-center p-2">
 						<Dropdown label={<ThreeDots />} size="sm" arrowIcon={false} inline>
-							{list.map((item) => <Dropdown.Item onClick={() => router.push(item.redirect)}>{item.label}</Dropdown.Item>)}
+							{list.map((item, index) => <Dropdown.Item key={index} onClick={() => router.push(item.redirect)}>{item.label}</Dropdown.Item>)}
 						</Dropdown>
 					</div>
 				</div>
