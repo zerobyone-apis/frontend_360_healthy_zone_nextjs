@@ -23,6 +23,11 @@ export default function Page() {
 				setDiets(resp);
 			} catch (error) {
 				console.error("Error fetching diets:", error);
+				return (
+					<div className="flex flex-col gap-2 justify-center items-center h-full">
+						<h3 className="text-lg">An error occurred while fetching data</h3>
+						<p className="text-sm text-gray-500">Please try again later.</p>
+					</div>)
 			}
 		}
 
