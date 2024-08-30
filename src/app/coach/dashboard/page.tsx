@@ -47,7 +47,7 @@ export default async function Page() {
 				<AmountCard title={"Trainings"} content={totalTrainings} />
 			</div>
 			<div className="col-span-full">
-				<UserMiniList users={stats.full_assignments} redirect="/nutritionist/dashboard/customers" />
+				<UserMiniList users={stats.full_assignments} redirect="/coach/dashboard/customers" />
 			</div>
 		</div>
 	);
