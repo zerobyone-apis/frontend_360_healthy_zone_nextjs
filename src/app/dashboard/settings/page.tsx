@@ -187,16 +187,22 @@ export default function Page() {
 					</section>
 				</Tabs.Item>
 				<Tabs.Item title="Subscription">
-					This is <span className="font-medium text-gray-800 dark:text-white">Subscription tab associated content</span>.
-					Clicking another tab will toggle the visibility of this one for the next.
+					<div className="flex flex-col gap-2 justify-center items-center h-full">
+						<h3 className="text-lg">Working in progess on Subscription view</h3>
+						<p className="text-sm text-gray-500">Please try again later.</p>
+					</div>
 				</Tabs.Item>
 				<Tabs.Item title="Settings">
-					This is <span className="font-medium text-gray-800 dark:text-white">Settings tab associated content</span>.
-					Clicking another tab will toggle the visibility of this one for the next.
+					<div className="flex flex-col gap-2 justify-center items-center h-full">
+						<h3 className="text-lg">Working in progess on settings view</h3>
+						<p className="text-sm text-gray-500">Please try again later.</p>
+					</div>
 				</Tabs.Item>
 				<Tabs.Item title="Support">
-					This is <span className="font-medium text-gray-800 dark:text-white">Support tab associated content</span>.
-					Clicking another tab will toggle the visibility of this one for the next.
+					<div className="flex flex-col gap-2 justify-center items-center h-full">
+						<h3 className="text-lg">Working in progess on support view</h3>
+						<p className="text-sm text-gray-500">Please try again later.</p>
+					</div>
 				</Tabs.Item>
 			</Tabs>
 
