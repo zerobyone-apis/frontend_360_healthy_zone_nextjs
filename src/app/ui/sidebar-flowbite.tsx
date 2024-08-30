@@ -1,17 +1,19 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx';
 import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 import { NotificationBell } from './notification-bell';
 import Link from 'next/link';
 import { signout } from '@/actions/dashboard/signout';
+import useOnClickOutside from '@/hooks/useOnClickOutside';
 
 type Props = {
     list: any[];
 }
 
 export default function Sidebar({ list }: Props) {
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
+    const [showProfileDrop, setShowProfileDrop] = useState<boolean>(false);
     return (
         <>
             <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -34,12 +36,24 @@ export default function Sidebar({ list }: Props) {
                         <div className="flex items-center">
                             <div className="flex items-center ms-3 gap-5">
                                 <NotificationBell />
-                                <div>
+
+                                <div
+                                    className="rounded-full hover:cursor-pointer"
+                                    onClick={() => setShowProfileDrop(!showProfileDrop)}
+                                >
+                                    <img
+                                        alt="imagen"
+                                        className="w-10 h-10 rounded-full ring-3 border-2 border-jungle-green-500 p-1"
+                                        src={"/profile.png"}
+                                    />
+                                    <ProfileDropdown show={showProfileDrop} />
+                                </div>
+                                {/* <div>
                                     <button type="button" className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                                         <span className="sr-only">Open user menu</span>
                                         <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
                                     </button>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
@@ -72,4 +86,61 @@ export default function Sidebar({ list }: Props) {
             </aside>
         </>
     )
+}
+
+function ProfileDropdown({ show = false }) {
+    const dropdownRef = useRef(null);
+    const [isvisible, setIsVisible] = useState(show);
+    const handleClickOutsideFn = () => setIsVisible(false);
+
+    useEffect(() => {
+        setIsVisible(show);
+    }, [show]);
+    useOnClickOutside(dropdownRef, handleClickOutsideFn);
+
+    if (!isvisible) return null;
+    return (
+        <div className="relative inline-block text-left" ref={dropdownRef}>
+            <div
+                className="absolute right-0 top-[-40px] z-10 mt-[1px] w-56 origin-top-right rounded-md bg-white shadow-lg ring-2 ring-black ring-opacity-5 focus:outline-none"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="menu-button"
+            >
+                <div className="py-1" role="none">
+                    <button
+                        className="text-gray-700 text-start block px-4 py-2 text-sm hover:bg-gray-100 w-full"
+                        role="menuitem"
+                        id="menu-item-0"
+                    >
+                        Edit Profile
+                    </button>
+                    <Link
+                        href="/"
+                        className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                        role="menuitem"
+                        id="menu-item-1"
+                    >
+                        Support
+                    </Link>
+                    <Link
+                        href="/"
+                        className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                        role="menuitem"
+                        id="menu-item-2"
+                    >
+                        License
+                    </Link>
+                    <button
+                        className="text-gray-700 block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
+                        role="menuitem"
+                        id="menu-item-3"
+                        onClick={() => signout()}
+                    >
+                        Sign out
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
 }
