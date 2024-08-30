@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import { getProgressByClientID } from "@/actions/goals/get-progress";
 import { ProgressResponseDTO } from "@/interfaces/progress";
 import Link from "next/link";
-import CustomerTrainingCard from "@/app/ui/coach/customer-training-card";
 import ConfirmationDialog from "@/app/ui/confirmation-dialog";
 import TrainingDetailsDialog from "@/app/ui/coach/training-details.dialog";
 import { deactivateTraining } from "@/actions/trainings/deactivate-training";
@@ -123,10 +122,10 @@ export default function Page() {
 				<div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
 					<div
 						className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-						style={{ width: goal.percentage + "%" }}
+						style={{ width: goal.isCompleted ? "100%" : goal.percentage + "%" }}
 					>
 						{" "}
-						{goal.percentage}%
+						{goal.isCompleted ? "100" : goal.percentage}%
 					</div>
 				</div>
 			</div>
