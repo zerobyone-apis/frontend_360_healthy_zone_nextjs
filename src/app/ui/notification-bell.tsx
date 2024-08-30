@@ -40,11 +40,9 @@ export function NotificationBell({ }: Props) {
 		}
 
 		stompClient.connect(header, (frame: any) => {
-			console.log('Connected: ' + frame);
 
 			if (user.admin == null) {
 				stompClient.subscribe('/notifications/messages', function (message) { //  para todos..
-					console.log(message);
 					toast(message.body)
 				});
 			}
@@ -57,12 +55,14 @@ export function NotificationBell({ }: Props) {
 
 
 			stompClient.subscribe('/notifications/notif', function (message) {
-				console.log(message);
+				// console.log(message);
+				toast.success(message.body)
 			});
 
 
 			stompClient.subscribe('/user/notifications/user-notif', function (message) {
-				console.log(message);
+				// console.log(message);
+				toast.success(message.body);
 			});
 		});
 	}

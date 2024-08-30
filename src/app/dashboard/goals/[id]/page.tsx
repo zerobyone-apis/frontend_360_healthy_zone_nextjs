@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import { getProgressByClientID } from "@/actions/goals/get-progress";
 import { ProgressResponseDTO } from "@/interfaces/progress";
 import Link from "next/link";
-import CustomerTrainingCard from "@/app/ui/coach/customer-training-card";
 import ConfirmationDialog from "@/app/ui/confirmation-dialog";
 import TrainingDetailsDialog from "@/app/ui/coach/training-details.dialog";
 import { deactivateTraining } from "@/actions/trainings/deactivate-training";
@@ -123,10 +122,10 @@ export default function Page() {
 				<div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
 					<div
 						className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-						style={{ width: goal.percentage + "%" }}
+						style={{ width: goal.isCompleted ? "100%" : goal.percentage + "%" }}
 					>
 						{" "}
-						{goal.percentage}%
+						{goal.isCompleted ? "100" : goal.percentage}%
 					</div>
 				</div>
 			</div>
@@ -171,6 +170,11 @@ export default function Page() {
 					{progress?.map((p, index) => (
 						<ProgressCard progress={p} key={index} />
 					))}
+
+					{!progress?.length &&
+						<div className="w-full p-4 bg-jungle-green-100 shadow rounded-xl text-center text-gray-500">
+							No progress yet...
+						</div>}
 				</div>
 			</div>
 			<div className="w-full grid grid-cols-3 gap-2 mt-2">
@@ -190,7 +194,7 @@ export default function Page() {
 						id="small-input"
 						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500  overflow-hidden"
 					>
-						{goal.initial_height}
+						{Math.ceil(goal.initial_height)} cm
 					</p>
 				</div>
 				<div className="col-span-1 col-end-2">
@@ -204,7 +208,7 @@ export default function Page() {
 						id="small-input"
 						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 overflow-hidden"
 					>
-						{goal.initial_weight}
+						{Math.ceil(goal.initial_weight)} kg
 					</p>
 				</div>
 				<div className="col-span-1">
@@ -218,7 +222,7 @@ export default function Page() {
 						id="small-input"
 						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500  overflow-hidden"
 					>
-						{goal.client.current_weight}
+						{Math.ceil(goal.client.current_weight)} kg
 					</p>
 				</div>
 				<div className="col-span-1">
@@ -232,7 +236,7 @@ export default function Page() {
 						id="small-input"
 						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500  overflow-hidden"
 					>
-						{goal.target_weight}
+						{Math.ceil(goal.target_weight)} kg
 					</p>
 				</div>
 				<div className="col-span-1 col-end-2">
@@ -246,7 +250,7 @@ export default function Page() {
 						id="small-input"
 						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500  overflow-hidden"
 					>
-						{goal.initial_body_fat_percentage}
+						{Math.ceil(goal.initial_body_fat_percentage)}%
 					</p>
 				</div>
 				<div className="col-span-1">
@@ -260,7 +264,7 @@ export default function Page() {
 						id="small-input"
 						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500  overflow-hidden"
 					>
-						{goal.current_body_fat_percentage}
+						{Math.ceil(goal.current_body_fat_percentage)}%
 					</p>
 				</div>
 				<div className="col-span-1">
@@ -274,7 +278,7 @@ export default function Page() {
 						id="small-input"
 						className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500  overflow-hidden"
 					>
-						{goal.target_body_fat_percentage}
+						{Math.ceil(goal.target_body_fat_percentage)}%
 					</p>
 				</div>
 			</div>

@@ -35,7 +35,7 @@ export default function TrainingResumeCard({
 				)
 			)}
 		>
-			{training.type}
+			{training.type.replaceAll("_", " ")}
 			<div className="pt-1 flex flex-col items-start gap-2">
 				<span className="font-thin text-sm">
 					{training.description_training}
@@ -54,11 +54,11 @@ export default function TrainingResumeCard({
 								clsx(
 									"font-bold",
 									trainingStatus &&
-										trainingObjectStyles[trainingStatus].labelText
+									trainingObjectStyles[trainingStatus].labelText
 								)
 							)}
 						>
-							{trainingStatus}
+							{trainingStatus == "CREATED" ? "WAITING TO START" : trainingStatus}
 						</p>
 					</label>
 					<Link

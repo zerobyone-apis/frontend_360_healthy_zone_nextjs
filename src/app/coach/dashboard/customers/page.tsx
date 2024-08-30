@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getDashboardStats } from "@/actions/coach/dashboard";
 import CustomerCard from "@/app/ui/coach/customer-card";
 import Link from "next/link";
+import { redirect } from "next/dist/server/api-utils";
 
 export default function Page() {
 	const [stats, setStats] = useState<any>(null);
@@ -33,7 +34,7 @@ export default function Page() {
 					<Link
 						href="/coach/dashboard/goals?new-goal=true"
 						type="button"
-						className="px-3 py-2 text-xs font-medium text-center hover:text-white border border-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+						className="px-3 py-2 text-xs font-medium text-center hover:text-white border border-blue-700 rounded-lg hover:bg-blue-800 bg-white focus:ring-4 focus:outline-none focus:ring-blue-300"
 					>
 						<i className="bx bx-plus me-1"></i>
 						New Goal
@@ -41,7 +42,7 @@ export default function Page() {
 					<Link
 						href="/coach/dashboard/trainings?new-training=true"
 						type="button"
-						className="px-3 py-2 text-xs font-medium text-center hover:text-white border border-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+						className="px-3 py-2 text-xs font-medium text-center hover:text-white border border-blue-700 rounded-lg hover:bg-blue-800 bg-white focus:ring-4 focus:outline-none focus:ring-blue-300"
 					>
 						<i className="bx bx-plus me-1"></i>
 						New training
@@ -51,7 +52,20 @@ export default function Page() {
 
 			<div className="gap-3">
 				{stats.full_assignments.map((assigned: any) => {
-					return <CustomerCard key={assigned.id} client={assigned.client} />;
+					const list = [{
+						label: "Details",
+						redirect: "/coach/dashboard/customers/" + assigned.client.id
+					},
+					{
+						label: "Create Goal",
+						redirect: "/coach/dashboard/goals?new-goal=true&client_id=" + assigned.client.id
+					},
+					{
+						label: "Create training",
+						redirect: "/coach/dashboard/trainings?new-training=true&client_id=" + assigned.client.id
+					}
+					]
+					return <CustomerCard key={assigned.id} client={assigned.client} list={list} />;
 				})}
 			</div>
 		</section>
