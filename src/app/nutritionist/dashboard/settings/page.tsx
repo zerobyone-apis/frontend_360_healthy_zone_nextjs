@@ -1,23 +1,67 @@
+"use client";
+import { useEffect, useState } from "react";
 import { getProfileInfo } from "@/actions/profile/getProfileInfo";
 import parseServerDate from "@/utils/parseDate";
 import Link from "next/link";
+import LoadingPage from "@/app/ui/loading.page";
+import { Button } from "@/app/ui/button";
+import { updateProfile } from "@/actions/profile/update-profile";
+import { toast } from "react-toastify";
 
-export default async function Page() {
-	let profile;
+export default function Page() {
+	const [profile, setProfile] = useState({ description: "", first_name: "", last_name: "", phone: "", email: "", city: "", country: "", address: "", updated_on: "" })
+	const [loading, setLoading] = useState<boolean>(false);
 
-	try {
-		profile = await getProfileInfo();
-	} catch (error) {
-		console.log(error);
-		return (
-			<div className="flex flex-col gap-2 justify-center items-center h-full">
-				<h3 className="text-lg">An error occurred while fetching data</h3>
-				<p className="text-sm text-gray-500">Please try again later.</p>
-			</div>
-		);
+	function handleOnChange(event: any) {
+		const { value, name } = event.target;
+		setProfile({ ...profile, [name]: value });
 	}
 
-	const lastUpdateDate = parseServerDate(profile.updated_on);
+	async function handleSave() {
+		try {
+			const info = {
+				description: profile.description,
+				first_name: profile.first_name,
+				last_name: profile.last_name,
+				phone: profile.phone,
+				city: profile.city,
+				country: profile.country,
+				address: profile.address
+			}
+			await updateProfile(info);
+			toast.success("Profile updated successfully");
+			setTimeout(() => {
+				window.location.reload();
+			}, 100);
+		} catch (e) {
+			toast.error("Error trying to update the profile, try later.");
+		}
+
+	}
+
+	useEffect(() => {
+		async function getProfileData() {
+			try {
+				setLoading(true);
+				const resp = await getProfileInfo();
+				setProfile(resp);
+				setLoading(false);
+			} catch (error) {
+				console.log(error);
+				return (
+					<div className="flex flex-col gap-2 justify-center items-center h-full">
+						<h3 className="text-lg">An error occurred while fetching data</h3>
+						<p className="text-sm text-gray-500">Please try again later.</p>
+					</div>
+				);
+			}
+		}
+		getProfileData();
+	}, []);
+
+	const lastUpdateDate = profile ? parseServerDate(profile.updated_on) : "";
+
+	if (loading || !profile) return <LoadingPage message={"Loading profile settings"} />;
 	return (
 		<>
 			<section>
@@ -31,20 +75,19 @@ export default async function Page() {
 						</p>
 					</div>
 					<div className="inline-flex gap-2">
-						<Link
-							href="?change-password=true"
+						<Button
 							type="button"
 							className="px-3 py-2 text-xs font-medium text-center text-blue-500 bg-white border-blue-500 border-2 rounded-lg hover:bg-blue-500 hover:text-white transition-colors focus:ring-2 focus:outline-none focus:ring-blue-300"
 						>
 							Change password
-						</Link>
-						<Link
-							href="?save-settings=true"
+						</Button>
+						<Button
+							onClick={handleSave}
 							type="button"
-							className="px-3 py-2 text-xs font-medium text-center text-white bg-jungle-green-700 rounded-lg hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300"
+							className="px-3 py-2 text-xs font-medium text-center text-white bg-jungle-green-700 rounded-lg hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 flex justify-center"
 						>
-							Save settings
-						</Link>
+							Update profile
+						</Button>
 					</div>
 				</div>
 				<form id="profile-form" className="p-2">
@@ -55,7 +98,8 @@ export default async function Page() {
 								type="description"
 								id="description"
 								name="description"
-								defaultValue={profile.description}
+								value={profile.description}
+								onChange={(e) => handleOnChange(e)}
 								className="border border-gray-300 rounded-lg p-2"
 							/>
 						</div>
@@ -64,8 +108,9 @@ export default async function Page() {
 							<input
 								type="text"
 								id="name"
-								name="name"
-								defaultValue={profile.first_name}
+								name="first_name"
+								value={profile.first_name}
+								onChange={(e) => handleOnChange(e)}
 								className="border border-gray-300 rounded-lg p-2"
 							/>
 						</div>
@@ -74,8 +119,9 @@ export default async function Page() {
 							<input
 								type="text"
 								id="lastname"
-								name="lastname"
-								defaultValue={profile.last_name}
+								name="last_name"
+								value={profile.last_name}
+								onChange={(e) => handleOnChange(e)}
 								className="border border-gray-300 rounded-lg p-2"
 							/>
 						</div>
@@ -85,7 +131,8 @@ export default async function Page() {
 								type="text"
 								id="city"
 								name="city"
-								defaultValue={profile.city}
+								value={profile.city}
+								onChange={(e) => handleOnChange(e)}
 								className="border border-gray-300 rounded-lg p-2"
 							/>
 						</div>
@@ -95,7 +142,8 @@ export default async function Page() {
 								type="text"
 								id="country"
 								name="country"
-								defaultValue={profile.country}
+								value={profile.country}
+								onChange={(e) => handleOnChange(e)}
 								className="border border-gray-300 rounded-lg p-2"
 							/>
 						</div>
@@ -105,7 +153,8 @@ export default async function Page() {
 								type="text"
 								id="address"
 								name="address"
-								defaultValue={profile.address}
+								value={profile.address}
+								onChange={(e) => handleOnChange(e)}
 								className="border border-gray-300 rounded-lg p-2"
 							/>
 						</div>
@@ -115,7 +164,8 @@ export default async function Page() {
 								type="tel"
 								id="phone"
 								name="phone"
-								defaultValue={profile.phone}
+								value={profile.phone}
+								onChange={(e) => handleOnChange(e)}
 								className="border border-gray-300 rounded-lg p-2"
 							/>
 						</div>
@@ -126,7 +176,7 @@ export default async function Page() {
 								type="email"
 								id="email"
 								name="email"
-								defaultValue={profile.email}
+								value={profile.email}
 								className="border border-gray-300 rounded-lg p-2"
 							/>
 						</div>

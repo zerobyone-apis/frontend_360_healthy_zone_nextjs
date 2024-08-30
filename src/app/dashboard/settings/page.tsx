@@ -1,65 +1,214 @@
-'use client'
-import { saveBasicInfo } from "@/actions/dashboard/settings";
-import { Button } from "@/app/ui/button";
-import InputField from "@/app/ui/input";
-import Cookies from "js-cookie";
-import { useFormState } from "react-dom";
-import { Crypto } from "@/utils/encrypt";
+"use client";
 import { useEffect, useState } from "react";
-import { getProfile } from "@/actions/client/client-actions";
+import { getProfileInfo } from "@/actions/profile/getProfileInfo";
+import parseServerDate from "@/utils/parseDate";
+import Link from "next/link";
+import LoadingPage from "@/app/ui/loading.page";
+import { Button } from "@/app/ui/button";
+import { updateProfile } from "@/actions/profile/update-profile";
+import { toast } from "react-toastify";
 
 export default function Page() {
-    const cookie = Cookies;
-    // const userInfo = JSON.parse(Crypto.decrypt(cookie.get('user') || "") || "{}");
-    const [userInfo, setUserInfo] = useState({ first_name: "", last_name: "", phone: "", email: "" });
-    const [stateBasicInfo, formActionBasicInfo] = useFormState(saveBasicInfo, { message: "", error: false, response: null })
-    const [error, setError] = useState(false);
-    useEffect(() => {
-        getProfile().then((resp) => {
-            console.log(resp)
-            if (resp.error) setError(true);
-            else setUserInfo(resp);
-        })
-    }, []);
+	const [profile, setProfile] = useState({ description: "", first_name: "", last_name: "", phone: "", email: "", city: "", country: "", address: "", updated_on: "" })
+	const [loading, setLoading] = useState<boolean>(false);
 
+	function handleOnChange(event: any) {
+		const { value, name } = event.target;
+		setProfile({ ...profile, [name]: value });
+	}
 
+	async function handleSave() {
+		try {
+			const info = {
+				description: profile.description,
+				first_name: profile.first_name,
+				last_name: profile.last_name,
+				phone: profile.phone,
+				city: profile.city,
+				country: profile.country,
+				address: profile.address
+			}
+			await updateProfile(info);
+			toast.success("Profile updated successfully");
+			setTimeout(() => {
+				window.location.reload();
+			}, 100);
+		} catch (e) {
+			toast.error("Error trying to update the profile, try later.");
+		}
 
-    return (
-        <div>
-            <form className="border border-jungle-green-200 rounded p-4 mt-10" action={formActionBasicInfo}>
-                {/**
-                 * Agregar h5 para describir que se agregara aqui...
-                 */}
-                <label className="-top-7 relative z-20 bg-jungle-green-200 rounded p-1 shadow"  >Basic information</label>
-                <InputField placeholder="John" label="Name" name="first_name" defaultValue={userInfo.first_name} />
-                <InputField placeholder="Doe" label="Lastname" name="last_name" defaultValue={userInfo.last_name} />
-                <InputField placeholder="+17863036228" label="Phone number" name="phone" defaultValue={userInfo.phone} />
-                <InputField placeholder="jhon.doe@mydomain.com" label="Email" name="email" defaultValue={userInfo.email} />
-                {/* {stateBasicInfo.message && <div className={clsx("p-2 w-full rounded mb-3", stateBasicInfo.error ? "bg-red-500" : "bg-jungle-green-400")}><p className={clsx("font-sm text-white")}>
-                    <i className={clsx('bx font-bold', stateBasicInfo.error ? "bx-error" : "bx-check")}></i> {stateBasicInfo.message}
-                </p></div>} */}
-                <div className="flex justify-end w-full">
-                    <Button type="submit" className="rounded bg-jungle-green-400 hover:bg-jungle-green-500 text-white"> Save Info</Button>
-                </div>
-            </form>
-            <form className="border border-jungle-green-200 rounded p-4 mt-10">
-                <label className="-top-7 relative z-20 bg-jungle-green-200 rounded p-1 shadow" >Address information</label>
-                <InputField placeholder="United States" label="Country" name="country" />
-                <InputField placeholder="New York" label="City" name="city" />
-                <InputField placeholder="Green Av. 123" label="Address" name="address" />
-                <div className="flex justify-end w-full">
-                    <Button type="submit" className="rounded bg-jungle-green-400 hover:bg-jungle-green-500 text-white"> Save Address</Button>
-                </div>
-            </form>
-            <form className="border border-jungle-green-200 rounded p-4 mt-10">
-                <label className="-top-7 relative z-20 bg-jungle-green-200 rounded p-1 shadow" >My Goals</label>
-                <InputField placeholder="Describe your first goal here..." label="Goal 1" name="goal" />
-                <InputField placeholder="Describe your second goal here..." label="Goal 2" name="goal" />
-                <InputField placeholder="Describe your third goal here..." label="Goal 3" name="goal" />
-                <div className="flex justify-end w-full">
-                    <Button type="submit" className="rounded bg-jungle-green-400 hover:bg-jungle-green-500 text-white"> Save Goals</Button>
-                </div>
-            </form>
-        </div>
-    )
+	}
+
+	useEffect(() => {
+		async function getProfileData() {
+			try {
+				setLoading(true);
+				const resp = await getProfileInfo();
+				setProfile(resp);
+				setLoading(false);
+			} catch (error) {
+				console.log(error);
+				return (
+					<div className="flex flex-col gap-2 justify-center items-center h-full">
+						<h3 className="text-lg">An error occurred while fetching data</h3>
+						<p className="text-sm text-gray-500">Please try again later.</p>
+					</div>
+				);
+			}
+		}
+		getProfileData();
+	}, []);
+
+	const lastUpdateDate = profile ? parseServerDate(profile.updated_on) : "";
+
+	if (loading || !profile) return <LoadingPage message={"Loading profile settings"} />;
+	return (
+		<>
+			<section>
+				<div className="inline-flex justify-between w-full mb-5 p-5">
+					<div className="flex flex-col">
+						<h1 className="text-xl text-jungle-green-700 font-bold">
+							Settings
+						</h1>
+						<p className="text-sm text-gray-400 flex items-center">
+							Last update: {lastUpdateDate}
+						</p>
+					</div>
+					<div className="inline-flex gap-2">
+						<Button
+							type="button"
+							className="px-3 py-2 text-xs font-medium text-center text-blue-500 bg-white border-blue-500 border-2 rounded-lg hover:bg-blue-500 hover:text-white transition-colors focus:ring-2 focus:outline-none focus:ring-blue-300"
+						>
+							Change password
+						</Button>
+						<Button
+							onClick={handleSave}
+							type="button"
+							className="px-3 py-2 text-xs font-medium text-center text-white bg-jungle-green-700 rounded-lg hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 flex justify-center"
+						>
+							Update profile
+						</Button>
+					</div>
+				</div>
+				<form id="profile-form" className="p-2">
+					<div className="grid grid-cols-2 gap-4">
+						<div className="flex flex-col gap-2 col-span-full">
+							<label htmlFor="description">Description</label>
+							<input
+								type="description"
+								id="description"
+								name="description"
+								value={profile.description}
+								onChange={(e) => handleOnChange(e)}
+								className="border border-gray-300 rounded-lg p-2"
+							/>
+						</div>
+						<div className="flex flex-col gap-2 col-span-full md:col-span-1">
+							<label htmlFor="name">Name</label>
+							<input
+								type="text"
+								id="name"
+								name="first_name"
+								value={profile.first_name}
+								onChange={(e) => handleOnChange(e)}
+								className="border border-gray-300 rounded-lg p-2"
+							/>
+						</div>
+						<div className="flex flex-col gap-2 col-span-full md:col-span-1">
+							<label htmlFor="name">Lastname</label>
+							<input
+								type="text"
+								id="lastname"
+								name="last_name"
+								value={profile.last_name}
+								onChange={(e) => handleOnChange(e)}
+								className="border border-gray-300 rounded-lg p-2"
+							/>
+						</div>
+						<div className="flex flex-col gap-2 col-span-full md:col-span-1">
+							<label htmlFor="name">City</label>
+							<input
+								type="text"
+								id="city"
+								name="city"
+								value={profile.city}
+								onChange={(e) => handleOnChange(e)}
+								className="border border-gray-300 rounded-lg p-2"
+							/>
+						</div>
+						<div className="flex flex-col gap-2 col-span-full md:col-span-1">
+							<label htmlFor="name">Country</label>
+							<input
+								type="text"
+								id="country"
+								name="country"
+								value={profile.country}
+								onChange={(e) => handleOnChange(e)}
+								className="border border-gray-300 rounded-lg p-2"
+							/>
+						</div>
+						<div className="flex flex-col gap-2 col-span-full md:col-span-1">
+							<label htmlFor="name">Address</label>
+							<input
+								type="text"
+								id="address"
+								name="address"
+								value={profile.address}
+								onChange={(e) => handleOnChange(e)}
+								className="border border-gray-300 rounded-lg p-2"
+							/>
+						</div>
+						<div className="flex flex-col gap-2 col-span-full md:col-span-1">
+							<label htmlFor="phone">Phone</label>
+							<input
+								type="tel"
+								id="phone"
+								name="phone"
+								value={profile.phone}
+								onChange={(e) => handleOnChange(e)}
+								className="border border-gray-300 rounded-lg p-2"
+							/>
+						</div>
+						<div className="flex flex-col gap-2 col-span-full md:col-span-1">
+							<label htmlFor="email">Email</label>
+							<input
+								disabled={true}
+								type="email"
+								id="email"
+								name="email"
+								value={profile.email}
+								className="border border-gray-300 rounded-lg p-2"
+							/>
+						</div>
+					</div>
+				</form>
+			</section>
+			{/* <ChangePasswordDialog /> */}
+		</>
+	);
+}
+
+function ChangePasswordDialog() {
+	return (
+		<dialog className="grid grid-cols-1 gap-4">
+			<div className="flex flex-col gap-2">
+				<label htmlFor="password">Password</label>
+				<input
+					type="password"
+					id="password"
+					name="password"
+					className="border border-gray-300 rounded-lg p-2"
+				/>
+			</div>
+			<div className="flex flex-col gap-2">
+				<label htmlFor="confirm-password">Confirm password</label>
+				<input
+					type="password"
+					id="confirm-password"
+					name="confirm-password"
+					className="border border-gray-300 rounded-lg p-2"
+				/>
+			</div>
+		</dialog>
+	);
 }
