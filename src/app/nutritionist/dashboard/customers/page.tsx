@@ -60,7 +60,20 @@ export default function Page() {
 
 			<div className="gap-3">
 				{stats.full_assignments.map((assigned: any) => {
-					return <CustomerCard key={assigned.id} client={assigned.client} />;
+					const list = [{
+						label: "Details",
+						redirect: "/nutritionist/dashboard/customers/" + assigned.client.id
+					},
+					{
+						label: "Create Goal",
+						redirect: "/nutritionist/dashboard/goals?new-goal=true&client_id=" + assigned.client.id
+					},
+					{
+						label: "Create training",
+						redirect: "/nutritionist/dashboard/diets?new-diet=true&client_id=" + assigned.client.id
+					}
+					]
+					return <CustomerCard key={assigned.id} client={assigned.client} list={list} />;
 				})}
 			</div>
 
