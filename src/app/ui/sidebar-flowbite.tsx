@@ -108,15 +108,16 @@ function ProfileDropdown({ show = false }) {
                 aria-labelledby="menu-button"
             >
                 <div className="py-1" role="none">
-                    <button
+                    <Link
+                        href="#"
                         className="text-gray-700 text-start block px-4 py-2 text-sm hover:bg-gray-100 w-full"
                         role="menuitem"
                         id="menu-item-0"
                     >
                         Edit Profile
-                    </button>
+                    </Link>
                     <Link
-                        href="/"
+                        href="#"
                         className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
                         role="menuitem"
                         id="menu-item-1"
@@ -124,7 +125,7 @@ function ProfileDropdown({ show = false }) {
                         Edit Custom Form
                     </Link>
                     <Link
-                        href="/"
+                        href="#"
                         className="text-gray-700 block px-4 py-2 text-sm hover:bg-jungle-green-200"
                         role="menuitem"
                         id="menu-item-2"
