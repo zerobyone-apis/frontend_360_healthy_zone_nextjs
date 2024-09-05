@@ -123,7 +123,7 @@ export function NotificationBell({ }: Props) {
 					Notifications
 				</div>
 				<div className="divide-y divide-gray-100 dark:divide-gray-700 max-h-[300px] overflow-auto">
-					{notifications?.map((notification) => {
+					{notifications?.map((notification: any) => {
 
 						const date1 = notification.datetime_sent;
 						const date2 = new Date().toISOString();
