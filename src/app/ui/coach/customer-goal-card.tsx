@@ -102,7 +102,8 @@ export default function CustomerGoalCard({
 				</Link>
 				{showDeactivate && (
 					<Link
-						href={`/coach/dashboard/goals?confirm-delete=true&goal_id=${goal.id}`}
+						href={redirectTo ? `${redirectTo}?confirm-delete=true&goal_id=${goal.id}` :
+							`/coach/dashboard/goals?confirm-delete=true&goal_id=${goal.id}`}
 						type="button"
 						className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
 					>

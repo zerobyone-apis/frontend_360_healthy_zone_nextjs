@@ -34,7 +34,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 	return (
 		<>
-			<main className=" bg-white">
+			<main className=" bg-jungle-green-50 h-screen">
 				<Sidebar list={navbarList} />
 				<main className="p-4 sm:ml-64">
 					<div className="p-4 mt-14">

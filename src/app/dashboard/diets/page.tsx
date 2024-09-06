@@ -1,26 +1,33 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import DietResumeCard from "@/app/ui/dashboard/diets/diet-resume-card";
-import { getAllDietsByUserID } from "@/actions/diets";
 import Cookies from "js-cookie";
 import { User } from "@/interfaces/user";
 import { DietResponseDTO } from "@/interfaces/diets";
 import DietCounterChart from "@/app/ui/dashboard/counter-chart";
 import Image from "next/image";
+import { getAllDietsByUser } from "@/actions/diets/get-all-diets-by-user";
 
 export default function Page() {
 	const [diets, setDiets] = useState<any[]>([]);
 
 	const user: User = JSON.parse(Cookies.get("user") || "{}");
 	const userId = Number(user.user?.userId);
+	const dietsCompleted: number = diets.filter((diet) => diet.isCompleted === true).length || 0;
 
 	useEffect(() => {
 		async function fetchDiets() {
 			try {
-				const resp = await getAllDietsByUserID(userId);
+				const resp = await getAllDietsByUser();
+				console.log(resp);
 				setDiets(resp);
 			} catch (error) {
 				console.error("Error fetching diets:", error);
+				return (
+					<div className="flex flex-col gap-2 justify-center items-center h-full">
+						<h3 className="text-lg">An error occurred while fetching data</h3>
+						<p className="text-sm text-gray-500">Please try again later.</p>
+					</div>)
 			}
 		}
 
@@ -47,7 +54,7 @@ export default function Page() {
 					bg="bg-jungle-green-100"
 					border="border-jungle-green-500"
 					title="✅ COMPLETED ✅"
-					count={diets.filter.length}
+					count={dietsCompleted}
 				/>
 
 				<DietCounterChart

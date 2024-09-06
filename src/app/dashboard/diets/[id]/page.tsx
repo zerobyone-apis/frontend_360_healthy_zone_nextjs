@@ -1,4 +1,4 @@
-import { getDietById } from "@/actions/diets"
+import { getDietByID } from "@/actions/diets/get-diet-bt-id";
 import { Button } from "@/app/ui/button";
 import DefaultCard from "@/app/ui/dashboard/default-card";
 import HorizontalTimeline from "@/app/ui/dashboard/horizontal-timeline";
@@ -7,19 +7,19 @@ import { DietResumeCardStyles } from "@/use-cases/diets-styles";
 import clsx from "clsx";
 
 export default async function Page({ params }: { params: { id: string } }) {
-    const diet: DietResponseDTO | null = await getDietById(Number(params.id));
-
+    const diet: DietResponseDTO | null = await getDietByID(params.id);
+    const status = diet?.diet_status === "CREATED" ? "WAITING FOR START" : diet?.diet_status || "NOT APPLY";
     return (
         <>
             <div className="flex flex-col items-center">
                 <div className="text-center">
-                    <h4 className="text-3xl font-bold text-gray-700 font-sans">{diet?.type}</h4>
-                    <h5 className="text-xl text-gray-600 font-sans">{diet?.description_diet}</h5>
+                    <h4 className="text-3xl font-bold text-gray-700 font-sans">{diet?.type.replaceAll("_", " ")}</h4>
+                    <h5 className="text-lg text-gray-600 font-sans max-w-[790px]">{diet?.description_diet}</h5>
                 </div>
                 <label className={clsx("p-1 rounded ", DietResumeCardStyles[diet?.diet_status || "NOT APPLY"].label)}>
-                    <p className={clsx('font-bold', DietResumeCardStyles[diet?.diet_status || "NOT APPLY"].labelText)}>{diet?.diet_status || "NOT APPLY"}</p>
+                    <p className={clsx('font-bold', DietResumeCardStyles[diet?.diet_status || "NOT APPLY"].labelText)}>{status}</p>
                 </label>
-                <div className="mt-4 ml-6">
+                <div className="mt-4 ml-6 w-full justify-center flex">
                     <HorizontalTimeline init_on={diet?.init_on || ""} end_on={diet?.end_on || ""} />
                 </div>
                 <div className="grid grid-cols-2 w-full p-4 gap-2">
