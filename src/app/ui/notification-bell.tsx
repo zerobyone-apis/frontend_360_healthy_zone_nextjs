@@ -21,7 +21,7 @@ export function NotificationBell({ }: Props) {
 	const userEmail = user.user?.email || "";
 
 	const [toggle, setToggle] = useState(false);
-	const [notifications, setNotifications] = useState<NotificationDto[]>();
+	const [notifications, setNotifications] = useState<NotificationDto[] | any>([]);
 	const ref = React.useRef(null);
 	useOnClickOutside(ref, () => setToggle(false));
 
@@ -41,7 +41,7 @@ export function NotificationBell({ }: Props) {
 
 		stompClient.connect(header, (frame: any) => {
 
-			if (user.admin == null) {
+			if (user.admin !== null) {
 				stompClient.subscribe('/notifications/messages', function (message) { //  para todos..
 					toast(message.body)
 				});
@@ -50,19 +50,27 @@ export function NotificationBell({ }: Props) {
 
 			stompClient.subscribe('/user/notifications/user-message',  // este de aca es por USER ID
 				function (message) {
-					toast.success(message.body);
+					const data = JSON.parse(message.body);
+					console.log(data);
+					setNotifications([...notifications, {
+						message: data.content,
+						datetime_sent: data.event.datetime_sent,
+						id: notifications?.length,
+						typeEvent: data.event.type_event
+					}]);
+					toast.success(data.content);
 				});
 
 
 			stompClient.subscribe('/notifications/notif', function (message) {
-				// console.log(message);
-				toast.success(message.body)
+				console.log(message);
+				// toast.success(message.body)
 			});
 
 
 			stompClient.subscribe('/user/notifications/user-notif', function (message) {
-				// console.log(message);
-				toast.success(message.body);
+				console.log(message);
+				// toast.success(message.body);
 			});
 		});
 	}
@@ -115,7 +123,7 @@ export function NotificationBell({ }: Props) {
 					Notifications
 				</div>
 				<div className="divide-y divide-gray-100 dark:divide-gray-700 max-h-[300px] overflow-auto">
-					{notifications?.map((notification) => {
+					{notifications?.map((notification: any) => {
 
 						const date1 = notification.datetime_sent;
 						const date2 = new Date().toISOString();
