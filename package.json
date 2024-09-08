@@ -30,7 +30,7 @@
 		"date-fns": "^3.6.0",
 		"dayjs": "^1.11.10",
 		"flowbite": "^2.3.0",
-		"flowbite-react": "^0.7.8",
+		"flowbite-react": "^0.10.1",
 		"framer-motion": "^11.3.8",
 		"js-cookie": "^3.0.5",
 		"next": "14.0.3",
