@@ -1,9 +1,9 @@
 "use client"
 import { Fields, QuestionDTO } from '@/interfaces/questions'
 import clsx from 'clsx';
-import { Button, Drawer, Label, ListGroup, TextInput } from 'flowbite-react'
+import { Badge, Button, Drawer, Label, ListGroup, TextInput } from 'flowbite-react'
 import React, { useState } from 'react'
-import { HiBars2, HiSquaresPlus, HiArrowRight } from "react-icons/hi2";
+import { HiArrowRight, HiCheckBadge } from "react-icons/hi2";
 
 type Props = {
     question: QuestionDTO
@@ -20,19 +20,19 @@ export default function FieldsCard({ question }: Props) {
 
 function DrawerField({ field }: { field: Fields }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [val, setVal] = useState("");
     const handleClose = () => setIsOpen(false);
-    const handleOnChange = (val: any) => {
-        console.log(`Field [${field.id}] val: ${val}`)
+    const handleOnChange = (value: any) => {
+        setVal(value);
     }
     return (
         <>
             <button className='w-full p-3 rounded-xl flex justify-between bg-gray-200 hover:bg-gray-300 hover:cursor-pointer' key={field.id} onClick={() => setIsOpen(true)}>
-                <p className=''>
-                    {field.label}
-                </p>
+                <div className='w-full flex flex-col gap-2 text-start'>
+                    <p>{field.label}</p> {val && <Badge color="gray" size="sm" className='truncate max-w-full'>{val}</Badge>}
+                </div>
 
-                <HiArrowRight />
-
+                {!val ? <HiArrowRight /> : <HiCheckBadge className='text-jungle-green-500' />}
             </button>
 
             <Drawer open={isOpen} onClose={handleClose} position="bottom" className="p-1">
@@ -44,10 +44,10 @@ function DrawerField({ field }: { field: Fields }) {
                     className="cursor-pointer px-4 pt-4 hover:bg-gray-50 dark:hover:bg-gray-700"
                 />
                 <Drawer.Items className="p-5 flex-col flex gap-2">
-                    {field.type === "numeric" && <NumericField field={field} />}
-                    {field.type === "text" && <TextField field={field} />}
-                    {field.type === "radio" && <MultipleField field={field} />}
-                    {field.type === "radio-and-other" && <MultipleOtherField field={field} onChange={handleOnChange} />}
+                    {field.type === "numeric" && <NumericField field={field} val={val} onChange={handleOnChange} />}
+                    {field.type === "text" && <TextField field={field} val={val} onChange={handleOnChange} />}
+                    {field.type === "radio" && <MultipleField field={field} val={val} onChange={handleOnChange} />}
+                    {field.type === "radio-and-other" && <MultipleOtherField field={field} val={val} onChange={handleOnChange} />}
                     {field.type !== "radio" && <Button onClick={handleClose} className='bg-jungle-green-500'>Accept</Button>}
                 </Drawer.Items>
             </Drawer>
@@ -55,34 +55,31 @@ function DrawerField({ field }: { field: Fields }) {
     )
 }
 
-function NumericField({ field }: { field: Fields }) {
-    const [num, setNum] = useState(0);
+function NumericField({ field, onChange, val }: { field: Fields, onChange: (val: any) => void, val: any }) {
 
     return (
         <div className='flex flex-col  items-start'>
             {/* <div className="mb-2 block p-2">
                 <Label htmlFor={field.id} value={field.label} />
             </div> */}
-            <TextInput id={field.id} type="number" value={num} onChange={(e) => setNum(Number(e.target.value))} placeholder={field.placeholder} className='w-full' />
+            <TextInput id={field.id} type="number" value={val} onChange={(e) => onChange(e.target.value)} placeholder={field.placeholder} className='w-full' />
         </div>
     )
 }
 
-function TextField({ field }: { field: Fields }) {
-    const [text, setText] = useState("");
+function TextField({ field, onChange, val }: { field: Fields, onChange: (val: any) => void, val: any }) {
 
     return (
         <div className='flex flex-col  items-start'>
             {/* <div className="mb-2 block p-2">
                 <Label htmlFor={field.id} value={field.label} />
             </div> */}
-            <TextInput id={field.id} type="text" value={text} onChange={(e) => setText(e.target.value)} placeholder={field.placeholder} className='w-full' />
+            <TextInput id={field.id} type="text" value={val} onChange={(e) => onChange(e.target.value)} placeholder={field.placeholder} className='w-full' />
         </div>
     )
 }
 
-function MultipleField({ field }: { field: Fields }) {
-    const [option, setOption] = useState("");
+function MultipleField({ field, onChange, val }: { field: Fields, onChange: (val: any) => void, val: any }) {
 
     if (!field.options) return null;
 
@@ -92,16 +89,17 @@ function MultipleField({ field }: { field: Fields }) {
                 {field.options.map((opt) =>
                     <ListGroup.Item
                         name={opt}
-                        onClick={() => setOption(opt)}
-                        aria-selected={option === opt}
+                        onClick={() => onChange(opt)}
+                        aria-selected={val === opt}
+                        active={val === opt}
+                        className={clsx(val === opt && "bg-jungle-green-500")}
                         key={opt}>{opt}</ListGroup.Item>)}
             </ListGroup>
-        </div>
+        </div >
     )
 }
 
-function MultipleOtherField({ field, onChange }: { field: Fields, onChange: (val: any) => void }) {
-    const [option, setOption] = useState("");
+function MultipleOtherField({ field, onChange, val }: { field: Fields, onChange: (val: any) => void, val: any }) {
     const [other, setOther] = useState("");
     const [showOther, setShowOther] = useState<boolean>(false);
 
@@ -116,7 +114,6 @@ function MultipleOtherField({ field, onChange }: { field: Fields, onChange: (val
         }
         setShowOther(false);
         onChange(opt);
-        setOption(opt);
     }
 
     const handleSetOther = (e: React.ChangeEvent<HTMLInputElement>) => {
