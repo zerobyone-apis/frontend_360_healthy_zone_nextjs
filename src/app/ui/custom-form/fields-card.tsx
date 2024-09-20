@@ -1,9 +1,11 @@
 "use client"
 import { Fields, QuestionDTO } from '@/interfaces/questions'
+import { customFormStore } from '@/stores/customForm.store';
 import clsx from 'clsx';
 import { Badge, Button, Drawer, Label, ListGroup, TextInput } from 'flowbite-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HiArrowRight, HiCheckBadge } from "react-icons/hi2";
+
 
 type Props = {
     question: QuestionDTO
@@ -19,12 +21,18 @@ export default function FieldsCard({ question }: Props) {
 }
 
 function DrawerField({ field }: { field: Fields }) {
+    const setAnswer = customFormStore((state: any) => state.setAnswer);
     const [isOpen, setIsOpen] = useState(false);
     const [val, setVal] = useState("");
     const handleClose = () => setIsOpen(false);
+    const handleAccept = () => {
+        setAnswer({ [field.id]: val });
+        handleClose();
+    }
     const handleOnChange = (value: any) => {
         setVal(value);
     }
+
     return (
         <>
             <button className='w-full p-3 rounded-xl flex justify-between bg-gray-200 hover:bg-gray-300 hover:cursor-pointer' key={field.id} onClick={() => setIsOpen(true)}>
@@ -48,7 +56,7 @@ function DrawerField({ field }: { field: Fields }) {
                     {field.type === "text" && <TextField field={field} val={val} onChange={handleOnChange} />}
                     {field.type === "radio" && <MultipleField field={field} val={val} onChange={handleOnChange} />}
                     {field.type === "radio-and-other" && <MultipleOtherField field={field} val={val} onChange={handleOnChange} />}
-                    {field.type !== "radio" && <Button onClick={handleClose} className='bg-jungle-green-500'>Accept</Button>}
+                    <Button onClick={handleAccept} className='bg-jungle-green-500'>Accept</Button>
                 </Drawer.Items>
             </Drawer>
         </>
