@@ -1,6 +1,10 @@
+@import "../../public/boxicons-2.1.4/css/boxicons.min.css";
+@import "https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css";
+
+@import 'swiper/css';
+@import 'swiper/css/pagination';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import "../../public/boxicons-2.1.4/css/boxicons.min.css";
-@import "https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css";

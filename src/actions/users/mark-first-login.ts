@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-export async function fetchTemplate() {
+export async function markFirstLogin() {
 	const cookieStore = cookies();
 
 	//getting the token from the cookie
@@ -11,13 +11,13 @@ export async function fetchTemplate() {
 
 	//getting the user from the cookie
 	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
+	const userID = user.user.userId;
 
 	try {
 		const resp = await fetch(
-			process.env.BASE_PATH +
-				"/this/would/be/your/path/" /* + user.client.id or some param */,
+			process.env.BASE_PATH + "/v1.0/user/mark/" + userID,
 			{
-				method: "GET",
+				method: "PATCH",
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: token,
@@ -34,6 +34,6 @@ export async function fetchTemplate() {
 
 		return body;
 	} catch (error) {
-		throw new Error("Error trying to...");
+		throw new Error("Error trying to mark user first login ");
 	}
 }
