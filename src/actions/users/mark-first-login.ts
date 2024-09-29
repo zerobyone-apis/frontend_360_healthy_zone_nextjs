@@ -15,7 +15,7 @@ export async function markFirstLogin() {
 
 	try {
 		const resp = await fetch(
-			process.env.BASE_PATH + "/v1.0/user/mark/" + userID,
+			process.env.BASE_PATH + "/v1.0/user/login/mark/" + userID,
 			{
 				method: "PATCH",
 				headers: {
