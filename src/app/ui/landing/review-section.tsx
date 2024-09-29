@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 
 type Props = {}
@@ -359,7 +360,7 @@ export default function ReviewSection({ }: Props) {
                         </div>
 
                         <p className="font-normal text-lg leading-8 text-gray-500 ">
-                            I recently had the opportunity to explore Pagedone's UI design system, and it left a lasting
+                            I recently had the opportunity to explore Pagedone&apos;s UI design system, and it left a lasting
                             impression on my workflow. The system seamlessly blends user-friendly features with a robust set
                             of design components, making it a go-to for creating visually stunning and consistent
                             interfaces.
