@@ -1,3 +1,5 @@
+"use client"
+import clsx from 'clsx';
 import Link from 'next/link';
 import React from 'react'
 interface Feature {
@@ -10,15 +12,23 @@ type Props = {
     title: string;
     description: string;
     features: Feature[];
+    main?: boolean
 }
 
-export function PricingCard({ price, title, description, features }: Props) {
+export function PricingCard({ price, title, description, features, main = false }: Props) {
     return (
-        <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
+        <div className={clsx("flex flex-col mx-auto md:mx-0 max-w-lg text-center text-gray-900 rounded-lg border border-gray-100 shadow",
+            main ? "bg-indigo-50 transition-all duration-500 hover:bg-indigo-100 px-6 py-9" : "bg-white p-6")}>
+            {main &&
+                <>
+                    <div className="uppercase bg-gradient-to-r from-indigo-600 to-violet-600 rounded-2xl mb-4 p-3 text-center text-white">
+                        MOST POPULAR
+                    </div>
+                </>}
             <h3 className="mb-4 text-2xl font-semibold">{title}</h3>
             <p className="font-light text-gray-500 sm:text-lg ">{description}</p>
             <div className="flex justify-center items-baseline my-8">
-                <span className="mr-2 text-5xl font-extrabold">${price}</span>
+                <span className={clsx("mr-2 text-5xl font-extrabold", main && "text-indigo-600")}>${price}</span>
                 <span className="text-gray-500 ">/month</span>
             </div>
             <ul role="list" className="mb-8 space-y-4 text-left">
@@ -31,7 +41,9 @@ export function PricingCard({ price, title, description, features }: Props) {
                 }
             </ul>
             <div className='w-full h-full flex items-end justify-center'>
-                <Link href={"/signup"}><button className="text-jungle-green-500 border-jungle-green-500 border bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-bold rounded-lg text-sm px-5 py-2.5 text-center w-full">Get started</button></Link>
+                <Link href={"/signup"}><button className={clsx(" border bg-primary-600 hover:bg-primary-700 delay-75 transition-colors focus:ring-4 focus:ring-primary-200 font-bold rounded-lg text-sm px-5 py-2.5 text-center w-full",
+                    main ? "text-white border-violet-600 bg-indigo-600 hover:bg-violet-500" : "text-jungle-green-500 border-jungle-green-500 hover:bg-jungle-green-500 hover:text-white bg-white")
+                }>Get started</button></Link>
             </div>
         </div>
     )

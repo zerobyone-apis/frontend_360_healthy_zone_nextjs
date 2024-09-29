@@ -14,7 +14,7 @@ export async function createCustomForm(formData: object) {
 
 	try {
 		const resp = await fetch(
-			process.env.BASE_PATH + "/v1.0/custom-form/create/" + user.client.id,
+			process.env.BASE_PATH + "/v1.0/custom-form/create/" + user.user.userId,
 			{
 				method: "POST",
 				headers: {
