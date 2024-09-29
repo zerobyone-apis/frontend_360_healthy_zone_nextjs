@@ -1,9 +1,11 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { PricingCard } from "../pricingCard";
 
 interface Card {
     price: number;
     title: string;
     description: string;
+    plan_id: string;
     features: Feature[];
 }
 
@@ -13,12 +15,13 @@ interface Feature {
 }
 
 export function Pricing() {
-
+ 
     const pricingCardList: Card[] = [
         {
             title: "Basic Plan",
             description: "Nutrition or Coach Access Only",
-            price: 20,
+            price: 45,
+            plan_id: "P-5D4660646N0837058M34NTXY",
             features: [
                 {
                     title: "Monthly session with a nutritionist or coach ",
@@ -38,7 +41,8 @@ export function Pricing() {
         {
             title: "Standard plan",
             description: "Access to Both Nutrition and Coach",
-            price: 35,
+            price: 78,
+            plan_id: "P-3Y5450704F819784LM34N5OQT",
             features: [
                 {
                     title: "All benefits of the Basic Plan"
@@ -60,7 +64,8 @@ export function Pricing() {
         {
             title: "Premium Plan",
             description: "Full Access + Exclusive Benefits",
-            price: 20,
+            price: 99,
+            plan_id: "P-3Y5450704F819784LM34N5OQ",
             features: [
                 {
                     title: "All benefits of the Standard Plan",
@@ -94,7 +99,7 @@ export function Pricing() {
                 </div>
                 <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
 
-                    {pricingCardList.map((card, index) => <PricingCard key={index} title={card.title} description={card.description} price={card.price} features={card.features} />)}
+                    {pricingCardList.map((card, index) => <PricingCard key={index} title={card.title} description={card.description} price={card.price} plan_id={card.plan_id} features={card.features}/>)}
 
                 </div>
             </div>
