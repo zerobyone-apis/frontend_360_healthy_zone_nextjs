@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-export async function fetchTemplate() {
+export async function createCustomForm(formData: object) {
 	const cookieStore = cookies();
 
 	//getting the token from the cookie
@@ -14,15 +14,14 @@ export async function fetchTemplate() {
 
 	try {
 		const resp = await fetch(
-			process.env.BASE_PATH +
-				"/this/would/be/your/path/" /* + user.client.id or some param */,
+			process.env.BASE_PATH + "/v1.0/custom-form/create/" + user.client.id,
 			{
-				method: "GET",
+				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: token,
 				},
-				body: /* body here if required */ null,
+				body: JSON.stringify(formData),
 				cache: "no-store",
 			}
 		);
@@ -34,6 +33,7 @@ export async function fetchTemplate() {
 
 		return body;
 	} catch (error) {
-		throw new Error("Error trying to...");
+		console.error(error);
+		throw new Error("Error trying to create custom form");
 	}
 }

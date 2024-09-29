@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-export async function fetchTemplate() {
+export async function createNewDiet(clientID: string, dietObj: any) {
 	const cookieStore = cookies();
 
 	//getting the token from the cookie
@@ -11,29 +11,32 @@ export async function fetchTemplate() {
 
 	//getting the user from the cookie
 	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
+	const obj = { ...dietObj, nutritionist_id: user.nutritionist.id };
 
 	try {
 		const resp = await fetch(
-			process.env.BASE_PATH +
-				"/this/would/be/your/path/" /* + user.client.id or some param */,
+			process.env.BASE_PATH + "/v1.0/diet/create/client/" + clientID,
 			{
-				method: "GET",
+				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: token,
 				},
-				body: /* body here if required */ null,
+				body: JSON.stringify(obj),
 				cache: "no-store",
 			}
 		);
 		let body = await resp.json();
-
 		if (!resp.ok) {
+			console.log(body);
 			throw new Error(body.message);
 		}
 
+		console.log(body);
+
 		return body;
 	} catch (error) {
-		throw new Error("Error trying to...");
+		console.log(error);
+		throw new Error("Error trying to create a new diet");
 	}
 }

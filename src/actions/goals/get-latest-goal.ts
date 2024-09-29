@@ -28,6 +28,11 @@ export async function getLatestGoalByClientID(
 			}
 		);
 		let body = await resp.json();
+		if (!resp.ok) {
+			console.log(body);
+			return null;
+		}
+
 		return body;
 	} catch (error) {
 		console.log(error);
