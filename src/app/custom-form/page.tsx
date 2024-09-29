@@ -40,7 +40,6 @@ export default function Page({ }: Props) {
         //calling the real api to firsttimelogin to false
         try {
             await createCustomForm({ formData: customForm });
-            // Api esta rota.
             // await markFirstLogin();
             router.push("/dashboard")
         } catch (e) {
