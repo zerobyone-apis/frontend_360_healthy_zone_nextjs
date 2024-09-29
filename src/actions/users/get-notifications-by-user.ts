@@ -36,6 +36,6 @@ export async function getNotificationsByUser(): Promise<NotificationDto[]> {
 
 		return body;
 	} catch (error) {
-		throw new Error("Error getting notifications for user id: " + userID);
+		throw new Error(`Error getting notifications for user id: ${userID} Error: ${error}`);
 	}
 }
