@@ -13,7 +13,7 @@ import { User } from "@/interfaces/user";
 
 export default function Page() {
 	const [paypalLink, setPaypalLink] = useState(null);
-	const user: User = JSON.parse(Cookies.get("user") || "");
+	const user: User = JSON.parse(Cookies.get("user") || "{}");
 	const plan_id = Cookies.get("plan_id") || "";
 	const price = Number(Cookies.get("plan_price") || "");
 
