@@ -5,6 +5,10 @@ import {
   ClientSubscription,
   paypalSubscription,
 } from '@/actions/paypal/subscriptions-paypal';
+"use client"
+import clsx from 'clsx';
+import Link from 'next/link';
+
 interface Feature {
   title: string;
   description?: string;
@@ -16,6 +20,7 @@ type Props = {
   description: string;
   plan_id: string;
   features: Feature[];
+  main: boolean;
 };
 
 export function PricingCard({
@@ -24,6 +29,7 @@ export function PricingCard({
   description,
   features,
   plan_id,
+  main = false
 }: Props) {
   const [paypalLink, setPaypalLink] = useState(null);
 

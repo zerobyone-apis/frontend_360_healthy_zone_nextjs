@@ -4,6 +4,7 @@ import { ContactForm } from "../ui/landing/contact-form"
 import { Hero } from "../ui/landing/hero";
 import PreviewSection from "../ui/landing/preview-section";
 import { Pricing } from "../ui/landing/pricing";
+import ReviewSection from "../ui/landing/review-section";
 import { Steps } from "../ui/landing/steps";
 
 export default function Page() {
@@ -15,6 +16,7 @@ export default function Page() {
       <PreviewSection />
       <Benefits />
       <Pricing />
+      <ReviewSection />
       <ContactForm />
     </main>
   )

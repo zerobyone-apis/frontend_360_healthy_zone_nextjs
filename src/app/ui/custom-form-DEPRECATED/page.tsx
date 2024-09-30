@@ -1,7 +1,7 @@
 'use client'
 import { useRouter } from "next/navigation";
-import { SURVEY_PAGES } from "../ui/mind-logger/libs/questions"
-import { Survey } from "../ui/mind-logger/survey"
+// import { SURVEY_PAGES } from "../ui/mind-logger/libs/questions"
+// import { Survey } from "../ui/mind-logger/survey"
 
 export default function Page() {
     const router = useRouter();
@@ -10,5 +10,6 @@ export default function Page() {
         console.log(values)
         router.push("/")
     }
-    return <Survey pages={SURVEY_PAGES} onSubmit={onSubmit} />
+    return null
+    // return <Survey pages={SURVEY_PAGES} onSubmit={onSubmit} />
 }
