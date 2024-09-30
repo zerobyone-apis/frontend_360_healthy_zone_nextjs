@@ -14,6 +14,8 @@ import { User } from "@/interfaces/user";
 export default function Page() {
 	const [paypalLink, setPaypalLink] = useState(null);
 	const user: User = JSON.parse(Cookies.get("user") || "");
+	const plan_id = Cookies.get("plan_id") || "";
+	const price = Number(Cookies.get("plan_price") || "");
 
 	const handleSubscription = async (planId: string, price: number) => {
 		try {
@@ -44,8 +46,6 @@ export default function Page() {
 
 	useEffect(() => {
 		if (!user.client?.subscription) {
-			const plan_id = Cookies.get("plan_id") || "";
-			const price = Number(Cookies.get("plan_price") || "");
 			handleSubscription(plan_id, price);
 		}
 	}, [])
