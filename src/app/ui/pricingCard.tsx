@@ -1,4 +1,5 @@
 'use client';
+import { User } from '@/interfaces';
 import clsx from 'clsx';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
@@ -29,6 +30,10 @@ export function PricingCard({
   const handleRegistration = () => {
     Cookies.set("plan_id", plan_id);
     Cookies.set("plan_price", String(price));
+    const user: User | null = Cookies.get("user") ? JSON.parse(Cookies.get("user") || "") : null;
+    if (user) {
+      return window.location.reload();
+    }
     router.push("/signup")
   }
 
