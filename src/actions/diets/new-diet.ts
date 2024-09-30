@@ -1,9 +1,8 @@
 "use server";
 
-import { NotificationDto } from "@/interfaces";
 import { cookies } from "next/headers";
 
-export async function getNotificationsByUser(): Promise<NotificationDto[]> {
+export async function createNewDiet(clientID: string, dietObj: any) {
 	const cookieStore = cookies();
 
 	//getting the token from the cookie
@@ -12,30 +11,32 @@ export async function getNotificationsByUser(): Promise<NotificationDto[]> {
 
 	//getting the user from the cookie
 	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
-
-	const userID = user.user.userId;
+	const obj = { ...dietObj, nutritionist_id: user.nutritionist.id };
 
 	try {
 		const resp = await fetch(
-			process.env.BASE_PATH + "/v1.0/notifications/by/user/" + userID,
+			process.env.BASE_PATH + "/v1.0/diet/create/client/" + clientID,
 			{
-				method: "GET",
+				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: token,
 				},
-				body: null,
+				body: JSON.stringify(obj),
 				cache: "no-store",
 			}
 		);
 		let body = await resp.json();
-
 		if (!resp.ok) {
+			console.log(body);
 			throw new Error(body.message);
 		}
 
+		console.log(body);
+
 		return body;
 	} catch (error) {
-		throw new Error(`Error getting notifications for user id: ${userID} Error: ${error}`);
+		console.log(error);
+		throw new Error("Error trying to create a new diet");
 	}
 }

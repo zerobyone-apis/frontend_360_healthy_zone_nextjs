@@ -1,8 +1,7 @@
 "use client";
 import clsx from "clsx";
 import { Dropdown } from "flowbite-react";
-import { redirect, useRouter } from "next/navigation";
-import { ReactNode } from "react";
+import { useRouter } from "next/navigation";
 
 type List = {
 	label: string;

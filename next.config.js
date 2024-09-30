@@ -13,6 +13,11 @@ const nextConfig = {
 				hostname: "storage.googleapis.com",
 				port: "",
 			},
+			{
+				protocol: "https",
+				hostname: "www.voxco.com",
+				port: "",
+			},
 		],
 	},
 	reactStrictMode: false,

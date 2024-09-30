@@ -1,9 +1,8 @@
 "use server";
 
-import { NotificationDto } from "@/interfaces";
 import { cookies } from "next/headers";
 
-export async function getNotificationsByUser(): Promise<NotificationDto[]> {
+export async function createCustomForm(formData: object) {
 	const cookieStore = cookies();
 
 	//getting the token from the cookie
@@ -13,18 +12,16 @@ export async function getNotificationsByUser(): Promise<NotificationDto[]> {
 	//getting the user from the cookie
 	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
 
-	const userID = user.user.userId;
-
 	try {
 		const resp = await fetch(
-			process.env.BASE_PATH + "/v1.0/notifications/by/user/" + userID,
+			process.env.BASE_PATH + "/v1.0/custom-form/create/" + user.user.userId,
 			{
-				method: "GET",
+				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: token,
 				},
-				body: null,
+				body: JSON.stringify(formData),
 				cache: "no-store",
 			}
 		);
@@ -36,6 +33,7 @@ export async function getNotificationsByUser(): Promise<NotificationDto[]> {
 
 		return body;
 	} catch (error) {
-		throw new Error(`Error getting notifications for user id: ${userID} Error: ${error}`);
+		console.error(error);
+		throw new Error("Error trying to create custom form");
 	}
 }
