@@ -1,13 +1,7 @@
 'use client';
-
-import React, { useState } from 'react';
-import {
-  ClientSubscription,
-  paypalSubscription,
-} from '@/actions/paypal/subscriptions-paypal';
 import clsx from 'clsx';
-import Link from 'next/link';
-
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 interface Feature {
   title: string;
   description?: string;
@@ -30,36 +24,13 @@ export function PricingCard({
   plan_id,
   main = false
 }: Props) {
-  const [paypalLink, setPaypalLink] = useState(null);
+  const router = useRouter();
 
-  const handleSubscription = async (planId: string) => {
-    try {
-
-      console.log('-> plan_id', planId);
-
-      const clientSubscriptionBody: ClientSubscription = {
-        client_id: 9, // todo: Aca toca ver como redireccionamos al cliente para tener el id de Cliente, para ello debe estar registrado.
-        plan_id: planId,
-        shiping_amount: {
-          value: price,
-          currency_code: 'USD',
-        },
-      };
-
-      const respPaypalLink = await paypalSubscription(clientSubscriptionBody);
-
-      if (!respPaypalLink)
-        console.error('Ocurrio un error con la subscripcion');
-      // const data = await response.json();
-
-      // 'data.paypalLink' debe ser el enlace de PayPal devuelto por tu backend
-      if (respPaypalLink) {
-        setPaypalLink(respPaypalLink); // Guarda el enlace en un estado
-      }
-    } catch (error) {
-      console.error('Error al crear la suscripción:', error);
-    }
-  };
+  const handleRegistration = () => {
+    Cookies.set("plan_id", plan_id);
+    Cookies.set("plan_price", String(price));
+    router.push("/signup")
+  }
 
   return (
     <>
@@ -89,37 +60,9 @@ export function PricingCard({
         <div className='w-full h-full flex items-end justify-center'>
           <button className={clsx(" border bg-primary-600 hover:bg-primary-700 delay-75 transition-colors focus:ring-4 focus:ring-primary-200 font-bold rounded-lg text-sm px-5 py-2.5 text-center w-full",
             main ? "text-white border-violet-600 bg-indigo-600 hover:bg-violet-500" : "text-jungle-green-500 border-jungle-green-500 hover:bg-jungle-green-500 hover:text-white bg-white")}
-            onClick={() => handleSubscription(plan_id)}>Get started</button>
+            onClick={handleRegistration}>Get started</button>
         </div>
       </div>
-
-      {/* Mostrar el iframe de PayPal si paypalLink está definido */}
-      {paypalLink && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden w-11/12 md:w-2/3 lg:w-1/2">
-            <div className="flex justify-between items-center p-4 border-b">
-              <h2 className="text-xl font-semibold">Complete your Payment</h2>
-              <button
-                className="text-gray-500 hover:text-gray-800"
-                onClick={() => setPaypalLink(null)} // Para cerrar el modal
-              >
-                &times; {/* Icono de cerrar */}
-              </button>
-            </div>
-            <iframe
-              src={paypalLink}
-              className="w-full h-[600px]"
-              style={{ border: 'none' }}
-            />
-            <div className="p-4">
-              <p className="text-sm text-gray-600">
-                Please complete your payment through the PayPal interface
-                above.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

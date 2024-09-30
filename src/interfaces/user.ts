@@ -16,7 +16,7 @@ export interface UserBody {
 
 export interface User {
 	user: UserBody;
-	client: object | null;
+	client: any | null;
 	nutritionist: object | null;
 	coach: object | null;
 	admin: object | null;
