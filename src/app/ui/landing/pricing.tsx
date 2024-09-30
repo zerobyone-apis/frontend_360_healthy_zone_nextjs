@@ -1,9 +1,11 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { PricingCard } from "../pricingCard";
 
 interface Card {
     price: number;
     title: string;
     description: string;
+    plan_id: string;
     features: Feature[];
     main?: boolean;
 }
@@ -18,8 +20,9 @@ export function Pricing() {
     const pricingCardList: Card[] = [
         {
             title: "Basic Plan",
+            price: 45,
+            plan_id: "P-5D4660646N0837058M34NTXY",
             description: "Your starting point for a healthier life",
-            price: 25,
             features: [
                 {
                     title: "24/7 platform access",
@@ -40,8 +43,9 @@ export function Pricing() {
         },
         {
             title: "Standard plan",
+            price: 78,
+            plan_id: "P-3Y5450704F819784LM34N5OQT",
             description: "For those looking for a comprehensive approach and constant follow-up",
-            price: 35,
             main: true,
             features: [
                 {
@@ -64,8 +68,9 @@ export function Pricing() {
         },
         {
             title: "Premium Plan",
+            price: 99,
+            plan_id: "P-3Y5450704F819784LM34N5OQ",
             description: "The ultimate health and well-being experience",
-            price: 80,
             features: [
                 {
                     title: "All benefits of the Standard Plan",
@@ -96,10 +101,9 @@ export function Pricing() {
                 </div>
 
                 <div className="space-y-9 lg:grid lg:grid-cols-3 sm:gap-6 md:gap-0  md:space-y-0 md:items-center">
-
                     {pricingCardList.map((card, index) =>
                         <div key={index}>
-                            <PricingCard title={card.title} description={card.description} price={card.price} features={card.features} main={card.main || false} />
+                            <PricingCard title={card.title} description={card.description} price={card.price} features={card.features} main={card.main || false} plan_id={card.plan_id} />
                         </div>
                     )}
 
