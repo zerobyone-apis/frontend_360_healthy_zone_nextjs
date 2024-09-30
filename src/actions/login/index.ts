@@ -57,7 +57,9 @@ export const login = async ({ email, password }: login) => {
 			delete body.client.diets;
 			delete body.client.goalClients;
 			if (body.client.subscription) {
-				body.client.subscription = true;
+				if (body.client.subscription.status !== "APPROVAL_PENDING")
+					body.client.subscription = true;
+				else body.client.subscription = null;
 			}
 		}
 		if (body.user.roles === "ADMIN") {
