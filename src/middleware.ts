@@ -33,8 +33,13 @@ export function middleware(request: NextRequest) {
 	// Si estamos en login, mandar al usuario a su correspondiente lugar
 	if (currentToken && request.nextUrl.pathname.startsWith("/login")) {
 		if (user?.user?.roles == "CLIENT" && user?.user?.firstTimeLogin == true) {
-			console.log("ingreso al custom form");
 			return NextResponse.redirect(new URL("/custom-form", request.url));
+		}
+
+		if (user?.user?.roles == "CLIENT" && !user?.client?.subscription) {
+			return NextResponse.redirect(
+				new URL("/subscription-process", request.url)
+			);
 		}
 
 		return NextResponse.redirect(
@@ -45,8 +50,13 @@ export function middleware(request: NextRequest) {
 	// Evitaremos el acceso a las diferentes areas si no tienen el acceso a las mismas
 	if (currentToken && !pathname.startsWith(Roles[currentToken.role])) {
 		if (user.user.roles === "CLIENT" && user.user.firstTimeLogin == true) {
-			console.log("ingreso al custom form");
 			return NextResponse.redirect(new URL("/custom-form", request.url));
+		}
+
+		if (user?.user?.roles == "CLIENT" && !user?.client?.subscription) {
+			return NextResponse.redirect(
+				new URL("/subscription-process", request.url)
+			);
 		}
 
 		return NextResponse.redirect(
@@ -59,10 +69,17 @@ export function middleware(request: NextRequest) {
 		user?.user?.firstTimeLogin == true &&
 		pathname.startsWith(Roles[currentToken.role])
 	) {
-		console.log("ingreso al custom form");
 		return NextResponse.redirect(new URL("/custom-form", request.url));
 	}
-	console.log("permito pasar");
+
+	if (
+		user?.user?.roles == "CLIENT" &&
+		!user?.client?.subscription &&
+		pathname.startsWith(Roles[currentToken.role])
+	) {
+		return NextResponse.redirect(new URL("/subscription-process", request.url));
+	}
+
 	return NextResponse.next();
 }
 

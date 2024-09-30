@@ -56,6 +56,9 @@ export const login = async ({ email, password }: login) => {
 			delete body.client.training;
 			delete body.client.diets;
 			delete body.client.goalClients;
+			if (body.client.subscription) {
+				body.client.subscription = true;
+			}
 		}
 		if (body.user.roles === "ADMIN") {
 			delete body.admin.assignments;

@@ -19,6 +19,8 @@ export default function Page() {
 			return toast.warning("Check your credentials and try again");
 		if (resp.user.roles === "CLIENT") {
 			if (resp.user.firstTimeLogin === true) return router.push("/custom-form");
+			if (!resp.client.subscription) return router.push("/subscription-process");
+
 			return router.push("/dashboard");
 		}
 		if (resp.user.roles === "COACH") return router.push("/coach/dashboard");
