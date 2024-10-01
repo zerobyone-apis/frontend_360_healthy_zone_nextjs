@@ -8,6 +8,8 @@ import { Pagination, Navigation } from 'swiper/modules';
 
 import NutritionistQuestions from "@/data/questions/nutritionist-questions";
 import DemographicQuestions from "@/data/questions/demographic-questions"
+import MedicalQuestions from "@/data/questions/medical-questions";
+import GeneralQuestions from "@/data/questions/general-questions";
 
 import "swiper"
 import 'swiper/css/navigation';
@@ -19,16 +21,14 @@ import Cookies from "js-cookie";
 import { useRouter } from 'next/navigation';
 import { createCustomForm } from '@/actions/customForm/create-custom-form';
 import { toast } from 'react-toastify';
-
 import { customFormStore } from '@/stores/customForm.store';
-import { markFirstLogin } from '@/actions/users/mark-first-login';
 
 
 type Props = {}
 
 export default function Page({ }: Props) {
     const router = useRouter();
-    const questions: QuestionDTO[] = [...DemographicQuestions(), ...NutritionistQuestions()];
+    const questions: QuestionDTO[] = [...DemographicQuestions(), ...NutritionistQuestions(), ...MedicalQuestions(), ...GeneralQuestions()];
     const customForm = customFormStore((state: any) => state.form);
 
     const handleComplete = async () => {
@@ -63,7 +63,8 @@ export default function Page({ }: Props) {
                     <SwiperSlide key={question.name}>
                         <div className='h-full flex flex-col p-10 w-full'>
                             <div className='top-0 text-center h-full p-5'>
-                                {/* <Image src={question.img || ""} alt={question.name} width={0} height={0}></Image> */}
+                                {/* <Image src={question.img || ""} alt={question.name} width={128} height={163} className=''></Image> */}
+                                <div className="h-14 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full mb-2"></div>
                                 <h3 className='font-semibold text-2xl text-jungle-green-500'> {question.title} </h3>
                                 <h5 className='text-lg text-gray-700'> {question.subtitle} </h5>
                             </div>
@@ -80,7 +81,7 @@ export default function Page({ }: Props) {
                             <h5 className='text-lg text-gray-700'>Now you can continue</h5>
                         </div>
                         <div className='justify-center items-center w-full flex'>
-                            <Button className='bg-jungle-green-500 text-white hover:bg-jungle-green-600' onClick={handleComplete}>Go to Dashboard</Button>
+                            <Button className='bg-jungle-green-500 text-white hover:bg-jungle-green-600' onClick={handleComplete}>Proceed Next Step</Button>
                         </div>
                     </div>
                 </SwiperSlide>
