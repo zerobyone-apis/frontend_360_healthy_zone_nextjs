@@ -195,11 +195,11 @@ export default function NewTrainingDialog({ handleNext, goal }: Props) {
 								>
 									<option value="">Select </option>
 									<option value="1 per week">1 Per Week</option>
-									<option value="2 per week">2 Per Week</option>
-									<option value="3 per week">3 Per Week </option>
-									<option value="4 per week">4 Per Week </option>
-									<option value="5 per week">5 Per Week </option>
-									<option value="6 per week">6 Per Week </option>
+									<option value="2 times per week">2 times Per Week</option>
+									<option value="3 times per week">3 times Per Week </option>
+									<option value="4 times per week">4 times Per Week </option>
+									<option value="5 times per week">5 times Per Week </option>
+									<option value="6 times per week">6 times Per Week </option>
 									<option value="All in a row">All in a row </option>
 								</select>
 							</div>
