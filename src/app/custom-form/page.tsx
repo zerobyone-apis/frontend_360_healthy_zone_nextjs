@@ -10,6 +10,9 @@ import NutritionistQuestions from "@/data/questions/nutritionist-questions";
 import DemographicQuestions from "@/data/questions/demographic-questions"
 import MedicalQuestions from "@/data/questions/medical-questions";
 import GeneralQuestions from "@/data/questions/general-questions";
+import MeasurementsQuestions from "@/data/questions/measurements-questions";
+import CoachQuestions from "@/data/questions/coach-questions";
+import TermsAndConditions from "@/data/questions/terms-and-conditions";
 
 import "swiper"
 import 'swiper/css/navigation';
@@ -28,7 +31,8 @@ type Props = {}
 
 export default function Page({ }: Props) {
     const router = useRouter();
-    const questions: QuestionDTO[] = [...DemographicQuestions(), ...NutritionistQuestions(), ...MedicalQuestions(), ...GeneralQuestions()];
+    const questions: QuestionDTO[] = [...DemographicQuestions(), ...NutritionistQuestions(), ...MedicalQuestions(),
+    ...GeneralQuestions(), ...MeasurementsQuestions(), ...CoachQuestions(), ...TermsAndConditions()];
     const customForm = customFormStore((state: any) => state.form);
 
     const handleComplete = async () => {
