@@ -1,9 +1,11 @@
 
 "use client";
 
+import { CreateClientProgress } from "@/actions/client/create-client-progress";
 import { getProfileInfo } from "@/actions/profile/getProfileInfo";
+import { GoalResponseDTO } from "@/interfaces/goals";
 import { calculateFatPercentage } from "@/utils/calculateFatPercentage";
-import { Button, Drawer, Label, Textarea, TextInput } from "flowbite-react";
+import { Button, Drawer, Label, Select, Textarea, TextInput } from "flowbite-react";
 import { useEffect, useState, ChangeEvent } from "react";
 import { HiOutlineArrowTrendingUp, HiScale } from "react-icons/hi2";
 import { toast } from "react-toastify";
@@ -11,13 +13,15 @@ import { toast } from "react-toastify";
 type Props = {
     open: boolean;
     handleCloseFn: () => void;
+    goal: GoalResponseDTO;
 }
-export function CreateProgressDrawer({ open = false, handleCloseFn }: Props) {
+export function CreateProgressDrawer({ open = false, handleCloseFn, goal }: Props) {
     const [currentWeight, setCurrentWeight] = useState("0");
     const [photos, setPhotos] = useState<File[]>([]);
     const [descriptionAdvance, setDescriptionAdvance] = useState("");
     const [profile, setProfile] = useState<any>();
-
+    const [trainingSelected, setTrainingSelected] = useState("");
+    const [dietSelected, setDietSelected] = useState("");
 
     useEffect(() => {
         getProfileInfo().then((data) => {
@@ -31,18 +35,45 @@ export function CreateProgressDrawer({ open = false, handleCloseFn }: Props) {
         setPhotos(images);
     }
 
-    const handleSubmit = () => {
-        if (!photos.length) return toast.warning("No photos uploaded")
+    const handleSubmit = async () => {
+        if (!dietSelected && !trainingSelected) return toast.warning("No diet or training selected");
 
-        toast.success("Progress submitted!");
+        if (!photos.length) return toast.warning("No photos uploaded")
+        const selected_type = dietSelected && trainingSelected ? "BOTH" : dietSelected ? "DIET" : "TRAINING";
+
+
+        try {
+            let data = {
+                initial_height: profile.initial_height,
+                initial_weight: profile.initial_weight,
+                goal_id: goal.id,
+                current_weight: currentWeight,
+                current_body_fat_percentage: currentFatPercentage(),
+                target_weight: goal.target_weight,
+                target_body_fat_percentage: goal.target_body_fat_percentage,
+                description_advance: descriptionAdvance,
+                selected_type,
+                training_id: trainingSelected || "",
+                diet_id: dietSelected || ""
+            }
+
+            let resp = await CreateClientProgress(data, photos);
+            console.log(resp);
+            toast.success("Progress submitted!");
+            return true
+        } catch (e) {
+            console.log(e);
+            toast.warning("Something went wrong");
+        }
+
     }
 
     const currentFatPercentage = () => {
         let pertcentage = calculateFatPercentage({
-            age: 30,
+            age: Number(profile.age),
             weight: Number(currentWeight),
             height: profile.initial_height,
-            gender: "male"
+            gender: profile.gender
         });
 
         if (!currentWeight || currentWeight === "0" || !pertcentage) return 0
@@ -59,6 +90,32 @@ export function CreateProgressDrawer({ open = false, handleCloseFn }: Props) {
                     <form action={handleSubmit}>
                         <div className="mb-6"><ImageUpload handleChange={handlePhotosChange} /></div>
                         <div className="max-w-md mb-6">
+                            <div className="max-w-md mb-6">
+                                <div className="mb-2 block">
+                                    <Label htmlFor="diet-selection" value="Select diet for..." />
+                                </div>
+                                <Select id="diet-selection" required value={dietSelected} onChange={(e) => setDietSelected(e.target.value)}>
+                                    <option>Select a diet</option>
+                                    {goal.diets.map((diet) => {
+                                        const opt = `${diet.type.replaceAll("_", " ")} / Status ${diet.diet_status.replaceAll("_", " ").toLowerCase()} - ${diet.created_on.split(" ")[0]}`
+                                        return <option key={diet.diet_id} value={diet.diet_id}>{opt}</option>
+                                    })
+                                    }
+                                </Select>
+                            </div>
+                            <div className="max-w-md mb-6">
+                                <div className="mb-2 block">
+                                    <Label htmlFor="training-selection" value="Select training for..." />
+                                </div>
+                                <Select id="training-selection" required value={trainingSelected} onChange={(e) => setTrainingSelected(e.target.value)}>
+                                    <option>Select a training</option>
+                                    {goal.trainings.map((training) => {
+                                        const opt = `${training.type.replaceAll("_", " ")} / Status ${training.training_status.replaceAll("_", " ").toLowerCase()} - ${training.created_on.split("T")[0]}`
+                                        return <option key={training.training_id} value={training.training_id}>{opt}</option>
+                                    })
+                                    }
+                                </Select>
+                            </div>
                             <div className="mb-2 block">
                                 <Label htmlFor="current-weight" value="Current weight (kg)" />
                             </div>

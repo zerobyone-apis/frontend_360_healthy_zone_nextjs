@@ -73,7 +73,6 @@ export default function Page() {
 	const showTrainingDetails = searchParams.get("details");
 	const confirmDelete = searchParams.get("confirm-delete");
 	const trainingId = searchParams.get("training_id");
-	const showAddProgress = searchParams.get("add-progress");
 	const trainingSelected =
 		goal?.trainings.find(train => train.training_id == trainingId) || null;
 	const confirmDeactivateTraining = async () => {
@@ -341,7 +340,7 @@ export default function Page() {
 				/>
 			)}
 
-			<CreateProgressDrawer handleCloseFn={handleCloseFn} open={openProgressDrawer} />
+			<CreateProgressDrawer handleCloseFn={handleCloseFn} open={openProgressDrawer} goal={goal} />
 		</section>
 	);
 }
