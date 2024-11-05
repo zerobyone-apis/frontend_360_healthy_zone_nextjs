@@ -43,7 +43,8 @@ export function NotificationBell({ }: Props) {
 
 			if (user.admin !== null) {
 				stompClient.subscribe('/notifications/messages', function (message) { //  para todos..
-					toast(message.body)
+					const data = JSON.parse(message.body);
+					toast(data.content)
 				});
 			}
 
@@ -58,7 +59,7 @@ export function NotificationBell({ }: Props) {
 						id: notifications?.length,
 						typeEvent: data.event.type_event
 					}]);
-					toast.success(data.content);
+					toast(data.content);
 				});
 
 
