@@ -15,6 +15,7 @@ import TrainingResumeCard from "@/app/ui/dashboard/trainings/training-resume-car
 import LoadingPage from "@/app/ui/loading.page";
 import { CreateProgressDrawer } from "@/app/ui/dashboard/goal/create-progress-drawer";
 import { Button } from "flowbite-react";
+import ProgressModal from "@/app/ui/dashboard/goal/progress-modal";
 
 export default function Page() {
 	const router = useRouter();
@@ -24,8 +25,18 @@ export default function Page() {
 	const [progress, setProgress] = useState<ProgressResponseDTO[] | null>();
 	const [openProgressDrawer, setOpenProgressDrawer] = useState(false);
 
-	const handleCloseFn = () => { setOpenProgressDrawer(false) }
+	const [progressSelected, setProgressSelected] = useState<ProgressResponseDTO>();
+	const [openProgressModal, setOpenProgressModal] = useState(false);
 
+	const handleCloseFn = () => {
+		setOpenProgressDrawer(false);
+		setOpenProgressModal(false);
+	}
+
+	const handleSeeProgress = (progress: ProgressResponseDTO) => {
+		setProgressSelected(progress);
+		setOpenProgressModal(true)
+	}
 	async function getGoalAndProgress() {
 		const id: string = Array.isArray(param.id) ? param.id[0] : param.id;
 
@@ -101,6 +112,7 @@ export default function Page() {
 				<Button
 					onClick={() => setOpenProgressDrawer(true)}
 					type="button"
+					size="xs"
 					className="inline-flex items-center px-4 py-2 text-sm font-medium  border border-gray-200 rounded-lg"
 				>
 					<i className="bx bx-detail"></i>
@@ -175,7 +187,7 @@ export default function Page() {
 				</div>
 				<div className="col-span-3">
 					{progress?.map((p, index) => (
-						<ProgressCard progress={p} key={index} />
+						<ProgressCard progress={p} key={index} handleSeeProgress={handleSeeProgress} />
 					))}
 
 					{!progress?.length &&
@@ -340,6 +352,7 @@ export default function Page() {
 				/>
 			)}
 
+			{progressSelected && <ProgressModal progress={progressSelected} goal={goal} handleCloseFn={handleCloseFn} open={openProgressModal} />}
 			<CreateProgressDrawer handleCloseFn={handleCloseFn} open={openProgressDrawer} goal={goal} />
 		</section>
 	);
