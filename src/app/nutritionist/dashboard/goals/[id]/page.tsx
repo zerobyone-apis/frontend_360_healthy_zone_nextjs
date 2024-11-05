@@ -11,6 +11,8 @@ import ConfirmationDialog from "@/app/ui/confirmation-dialog";
 import { deactivateTraining } from "@/actions/trainings/deactivate-training";
 import ProgressCard from "@/app/ui/coach/progress-card";
 import DietResumeCard from "@/app/ui/dashboard/diets/diet-resume-card";
+import LoadingPage from "@/app/ui/loading.page";
+import ProgressModal from "@/app/ui/dashboard/goal/progress-modal";
 
 export default function Page() {
 	const router = useRouter();
@@ -62,11 +64,20 @@ export default function Page() {
 		getGoalAndProgress();
 	}, []);
 
-	const showTrainingDetails = searchParams.get("details");
+	const [progressSelected, setProgressSelected] = useState<ProgressResponseDTO>();
+	const [openProgressModal, setOpenProgressModal] = useState(false);
+
+	const handleCloseFn = () => {
+		setOpenProgressModal(false);
+	}
+
+	const handleSeeProgress = (progress: ProgressResponseDTO) => {
+		setProgressSelected(progress);
+		setOpenProgressModal(true)
+	}
+
 	const confirmDelete = searchParams.get("confirm-delete");
 	const dietID = searchParams.get("diet_id");
-	const trainingSelected =
-		goal?.trainings.find(train => train.training_id == dietID) || null;
 	const confirmDeactivateDiet = async () => {
 		// Deactivate training
 		if (!dietID) return;
@@ -85,7 +96,7 @@ export default function Page() {
 	};
 
 	//TODO Implement the page LOADING and ERROR states
-	if (!goal) return <div>Loading</div>;
+	if (!goal) return <LoadingPage />
 
 	return (
 		<section className="p-2">
@@ -175,7 +186,7 @@ export default function Page() {
 				</div>
 				<div className="col-span-3">
 					{progress?.map((p, index) => (
-						<ProgressCard progress={p} key={index} />
+						<ProgressCard progress={p} key={index} handleSeeProgress={handleSeeProgress} />
 					))}
 
 					{!progress?.length &&
@@ -332,6 +343,9 @@ export default function Page() {
 					title={"Are you sure you want to deactivate this training?"}
 				/>
 			)}
+
+			{progressSelected && <ProgressModal progress={progressSelected} goal={goal} handleCloseFn={handleCloseFn} open={openProgressModal} />}
+
 		</section>
 	);
 }
