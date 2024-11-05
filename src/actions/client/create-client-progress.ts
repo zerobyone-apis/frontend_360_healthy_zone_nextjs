@@ -18,7 +18,7 @@ export async function CreateClientProgress(data: any, photos: File[]) {
 
 	formdata.append("client_id", String(clientID));
 	formdata.append("goal_id", data.goal_id);
-	formdata.append("description_advance", "Training seems good for now");
+	formdata.append("description_advance", data.description_advance);
 	formdata.append("initial_weight", String(data.initial_weight));
 	formdata.append("initial_height", String(data.initial_height));
 	formdata.append("initial_body_fat_percentage", "0");
@@ -60,7 +60,6 @@ export async function CreateClientProgress(data: any, photos: File[]) {
 		return resp;
 	} catch (e) {
 		console.log(e);
-		console.log(e.message);
 		throw new Error("Error trying to submit the progress");
 	}
 }
