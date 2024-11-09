@@ -102,14 +102,6 @@ export default function Page() {
 		<section className="p-2">
 			<div className="w-full inline-flex justify-end gap-2">
 				<Link
-					href={`?edit-progress=true`}
-					type="button"
-					className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
-				>
-					<i className="bx bx-detail"></i>
-					Edit progress
-				</Link>
-				<Link
 					href={`?confirm-delete=true`}
 					type="button"
 					className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
@@ -344,7 +336,7 @@ export default function Page() {
 				/>
 			)}
 
-			{progressSelected && <ProgressModal progress={progressSelected} goal={goal} handleCloseFn={handleCloseFn} open={openProgressModal} />}
+			{progressSelected && <ProgressModal progress={progressSelected} goal={goal} handleCloseFn={handleCloseFn} open={openProgressModal} professionalView />}
 
 		</section>
 	);
