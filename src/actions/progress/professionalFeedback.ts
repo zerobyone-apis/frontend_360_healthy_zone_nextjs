@@ -12,6 +12,9 @@ export async function postProffesionalFeedback(obj: any): Promise<any> {
 	//getting the user from the cookie
 	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
 	const role = user.user.roles.toLowerCase();
+	const endpointUrl = role
+		? "/v1.0/nutritionist/comment/for/client/progress"
+		: "/v1.0/coach/feedback/for/client/progress";
 	const objBody = {
 		...obj,
 		nutritionist_id: role === "NUTRITIONIST" ? user?.nutritionist?.id : "",
@@ -19,18 +22,15 @@ export async function postProffesionalFeedback(obj: any): Promise<any> {
 	};
 
 	try {
-		const resp = await fetch(
-			process.env.BASE_PATH + `/v1.0/${role}/comment/for/client/progress`,
-			{
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: token,
-				},
-				body: JSON.stringify(objBody),
-				cache: "no-store",
-			}
-		);
+		const resp = await fetch(process.env.BASE_PATH + endpointUrl, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+			body: JSON.stringify(objBody),
+			cache: "no-store",
+		});
 		let body = await resp.json();
 
 		if (!resp.ok) {

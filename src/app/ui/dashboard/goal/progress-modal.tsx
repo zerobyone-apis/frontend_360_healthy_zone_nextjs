@@ -18,7 +18,7 @@ type Props = {
 export default function ProgressModal({ open = false, handleCloseFn, goal, progress, professionalView }: Props) {
 
     const [comment, setComment] = useState("");
-    const [goalPercentage, setGoalPercentage] = useState(goal.isCompleted ? "100" : goal.percentage || "0");
+    const [goalPercentage, setGoalPercentage] = useState(goal.isCompleted ? "100" : goal.progressGoalPercentage || "0");
     const [fatPercentage, setFatPercentage] = useState(progress.current_body_fat_percentage || "0");
 
     let stars = [];

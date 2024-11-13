@@ -47,10 +47,10 @@ export default function CustomerGoalCard({
 			<div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
 				<div
 					className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-					style={{ width: goal.isCompleted ? "100" + "%" : goal.percentage + "%" }}
+					style={{ width: goal.isCompleted ? "100" + "%" : goal.progressGoalPercentage + "%" }}
 				>
 					{" "}
-					{goal.isCompleted ? "100" : goal.percentage}%
+					{goal.isCompleted ? "100" : goal.progressGoalPercentage}%
 				</div>
 			</div>
 			<p className="text-sm">

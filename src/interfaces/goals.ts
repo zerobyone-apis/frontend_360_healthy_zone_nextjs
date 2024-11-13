@@ -51,6 +51,7 @@ export interface GoalResponseDTO {
 	status: GoalStatus;
 	descriptionGoal: string;
 	percentage: string;
+	progressGoalPercentage: number;
 	goalType: TypeGoals;
 	healthyFocusDescription: string;
 	trainerPlans: CoachPlansServices;
