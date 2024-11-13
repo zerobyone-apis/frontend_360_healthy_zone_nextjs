@@ -352,7 +352,7 @@ export default function Page() {
 				/>
 			)}
 
-			{progressSelected && <ProgressModal progress={progressSelected} goal={goal} handleCloseFn={handleCloseFn} open={openProgressModal} />}
+			{progressSelected && <ProgressModal progress={progressSelected} goal={goal} handleCloseFn={handleCloseFn} open={openProgressModal} professionalView={false} />}
 			<CreateProgressDrawer handleCloseFn={handleCloseFn} open={openProgressDrawer} goal={goal} />
 		</section>
 	);

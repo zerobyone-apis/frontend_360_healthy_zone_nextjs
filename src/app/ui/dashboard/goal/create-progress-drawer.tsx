@@ -38,10 +38,18 @@ export function CreateProgressDrawer({ open = false, handleCloseFn, goal }: Prop
         setPhotos(images);
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event: any): Promise<boolean> => {
+        event.preventDefault();
         setLoading(true);
-        if (!dietSelected && !trainingSelected) return toast.warning("No diet or training selected");
-        if (!photos.length) return toast.warning("No photos uploaded");
+        if (!dietSelected && !trainingSelected) {
+            toast.warning("No diet or training selected");
+            return false
+        }
+
+        if (!photos.length) {
+            toast.warning("No photos uploaded");
+            return false;
+        }
 
         try {
             let data = {
@@ -72,7 +80,9 @@ export function CreateProgressDrawer({ open = false, handleCloseFn, goal }: Prop
         } catch (e) {
             console.log(e);
             toast.warning("Something went wrong");
+            return false
         }
+
     }
 
     const currentFatPercentage = () => {
@@ -97,7 +107,7 @@ export function CreateProgressDrawer({ open = false, handleCloseFn, goal }: Prop
             <Drawer open={open} onClose={handleCloseFn} position="right" className="z-[55] w-full md:w-[25rem]">
                 <Drawer.Header title="New Progress" titleIcon={HiOutlineArrowTrendingUp} />
                 <Drawer.Items>
-                    <form action={handleSubmit}>
+                    <form onSubmit={handleSubmit}>
                         <div className="mb-6"><ImageUpload handleChange={handlePhotosChange} /></div>
                         <div className="max-w-md mb-6">
                             <div className="mb-6">

@@ -37,7 +37,7 @@ export async function CreateClientProgress(data: any, photos: File[]) {
 		formdata.append("training_id", String(data?.training_id));
 	data?.diet_id && formdata.append("diet_id", String(data?.diet_id));
 
-	const requestOptions = {
+	const requestOptions: RequestInit = {
 		method: "POST",
 		body: formdata,
 		mode: "no-cors",
