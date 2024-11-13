@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { Button } from "../button";
 import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 
 export function Hero() {
@@ -22,9 +20,9 @@ export function Hero() {
 					<h1 className="text-center sm:text-start text-2xl md:text-3xl lg:text-4xl xl:text-5xl leading-loose mb-4 tracking-tight font-extrabold text-jungle-green-400">
 						Unlock Your Path to Wellness
 					</h1>
-					<p className="text-android-green-50 text-xl font-light">
+					{/* <p className="text-android-green-50 text-xl font-light">
 						This website is working in progress. Please come back on Agust 2024.
-					</p>
+					</p> */}
 					{/* <Button className="bg-jungle-green-500 rounded uppercase text-white">Registration here</Button> */}
 				</div>
 			</div>

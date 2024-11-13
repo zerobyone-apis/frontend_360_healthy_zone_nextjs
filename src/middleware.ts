@@ -17,8 +17,6 @@ export function middleware(request: NextRequest) {
 
 	const pathname = request.nextUrl.pathname;
 
-	console.log("role: ", user?.user?.roles);
-	console.log("is first login? ", user?.user?.firstTimeLogin);
 	//Si es una persona intentando acceder al dashboard y no tiene token, lo enviamos al login de regreso.
 	if (
 		!currentToken &&

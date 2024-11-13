@@ -49,6 +49,10 @@ export default function Page() {
         setShowAssignModal(true);
     }
 
+    const approveFeedback = (progress: any) => {
+        console.log(progress);
+    }
+
     // Progress of clients
 
     const headingsProgress = [
@@ -100,7 +104,7 @@ export default function Page() {
         <div className="flex flex-col gap-3">
             {dataClients?.length ? <DataTable title={"Clients to assign: " + dataClients.length} headings={headingsClients} data={dataClients} actionTitle="Assign" actionFunction={assignClient}></DataTable> :
                 <CheckCard content="All clients have been assigned"></CheckCard>}
-            {dataProgress?.length ? <DataTable headings={headingsProgress} data={dataProgress} actionTitle="Assign" actionFunction={assignClient}></DataTable>
+            {dataProgress?.length ? <DataTable headings={headingsProgress} data={dataProgress} actionTitle="Approve" actionFunction={approveFeedback}></DataTable>
                 :
                 <CheckCard content="All progress has been approved"></CheckCard>}
             {showAssignModal && selectedClient && <AssignModal client={selectedClient} handleClose={handleCloseAssignModal}></AssignModal>}

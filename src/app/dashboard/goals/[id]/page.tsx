@@ -12,6 +12,10 @@ import TrainingDetailsDialog from "@/app/ui/coach/training-details.dialog";
 import { deactivateTraining } from "@/actions/trainings/deactivate-training";
 import ProgressCard from "@/app/ui/coach/progress-card";
 import TrainingResumeCard from "@/app/ui/dashboard/trainings/training-resume-card";
+import LoadingPage from "@/app/ui/loading.page";
+import { CreateProgressDrawer } from "@/app/ui/dashboard/goal/create-progress-drawer";
+import { Button } from "flowbite-react";
+import ProgressModal from "@/app/ui/dashboard/goal/progress-modal";
 
 export default function Page() {
 	const router = useRouter();
@@ -19,7 +23,20 @@ export default function Page() {
 	const searchParams = useSearchParams();
 	const [goal, setGoal] = useState<GoalResponseDTO>();
 	const [progress, setProgress] = useState<ProgressResponseDTO[] | null>();
+	const [openProgressDrawer, setOpenProgressDrawer] = useState(false);
 
+	const [progressSelected, setProgressSelected] = useState<ProgressResponseDTO>();
+	const [openProgressModal, setOpenProgressModal] = useState(false);
+
+	const handleCloseFn = () => {
+		setOpenProgressDrawer(false);
+		setOpenProgressModal(false);
+	}
+
+	const handleSeeProgress = (progress: ProgressResponseDTO) => {
+		setProgressSelected(progress);
+		setOpenProgressModal(true)
+	}
 	async function getGoalAndProgress() {
 		const id: string = Array.isArray(param.id) ? param.id[0] : param.id;
 
@@ -41,6 +58,7 @@ export default function Page() {
 			const progressResponse = await getProgressByClientID(
 				goalResponse.client.id
 			);
+
 			const progressFiltered = progressResponse?.filter(
 				p => p.goal_id == goalResponse.id
 			);
@@ -86,19 +104,20 @@ export default function Page() {
 	};
 
 	//TODO Implement the page LOADING and ERROR states
-	if (!goal) return <div>Loading</div>;
+	if (!goal) return <LoadingPage message="Loading goals" />;
 
 	return (
 		<section className="p-2">
 			<div className="w-full inline-flex justify-end gap-2">
-				<Link
-					href={`?add-progress=true`}
+				<Button
+					onClick={() => setOpenProgressDrawer(true)}
 					type="button"
-					className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+					size="xs"
+					className="inline-flex items-center px-4 py-2 text-sm font-medium  border border-gray-200 rounded-lg"
 				>
 					<i className="bx bx-detail"></i>
 					Add progress
-				</Link>
+				</Button>
 			</div>
 			<div className="w-full text-center flex justify-center flex-col p-2">
 				<h1 className="text-xl text-jungle-green-700 font-bold text-center">
@@ -122,10 +141,10 @@ export default function Page() {
 				<div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
 					<div
 						className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-						style={{ width: goal.isCompleted ? "100%" : goal.percentage + "%" }}
+						style={{ width: goal.isCompleted ? "100%" : goal.progressGoalPercentage + "%" }}
 					>
 						{" "}
-						{goal.isCompleted ? "100" : goal.percentage}%
+						{goal.isCompleted ? "100" : goal.progressGoalPercentage}%
 					</div>
 				</div>
 			</div>
@@ -168,7 +187,7 @@ export default function Page() {
 				</div>
 				<div className="col-span-3">
 					{progress?.map((p, index) => (
-						<ProgressCard progress={p} key={index} />
+						<ProgressCard progress={p} key={index} handleSeeProgress={handleSeeProgress} />
 					))}
 
 					{!progress?.length &&
@@ -332,6 +351,9 @@ export default function Page() {
 					}}
 				/>
 			)}
+
+			{progressSelected && <ProgressModal progress={progressSelected} goal={goal} handleCloseFn={handleCloseFn} open={openProgressModal} professionalView={false} />}
+			<CreateProgressDrawer handleCloseFn={handleCloseFn} open={openProgressDrawer} goal={goal} />
 		</section>
 	);
 }
