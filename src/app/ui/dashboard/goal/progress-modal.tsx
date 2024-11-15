@@ -1,8 +1,10 @@
+import { ApproveFeedback } from '@/actions/admin/approve-feedback';
+import { ApproveProgress } from '@/actions/admin/approve-progress';
 import { postProffesionalFeedback } from '@/actions/progress/professionalFeedback';
 import { GoalResponseDTO, ProgressResponseDTO } from '@/interfaces';
 import clsx from 'clsx';
-import { Accordion, Alert, Avatar, Badge, Button, Label, Modal, RangeSlider, Rating, Textarea } from 'flowbite-react'
-import React, { ReactElement, useEffect, useState } from 'react'
+import { Alert, Avatar, Badge, Button, Label, Modal, RangeSlider, Rating, TextInput, Textarea } from 'flowbite-react'
+import React, { ReactElement, useState } from 'react'
 import { HiArrowUturnLeft } from "react-icons/hi2";
 import { toast } from 'react-toastify';
 
@@ -10,16 +12,47 @@ import { toast } from 'react-toastify';
 type Props = {
     open: boolean;
     handleCloseFn: () => void;
-    goal: GoalResponseDTO;
+    goal?: GoalResponseDTO;
     progress: ProgressResponseDTO;
-    professionalView: boolean;
+    professionalView?: boolean;
+    adminView?: boolean;
 }
 
-export default function ProgressModal({ open = false, handleCloseFn, goal, progress, professionalView }: Props) {
+export default function ProgressModal({ open = false, handleCloseFn, goal, progress, professionalView, adminView }: Props) {
 
     const [comment, setComment] = useState("");
-    const [goalPercentage, setGoalPercentage] = useState(goal.isCompleted ? "100" : goal.progressGoalPercentage || "0");
+    const [goalPercentage, setGoalPercentage] = useState(goal?.isCompleted ? "100" : goal?.progressGoalPercentage || "0");
     const [fatPercentage, setFatPercentage] = useState(progress.current_body_fat_percentage || "0");
+
+    const handleDecline = () => {
+        console.log("decline this comment...")
+    }
+
+    const handleApproveComment = async () => {
+        try {
+            await ApproveFeedback(progress.id);
+            handleCloseFn();
+            toast.success("Feedback has been approved");
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+        } catch (e) {
+            toast.error("Something went wrong");
+        }
+    }
+
+    const handleApproveProgress = async () => {
+        try {
+            await ApproveProgress(progress.id);
+            handleCloseFn();
+            toast.success("Progress has been approved");
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+        } catch (e) {
+            toast.error("Something went wrong");
+        }
+    }
 
     let stars = [];
     const level = {
@@ -50,7 +83,7 @@ export default function ProgressModal({ open = false, handleCloseFn, goal, progr
         try {
             await postProffesionalFeedback({
                 client_id: progress.client_id,
-                goal_id: goal.id,
+                goal_id: progress.goal_id,
                 client_progress_id: progress.id,
                 comment,
                 current_body_fat_percentage: Number(fatPercentage),
@@ -112,7 +145,7 @@ export default function ProgressModal({ open = false, handleCloseFn, goal, progr
                             <span className="font-medium">Waiting for professional to give you a feedback</span>
                         </Alert>
                     }
-                    {progress.professionalComment && progress.is_feedback_approved &&
+                    {(progress.professionalComment && progress.is_feedback_approved) || (adminView && progress.professionalComment) &&
                         <div className="flex items-start flex-col w-full bg-gray-200 border border-gray-300 p-3 rounded-lg md:ml-2">
                             <div className="inline-flex w-full items-center mb-4">
                                 <span className="inline-flex items-center mr-3 text-sm text-gray-500 dark:text-white font-semibold gap-2">
@@ -122,7 +155,6 @@ export default function ProgressModal({ open = false, handleCloseFn, goal, progr
                                             "My Feedback"
                                             : `Reply from ${progress.selected_type == "DIET" ? "Nutritionist" : "Coach"}`
                                     }
-
                                 </span>
                                 <p className="text-sm text-gray-400 dark:text-gray-400"><time dateTime={progress.professional_comment_date || ""}
                                     title={formatDate(progress.professional_comment_date || "")}>{formatDate(progress.professional_comment_date || "")}</time></p>
@@ -130,8 +162,21 @@ export default function ProgressModal({ open = false, handleCloseFn, goal, progr
                             <p className="text-base leading-relaxed text-gray-500 ml-5">
                                 {progress.professionalComment}
                             </p>
+                            {adminView && <div className='mt-2 flex flex-row gap-2'>
+                                <Button color="green" outline={false} onClick={handleApproveComment}>
+                                    Approve feedback
+                                </Button>
+                                <form className="max-w-md inline-flex" onSubmit={handleDecline}>
+                                    <TextInput type="text" placeholder="Reason why..." required className='border-r-0' />
+                                    <Button color="red" outline={false} className='border-l-0'>
+                                        Decline
+                                    </Button>
+                                </form>
+                            </div>}
                         </div>
                     }
+
+
 
                     {professionalView &&
                         <div className='bg-gray-100 p-2 rounded gap-2'>
@@ -169,10 +214,22 @@ export default function ProgressModal({ open = false, handleCloseFn, goal, progr
                             </div>
                         </div>
                     }
+
                 </div>
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer className='flex flex-row justify-between'>
                 <Button onClick={handleCloseFn}>Close</Button>
+                {adminView && <div className='mt-2 flex flex-row gap-2'>
+                    <Button color="green" outline={false} onClick={handleApproveProgress}>
+                        Approve progress
+                    </Button>
+                    <form className="max-w-md inline-flex" onSubmit={handleDecline}>
+                        <TextInput type="text" placeholder="Reason why..." required className='border-r-0' />
+                        <Button color="red" outline={false} className='border-l-0'>
+                            Decline
+                        </Button>
+                    </form>
+                </div>}
             </Modal.Footer>
         </Modal>
     )
