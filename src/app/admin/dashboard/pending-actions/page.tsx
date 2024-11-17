@@ -1,5 +1,6 @@
 "use client"
 import { getAdminActionsSummary } from '@/actions/admin/dashboard/get-actions-summary';
+import AssignUsersView from '@/app/ui/admin/assign-users-view';
 import ProgressViewTab from '@/app/ui/admin/progress-view-tab';
 import { AdminActionsSummary, ProgressResponseDTO } from '@/interfaces';
 import { Spinner, Tabs } from 'flowbite-react'
@@ -30,10 +31,16 @@ export default function Page({ }: Props) {
     return (
         <>
             <Tabs aria-label="Default tabs" variant="default">
-                <Tabs.Item title="Users to assign">
-                    In progress
+                <Tabs.Item active title="Users to assign">
+                    {loading ?
+                        <div className='h-full flex justify-center items-center'>
+                            <Spinner size='lg' />
+                        </div> :
+                        <>{actions?.to_assign_clients_to_professionals.length ? <AssignUsersView clients={actions?.to_assign_clients_to_professionals} /> :
+                            <h5 className='text-xl text-jungle-green-500'>All done here!</h5>}</>
+                    }
                 </Tabs.Item>
-                <Tabs.Item active title="Progresses & Feedback">
+                <Tabs.Item title="Progresses & Feedback">
                     {loading ?
                         <div className='h-full flex justify-center items-center'>
                             <Spinner size='lg' />
@@ -41,9 +48,6 @@ export default function Page({ }: Props) {
                         <>{actions?.to_approvals_client_progresses.length ? <ProgressViewTab progresses={actions?.to_approvals_client_progresses} /> :
                             <h5 className='text-xl text-jungle-green-500'>All done here!</h5>}</>
                     }
-                </Tabs.Item>
-                <Tabs.Item title="Notifications">
-                    In progress
                 </Tabs.Item>
             </Tabs>
         </>

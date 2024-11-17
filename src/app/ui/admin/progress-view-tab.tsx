@@ -43,11 +43,7 @@ export default function ProgressViewTab({ progresses }: Props) {
                                 <Table.Cell key={index}>{progress[property]}</Table.Cell>
                             ))}
                             <Table.Cell>
-                                <Button.Group outline>
-                                    <Button color="gray" onClick={() => handleSeeProgress(progress)}>Details</Button>
-                                    <Button color="green">Approve</Button>
-                                    <Button color="red">Decline</Button>
-                                </Button.Group>
+                                <Button color="gray" onClick={() => handleSeeProgress(progress)}>Details</Button>
                             </Table.Cell>
                         </Table.Row>
                     ))}
