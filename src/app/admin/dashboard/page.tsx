@@ -68,9 +68,9 @@ export default async function Page() {
 			</div>
 			<div className="col-span-full md:col-span-2 gap-2 flex flex-col">
 				<AmountCardRedirect
-					title="Notifications to approve"
+					title="Global Notifications"
 					content={actions.to_approval_notifications.length}
-					redirectTo="/admin/dashboard/pending-actions?tab=notifications"
+					redirectTo="/admin/dashboard/notifications"
 				/>
 				<AmountCardRedirect
 					title="Client progress to approve"
