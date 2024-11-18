@@ -26,7 +26,7 @@ export default function NotificationCard({ message, date, title, emitted_by }: P
                     <h3 className="font-bold text-base text-gray-800">{title}</h3>
                 </div>
                 <p className="text-xs text-gray-500">
-                    {parseServerDate(date) || "0"} ago
+                    {parseServerDate(date) || "0"}
                 </p>
             </div>
             <p className="mt-1 text-sm">
