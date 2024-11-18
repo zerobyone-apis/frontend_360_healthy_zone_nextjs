@@ -1,5 +1,6 @@
 import { ApproveFeedback } from '@/actions/admin/approve-feedback';
 import { ApproveProgress } from '@/actions/admin/approve-progress';
+import { RejectFeedback } from '@/actions/admin/reject-feedback';
 import { postProffesionalFeedback } from '@/actions/progress/professionalFeedback';
 import { GoalResponseDTO, ProgressResponseDTO } from '@/interfaces';
 import clsx from 'clsx';
@@ -24,8 +25,21 @@ export default function ProgressModal({ open = false, handleCloseFn, goal, progr
     const [goalPercentage, setGoalPercentage] = useState(goal?.isCompleted ? "100" : goal?.progressGoalPercentage || "0");
     const [fatPercentage, setFatPercentage] = useState(progress.current_body_fat_percentage || "0");
 
-    const handleDecline = () => {
-        console.log("decline this comment...")
+
+    const [reasonFeedback, setReasonFeedback] = useState<string>("");
+    const handleDeclineFeedback = async () => {
+        console.log("decline this comment...", reasonFeedback);
+        if (!reasonFeedback) return;
+        try {
+            await RejectFeedback(progress.id, reasonFeedback);
+            toast.success("Rejected successfully");
+            setTimeout(() => {
+                window.location.reload();
+            }, 200);
+        } catch (e) {
+            toast.error("Something went wrong, try again");
+        }
+
     }
 
     const handleApproveComment = async () => {
@@ -166,9 +180,10 @@ export default function ProgressModal({ open = false, handleCloseFn, goal, progr
                                 <Button color="green" outline={false} onClick={handleApproveComment}>
                                     Approve feedback
                                 </Button>
-                                <form className="max-w-md inline-flex" onSubmit={handleDecline}>
-                                    <TextInput type="text" placeholder="Reason why..." required className='border-r-0' />
-                                    <Button color="red" outline={false} className='border-l-0'>
+                                <form className="max-w-md inline-flex">
+                                    <TextInput type="text" placeholder="Reason why..." required className='border-r-0' value={reasonFeedback}
+                                        onChange={(e) => setReasonFeedback(e.target.value)} />
+                                    <Button color="red" outline={false} className='border-l-0' onClick={handleDeclineFeedback}>
                                         Decline
                                     </Button>
                                 </form>
@@ -223,8 +238,9 @@ export default function ProgressModal({ open = false, handleCloseFn, goal, progr
                     <Button color="green" outline={false} onClick={handleApproveProgress}>
                         Approve progress
                     </Button>
-                    <form className="max-w-md inline-flex" onSubmit={handleDecline}>
+                    <form className="max-w-md inline-flex">
                         <TextInput type="text" placeholder="Reason why..." required className='border-r-0' />
+
                         <Button color="red" outline={false} className='border-l-0'>
                             Decline
                         </Button>
