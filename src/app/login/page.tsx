@@ -15,6 +15,9 @@ export default function Page() {
 
 	async function handleLoginForm() {
 		let resp = await login(userdata);
+		if (resp.error && resp.message) {
+			return toast.error(resp.message);
+		}
 		if (!resp || resp.status === 500)
 			return toast.warning("Check your credentials and try again");
 		if (resp.user.roles === "CLIENT") {

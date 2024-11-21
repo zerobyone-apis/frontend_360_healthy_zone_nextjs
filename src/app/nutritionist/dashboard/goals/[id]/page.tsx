@@ -304,6 +304,7 @@ export default function Page() {
 						);
 					})
 				) : (
+
 					<div className="flex flex-col gap-2 justify-center items-center h-full">
 						<h3 className="text-lg">
 							It&apos;s time to assign some trainings 💪
