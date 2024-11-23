@@ -9,7 +9,10 @@ import { toast } from "react-toastify";
 import { Tabs } from "flowbite-react";
 
 export default function Page() {
-	const [profile, setProfile] = useState({ description: "", first_name: "", last_name: "", phone: "", email: "", city: "", country: "", address: "", updated_on: "" })
+	const [profile, setProfile] = useState({
+		description: "", first_name: "", last_name: "", phone: "", email: "", city: "", country: "",
+		address: "", updated_on: "", target_weight: "", current_weight: "", initial_weight: ""
+	})
 	const [loading, setLoading] = useState<boolean>(false);
 
 	function handleOnChange(event: any) {
@@ -26,7 +29,10 @@ export default function Page() {
 				phone: profile.phone,
 				city: profile.city,
 				country: profile.country,
-				address: profile.address
+				address: profile.address,
+				target_weight: profile.target_weight,
+				current_weight: Number(profile.current_weight),
+				initial_weight: Number(profile.initial_weight)
 			}
 			await updateProfile(info);
 			toast.success("Profile updated successfully");
@@ -62,6 +68,8 @@ export default function Page() {
 	const lastUpdateDate = profile ? parseServerDate(profile.updated_on) : "";
 
 	if (loading || !profile) return <LoadingPage message={"Loading profile settings"} />;
+	console.log(profile);
+
 	return (
 		<>
 			<Tabs aria-label="Default tabs">
@@ -179,6 +187,39 @@ export default function Page() {
 										id="email"
 										name="email"
 										value={profile.email}
+										className="border border-gray-300 rounded-lg p-2"
+									/>
+								</div>
+								<div className="flex flex-col gap-2 col-span-full md:col-span-1">
+									<label htmlFor="target_weight">Target Weight</label>
+									<input
+										type="text"
+										id="target_weight"
+										name="target_weight"
+										value={profile.target_weight || ""}
+										onChange={(e) => handleOnChange(e)}
+										className="border border-gray-300 rounded-lg p-2"
+									/>
+								</div>
+								<div className="flex flex-col gap-2 col-span-full md:col-span-1">
+									<label htmlFor="target_weight">Initial Weight</label>
+									<input
+										type="text"
+										id="initial_weight"
+										name="initial_weight"
+										value={profile.initial_weight || ""}
+										onChange={(e) => handleOnChange(e)}
+										className="border border-gray-300 rounded-lg p-2"
+									/>
+								</div>
+								<div className="flex flex-col gap-2 col-span-full md:col-span-1">
+									<label htmlFor="target_weight">Current Weight</label>
+									<input
+										type="text"
+										id="current_weight"
+										name="current_weight"
+										value={profile.current_weight || ""}
+										onChange={(e) => handleOnChange(e)}
 										className="border border-gray-300 rounded-lg p-2"
 									/>
 								</div>

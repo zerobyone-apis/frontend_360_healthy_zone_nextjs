@@ -143,7 +143,7 @@ export default function Page() {
 					<ProgressCard
 						bcolor="bg-yellow-green-500"
 						tcolor="text-yellow-green-500"
-						target={customForm.formMap?.target_weight ? customForm.formMap?.target_weight + " kg" : "Not defined yet.."}
+						target={profile.target_weight + " kg"}
 						percent={30}
 						currentProgress={profile.current_weight + " kg"}
 						title="Weight"
