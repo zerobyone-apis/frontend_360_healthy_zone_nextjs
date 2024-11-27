@@ -1,3 +1,4 @@
+"use client"
 import { getDietByID } from "@/actions/diets/get-diet-bt-id";
 import { Button } from "@/app/ui/button";
 import DefaultCard from "@/app/ui/dashboard/default-card";
@@ -5,9 +6,21 @@ import HorizontalTimeline from "@/app/ui/dashboard/horizontal-timeline";
 import { DietResponseDTO } from "@/interfaces/diets";
 import { DietResumeCardStyles } from "@/use-cases/diets-styles";
 import clsx from "clsx";
+import { Timeline } from "flowbite-react";
+import { useEffect, useState } from "react";
+import { HiCalendar, HiFlag } from "react-icons/hi2";
+import { toast } from "react-toastify";
 
 export default async function Page({ params }: { params: { id: string } }) {
-    const diet: DietResponseDTO | null = await getDietByID(params.id);
+    const [diet, setDiet] = useState<DietResponseDTO>();
+    useEffect(() => {
+        getDietByID(params.id).then((data) => {
+            setDiet(data)
+        }).catch(() => {
+            toast.error("Something went wrong loading the data");
+        })
+    }, [])
+
     const status = diet?.diet_status === "CREATED" ? "WAITING FOR START" : diet?.diet_status || "NOT APPLY";
     return (
         <>
@@ -20,7 +33,22 @@ export default async function Page({ params }: { params: { id: string } }) {
                     <p className={clsx('font-bold', DietResumeCardStyles[diet?.diet_status || "NOT APPLY"].labelText)}>{status}</p>
                 </label>
                 <div className="mt-4 ml-6 w-full justify-center flex">
-                    <HorizontalTimeline init_on={diet?.init_on || ""} end_on={diet?.end_on || ""} />
+                    <Timeline horizontal>
+                        <Timeline.Item>
+                            <Timeline.Point icon={HiCalendar} />
+                            <Timeline.Content>
+                                <Timeline.Time>{diet?.init_on.split(" ")[0]}</Timeline.Time>
+                                <Timeline.Title>Start diet</Timeline.Title>
+                            </Timeline.Content>
+                        </Timeline.Item>
+                        <Timeline.Item>
+                            <Timeline.Point icon={HiFlag} />
+                            <Timeline.Content>
+                                <Timeline.Time>{diet?.end_on.split(" ")[0]}</Timeline.Time>
+                                <Timeline.Title>Finish diet</Timeline.Title>
+                            </Timeline.Content>
+                        </Timeline.Item>
+                    </Timeline>
                 </div>
                 <div className="grid grid-cols-2 w-full p-4 gap-2">
                     <DefaultCard classes="col-span-2 md:col-span-2" titleClasses="text-jungle-green-700 mb-2 text-2xl font-bold tracking-tight" title="Recipes" body={diet?.healthy_recipes || "No content"} />
