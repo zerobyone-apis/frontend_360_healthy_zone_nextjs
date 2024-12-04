@@ -7,6 +7,7 @@ import { DietResponseDTO } from "@/interfaces/diets";
 import DietCounterChart from "@/app/ui/dashboard/counter-chart";
 import Image from "next/image";
 import { getAllDietsByUser } from "@/actions/diets/get-all-diets-by-user";
+import { toast } from "react-toastify";
 
 export default function Page() {
 	const [diets, setDiets] = useState<any[]>([]);
@@ -21,7 +22,7 @@ export default function Page() {
 				const resp = await getAllDietsByUser();
 				setDiets(resp);
 			} catch (error) {
-				console.error("Error fetching diets:", error);
+				toast.error("Error fetching diets, try later.");
 				return (
 					<div className="flex flex-col gap-2 justify-center items-center h-full">
 						<h3 className="text-lg">An error occurred while fetching data</h3>

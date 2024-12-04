@@ -1,7 +1,6 @@
 "use client";
 import { getTrainingsID } from "@/actions/trainings";
 import { trainingMarkInProgress } from "@/actions/trainings/training-in-progress";
-import { Button } from "@/app/ui/button";
 import ExercisesTimeline from "@/app/ui/dashboard/trainings/exercises-timeline";
 import { Training } from "@/interfaces/trainings";
 import clsx from "clsx";
@@ -34,7 +33,12 @@ export default function Page() {
 
 				setTraining(data);
 			})
-			.catch(console.error)
+			.catch(() => {
+				toast.error("Something went wrong");
+				return <div className="flex justify-center items-center h-screen gap-2">
+					<p>Something went wrong...</p>
+				</div>;
+			})
 			.finally(() => setLoading(false));
 	}, []);
 
@@ -74,7 +78,6 @@ export default function Page() {
 			try {
 				await trainingMarkInProgress(training.training_id);
 			} catch (error) {
-				console.error(error);
 				toast.error("Error starting training");
 				throw new Error("Error starting training");
 			}
@@ -112,8 +115,8 @@ export default function Page() {
 							scale: 1.2,
 							transition: { duration: 0.3 },
 						}}
-						onHoverStart={e => {}}
-						onHoverEnd={e => {}}
+						onHoverStart={e => { }}
+						onHoverEnd={e => { }}
 						disabled={!nextDay || nextDay.is_day_completed}
 						onClick={handleStartTraining}
 						className={clsx(
@@ -145,8 +148,8 @@ export default function Page() {
 						scale: 1.2,
 						transition: { duration: 0.3 },
 					}}
-					onHoverStart={e => {}}
-					onHoverEnd={e => {}}
+					onHoverStart={e => { }}
+					onHoverEnd={e => { }}
 					disabled={!nextDay || nextDay.is_day_completed}
 					onClick={handleStartTraining}
 					className={clsx(

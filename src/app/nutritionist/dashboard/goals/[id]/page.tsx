@@ -87,7 +87,6 @@ export default function Page() {
 			await deactivateTraining(dietID);
 			toast.success("Training deactivated successfully");
 		} catch (e) {
-			console.error(e);
 			toast.error("Failed to deactivate training");
 		}
 

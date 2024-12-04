@@ -9,12 +9,10 @@ import { User } from "@/interfaces/user";
 import { Pricing } from '../ui/landing/pricing';
 import { toast } from 'react-toastify';
 import LoadingPage from '../ui/loading.page';
-import { useRouter } from "next/navigation";
 
 type Props = {}
 
 export default function Page({ }: Props) {
-    const router = useRouter();
     const [paypalLink, setPaypalLink] = useState(null);
     const [loading, setLoading] = useState(false);
     const user: User = JSON.parse(Cookies.get("user") || "{}");
@@ -37,7 +35,6 @@ export default function Page({ }: Props) {
 
             if (!respPaypalLink) {
                 toast.error("There is an error with the plan selected, retry again")
-                console.error('Ocurrio un error con la subscripcion');
             }
             // const data = await response.json();
 
@@ -47,7 +44,6 @@ export default function Page({ }: Props) {
             }
         } catch (error) {
             toast.error("There is an error with the plan selected, retry again")
-            console.error('Error al crear la suscripción:', error);
         }
         setLoading(false);
     };

@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 
 type Props = {};
 
-export default function Page({}: Props) {
+export default function Page({ }: Props) {
 	const [stats, setStats] = useState<any>(null);
 	const [error, setError] = useState<boolean>(false);
 	const [trainings, setTrainings] = useState<any>([]);
@@ -31,7 +31,7 @@ export default function Page({}: Props) {
 				});
 			})
 			.catch(e => {
-				console.error(e);
+				toast.error("Something went wrong")
 				setError(true);
 			});
 	}, []);
@@ -49,7 +49,6 @@ export default function Page({}: Props) {
 			await deactivateTraining(trainingId);
 			toast.success("Training deactivated successfully");
 		} catch (e) {
-			console.error(e);
 			toast.error("Failed to deactivate training");
 		}
 
