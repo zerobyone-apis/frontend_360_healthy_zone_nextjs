@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/app/ui/button";
 import DefaultCard from "@/app/ui/dashboard/default-card";
 import HorizontalTimeline from "@/app/ui/dashboard/horizontal-timeline";

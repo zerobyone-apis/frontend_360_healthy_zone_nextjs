@@ -2,7 +2,6 @@
 import { getDietByID } from "@/actions/diets/get-diet-bt-id";
 import { Button } from "@/app/ui/button";
 import DefaultCard from "@/app/ui/dashboard/default-card";
-import HorizontalTimeline from "@/app/ui/dashboard/horizontal-timeline";
 import { DietResponseDTO } from "@/interfaces/diets";
 import { DietResumeCardStyles } from "@/use-cases/diets-styles";
 import clsx from "clsx";
@@ -11,7 +10,7 @@ import { useEffect, useState } from "react";
 import { HiCalendar, HiFlag } from "react-icons/hi2";
 import { toast } from "react-toastify";
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default function Page({ params }: { params: { id: string } }) {
     const [diet, setDiet] = useState<DietResponseDTO>();
     useEffect(() => {
         getDietByID(params.id).then((data) => {
