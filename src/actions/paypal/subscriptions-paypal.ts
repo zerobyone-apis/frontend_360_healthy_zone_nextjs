@@ -6,6 +6,7 @@ export interface ClientSubscription {
 	client_id: number;
 	plan_id: string;
 	shiping_amount: ShipingAmount;
+	type: string;
 }
 
 export interface ShipingAmount {

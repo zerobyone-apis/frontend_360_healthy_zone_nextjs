@@ -25,6 +25,7 @@ export default function Page() {
 	const user: User = JSON.parse(Cookies.get("user") || "{}");
 	const planId = Cookies.get("plan_id") || "";
 	const price = Number(Cookies.get("plan_price") || 0);
+	const planType = Cookies.get("plan_type") || "";
 
 	const fetchSubscription = useCallback(async () => {
 		if (user.client?.subscription) return;
@@ -33,6 +34,7 @@ export default function Page() {
 			const clientSubscriptionBody: ClientSubscription = {
 				client_id: user.client.id,
 				plan_id: planId,
+				type: planType,
 				shiping_amount: {
 					value: price,
 					currency_code: "USD",

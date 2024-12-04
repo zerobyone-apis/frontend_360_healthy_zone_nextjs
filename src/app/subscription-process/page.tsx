@@ -18,13 +18,15 @@ export default function Page({ }: Props) {
     const user: User = JSON.parse(Cookies.get("user") || "{}");
     const plan_id = Cookies.get("plan_id") || "";
     const price = Number(Cookies.get("plan_price") || "");
+    const plan_type = Cookies.get("plan_type") || ""
 
-    const handleSubscription = async (planId: string, price: number) => {
+    const handleSubscription = async (planId: string, price: number, type: string) => {
         setLoading(true);
         try {
             const clientSubscriptionBody: ClientSubscription = {
                 client_id: user.client.id, // todo: Aca toca ver como redireccionamos al cliente para tener el id de Cliente, para ello debe estar registrado.
                 plan_id: planId,
+                type,
                 shiping_amount: {
                     value: price,
                     currency_code: 'USD',
@@ -50,11 +52,8 @@ export default function Page({ }: Props) {
 
     useEffect(() => {
         if (!user.client?.subscription) {
-            handleSubscription(plan_id, price);
+            handleSubscription(plan_id, price, plan_type);
         }
-        // else {
-        //     router.push("/dashboard");
-        // }
     }, [])
 
     if (loading) {

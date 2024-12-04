@@ -8,7 +8,7 @@ export default async function Page() {
 	const trainings: any | null = await getAllTrainings();
 	console.log(trainings);
 	const trainingCompletedLength = trainings.filter(
-		(training: any) => training.isCompleted
+		(training: any) => training.isCompleted || training.training_status == "COMPLETED"
 	).length;
 
 	if (!trainings.length || !trainings)
