@@ -18,7 +18,7 @@ export default function Sidebar({ list }: Props) {
     const user: any = JSON.parse(Cookies.get("user") || "{}");
     const [isOpen, setIsOpen] = useState(false);
     const [showProfileDrop, setShowProfileDrop] = useState<boolean>(false);
-    const picProfile = user.client.profile_picture || user.nutritionist?.image_profile_url || user.coach?.image_profile_url || user.admin?.image_profile_url || "/profile.png";
+    const picProfile = user.client?.profile_picture || user.nutritionist?.image_profile_url || user.coach?.image_profile_url || user.admin?.image_profile_url || "/profile.png";
 
     return (
         <>
