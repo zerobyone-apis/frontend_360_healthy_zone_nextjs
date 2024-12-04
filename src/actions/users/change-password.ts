@@ -1,9 +1,11 @@
 "use server";
 
-import { NotificationDto } from "@/interfaces";
 import { cookies } from "next/headers";
 
-export async function getNotificationsByUser(): Promise<NotificationDto[]> {
+export async function changePassword(
+	current_password: string,
+	new_password: string
+) {
 	const cookieStore = cookies();
 
 	//getting the token from the cookie
@@ -13,18 +15,22 @@ export async function getNotificationsByUser(): Promise<NotificationDto[]> {
 	//getting the user from the cookie
 	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
 
-	const userID = user.user.userId;
-
 	try {
 		const resp = await fetch(
-			process.env.BASE_PATH + "/v1.0/notifications/all/by/user/" + userID,
+			process.env.BASE_PATH + "/v1.0/user/change/password",
 			{
-				method: "GET",
+				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: token,
 				},
-				body: null,
+				body: JSON.stringify({
+					current_password,
+					new_password,
+					userId: user.user.userId,
+					username: user.user.username,
+					email: user.user.email,
+				}),
 				cache: "no-store",
 			}
 		);
@@ -36,8 +42,7 @@ export async function getNotificationsByUser(): Promise<NotificationDto[]> {
 
 		return body;
 	} catch (error) {
-		throw new Error(
-			`Error getting notifications for user id: ${userID} Error: ${error}`
-		);
+		console.error(error);
+		throw new Error("Error trying to change the password...");
 	}
 }

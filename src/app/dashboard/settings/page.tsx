@@ -3,14 +3,18 @@ import { useEffect, useState } from "react";
 import { getProfileInfo } from "@/actions/profile/getProfileInfo";
 import parseServerDate from "@/utils/parseDate";
 import LoadingPage from "@/app/ui/loading.page";
-import { Button } from "@/app/ui/button";
 import { updateProfile } from "@/actions/profile/update-profile";
 import { toast } from "react-toastify";
-import { Tabs } from "flowbite-react";
+import { Label, Modal, Tabs, TextInput, Button } from "flowbite-react";
+import { changePassword } from "@/actions/users/change-password";
 
 export default function Page() {
-	const [profile, setProfile] = useState({ description: "", first_name: "", last_name: "", phone: "", email: "", city: "", country: "", address: "", updated_on: "" })
+	const [profile, setProfile] = useState({
+		description: "", first_name: "", last_name: "", phone: "", email: "", city: "", country: "",
+		address: "", updated_on: "", target_weight: "", current_weight: "", initial_weight: ""
+	})
 	const [loading, setLoading] = useState<boolean>(false);
+	const [openModal, setOpenModal] = useState<boolean>(false);
 
 	function handleOnChange(event: any) {
 		const { value, name } = event.target;
@@ -26,7 +30,10 @@ export default function Page() {
 				phone: profile.phone,
 				city: profile.city,
 				country: profile.country,
-				address: profile.address
+				address: profile.address,
+				target_weight: profile.target_weight,
+				current_weight: Number(profile.current_weight),
+				initial_weight: Number(profile.initial_weight)
 			}
 			await updateProfile(info);
 			toast.success("Profile updated successfully");
@@ -47,7 +54,6 @@ export default function Page() {
 				setProfile(resp);
 				setLoading(false);
 			} catch (error) {
-				console.log(error);
 				return (
 					<div className="flex flex-col gap-2 justify-center items-center h-full">
 						<h3 className="text-lg">An error occurred while fetching data</h3>
@@ -62,6 +68,7 @@ export default function Page() {
 	const lastUpdateDate = profile ? parseServerDate(profile.updated_on) : "";
 
 	if (loading || !profile) return <LoadingPage message={"Loading profile settings"} />;
+
 	return (
 		<>
 			<Tabs aria-label="Default tabs">
@@ -79,6 +86,7 @@ export default function Page() {
 							<div className="inline-flex gap-2">
 								<Button
 									type="button"
+									onClick={() => setOpenModal(true)}
 									className="px-3 py-2 text-xs font-medium text-center text-blue-500 bg-white border-blue-500 border-2 rounded-lg hover:bg-blue-500 hover:text-white transition-colors focus:ring-2 focus:outline-none focus:ring-blue-300"
 								>
 									Change password
@@ -182,6 +190,39 @@ export default function Page() {
 										className="border border-gray-300 rounded-lg p-2"
 									/>
 								</div>
+								<div className="flex flex-col gap-2 col-span-full md:col-span-1">
+									<label htmlFor="target_weight">Target Weight</label>
+									<input
+										type="text"
+										id="target_weight"
+										name="target_weight"
+										value={profile.target_weight || ""}
+										onChange={(e) => handleOnChange(e)}
+										className="border border-gray-300 rounded-lg p-2"
+									/>
+								</div>
+								<div className="flex flex-col gap-2 col-span-full md:col-span-1">
+									<label htmlFor="target_weight">Initial Weight</label>
+									<input
+										type="text"
+										id="initial_weight"
+										name="initial_weight"
+										value={profile.initial_weight || ""}
+										onChange={(e) => handleOnChange(e)}
+										className="border border-gray-300 rounded-lg p-2"
+									/>
+								</div>
+								<div className="flex flex-col gap-2 col-span-full md:col-span-1">
+									<label htmlFor="target_weight">Current Weight</label>
+									<input
+										type="text"
+										id="current_weight"
+										name="current_weight"
+										value={profile.current_weight || ""}
+										onChange={(e) => handleOnChange(e)}
+										className="border border-gray-300 rounded-lg p-2"
+									/>
+								</div>
 							</div>
 						</form>
 					</section>
@@ -206,32 +247,68 @@ export default function Page() {
 				</Tabs.Item>
 			</Tabs>
 
-			{/* <ChangePasswordDialog /> */}
+			{<ChangePasswordDialog openModal={openModal} onCloseModal={() => setOpenModal(false)} />}
 		</>
 	);
 }
 
-function ChangePasswordDialog() {
+type ChangePasswordDialogProps = {
+	openModal: boolean;
+	onCloseModal: () => void;
+}
+
+function ChangePasswordDialog({ openModal, onCloseModal }: ChangePasswordDialogProps) {
+
+	const [newPassword, setNewPassword] = useState<string>("")
+	const [currentPassword, setCurrentPassword] = useState<string>("")
+
+	const handleChangePassword = async () => {
+		try {
+			await changePassword(currentPassword, newPassword);
+			toast.success("Password changed successfully");
+
+			setTimeout(() => {
+				window.location.reload();
+			}, 200);
+		} catch {
+			toast.error("Something went wrong");
+		}
+	}
 	return (
-		<dialog className="grid grid-cols-1 gap-4">
-			<div className="flex flex-col gap-2">
-				<label htmlFor="password">Password</label>
-				<input
-					type="password"
-					id="password"
-					name="password"
-					className="border border-gray-300 rounded-lg p-2"
-				/>
-			</div>
-			<div className="flex flex-col gap-2">
-				<label htmlFor="confirm-password">Confirm password</label>
-				<input
-					type="password"
-					id="confirm-password"
-					name="confirm-password"
-					className="border border-gray-300 rounded-lg p-2"
-				/>
-			</div>
-		</dialog>
+		<Modal show={openModal} size="md" onClose={onCloseModal} popup>
+			<Modal.Header />
+			<Modal.Body>
+				<div className="space-y-6">
+					<h3 className="text-xl font-medium text-gray-900 dark:text-white">Change your password</h3>
+					<div>
+						<div className="mb-2 block">
+							<Label htmlFor="current-password" value="Current Password" />
+						</div>
+						<TextInput
+							id="current-password"
+							placeholder="**********"
+							type="password"
+							value={currentPassword}
+							onChange={(event) => setCurrentPassword(event.target.value)}
+							required
+						/>
+					</div>
+					<div>
+						<div className="mb-2 block">
+							<Label htmlFor="password" value="Your new password" />
+						</div>
+						<TextInput id="password"
+							type="password"
+							value={newPassword}
+							placeholder="**********"
+							onChange={(event) => setNewPassword(event.target.value)}
+							required />
+					</div>
+					<div className="w-full">
+						<Button disabled={!currentPassword || !newPassword} onClick={handleChangePassword} color="green">Change password</Button>
+					</div>
+				</div>
+			</Modal.Body>
+		</Modal>
 	);
 }

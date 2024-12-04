@@ -45,8 +45,6 @@ export function NewDietDrawer({ open = false, handleCloseFn, hint, clients }: Pr
             food_education: event.target.food_education.value,
         }
 
-        console.log("customer id", customerID);
-        console.log("diet object", dietObj);
         if (!goalAssigned) {
             return toast.warn("This customer doesn't have an active goal");
         }
@@ -72,7 +70,6 @@ export function NewDietDrawer({ open = false, handleCloseFn, hint, clients }: Pr
         try {
             setLoading(true);
             let resp = await getLatestGoalByClientID(clientID);
-            console.log(resp);
             setGoalAssigned(resp);
         } catch (e) {
             setGoalAssigned(null)

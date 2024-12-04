@@ -6,7 +6,6 @@ import { GoalResponseDTO } from "@/interfaces/goals";
 import { toast } from "react-toastify";
 import { getProgressByClientID } from "@/actions/goals/get-progress";
 import { ProgressResponseDTO } from "@/interfaces/progress";
-import Link from "next/link";
 import ConfirmationDialog from "@/app/ui/confirmation-dialog";
 import TrainingDetailsDialog from "@/app/ui/coach/training-details.dialog";
 import { deactivateTraining } from "@/actions/trainings/deactivate-training";
@@ -16,6 +15,7 @@ import LoadingPage from "@/app/ui/loading.page";
 import { CreateProgressDrawer } from "@/app/ui/dashboard/goal/create-progress-drawer";
 import { Button } from "flowbite-react";
 import ProgressModal from "@/app/ui/dashboard/goal/progress-modal";
+import DietResumeCard from "@/app/ui/dashboard/diets/diet-resume-card";
 
 export default function Page() {
 	const router = useRouter();
@@ -73,7 +73,10 @@ export default function Page() {
 
 			setProgress(progressSorted);
 		} catch (error) {
-			console.log(error);
+			toast.error("Something went wrong, sorry.")
+			return <div className="flex justify-center items-center h-screen gap-2">
+				<p>Something went wrong...</p>
+			</div>;
 		}
 	}
 
@@ -93,7 +96,6 @@ export default function Page() {
 			await deactivateTraining(trainingId);
 			toast.success("Training deactivated successfully");
 		} catch (e) {
-			console.error(e);
 			toast.error("Failed to deactivate training");
 		}
 
@@ -300,6 +302,26 @@ export default function Page() {
 						{Math.ceil(goal.target_body_fat_percentage)}%
 					</p>
 				</div>
+			</div>
+			<div className="gap-5 flex-col flex m-5">
+				<h2 className="text-lg font-semibold text-jungle-green-700">
+					Diets
+				</h2>
+
+				{goal.diets.length ? goal.diets.map((diet: any, index) => {
+					return (
+						<DietResumeCard key={diet.diet_id} diet={diet} index={index} />
+					);
+				})
+					: <div className="flex flex-col gap-2 justify-center items-center h-full">
+						<h3 className="text-lg">
+							Wait until your coach assign you some trainings 💪
+						</h3>
+						<p className="text-sm text-gray-500">
+							this can be a good opportunity to rest and recover
+						</p>
+					</div>}
+
 			</div>
 			<div className="gap-5 flex-col flex m-5">
 				<h2 className="text-lg font-semibold text-jungle-green-700">

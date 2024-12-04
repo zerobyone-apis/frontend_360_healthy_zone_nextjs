@@ -9,24 +9,24 @@ import { User } from "@/interfaces/user";
 import { Pricing } from '../ui/landing/pricing';
 import { toast } from 'react-toastify';
 import LoadingPage from '../ui/loading.page';
-import { useRouter } from "next/navigation";
 
 type Props = {}
 
 export default function Page({ }: Props) {
-    const router = useRouter();
     const [paypalLink, setPaypalLink] = useState(null);
     const [loading, setLoading] = useState(false);
     const user: User = JSON.parse(Cookies.get("user") || "{}");
     const plan_id = Cookies.get("plan_id") || "";
     const price = Number(Cookies.get("plan_price") || "");
+    const plan_type = Cookies.get("plan_type") || ""
 
-    const handleSubscription = async (planId: string, price: number) => {
+    const handleSubscription = async (planId: string, price: number, type: string) => {
         setLoading(true);
         try {
             const clientSubscriptionBody: ClientSubscription = {
                 client_id: user.client.id, // todo: Aca toca ver como redireccionamos al cliente para tener el id de Cliente, para ello debe estar registrado.
                 plan_id: planId,
+                type,
                 shiping_amount: {
                     value: price,
                     currency_code: 'USD',
@@ -37,7 +37,6 @@ export default function Page({ }: Props) {
 
             if (!respPaypalLink) {
                 toast.error("There is an error with the plan selected, retry again")
-                console.error('Ocurrio un error con la subscripcion');
             }
             // const data = await response.json();
 
@@ -47,18 +46,14 @@ export default function Page({ }: Props) {
             }
         } catch (error) {
             toast.error("There is an error with the plan selected, retry again")
-            console.error('Error al crear la suscripción:', error);
         }
         setLoading(false);
     };
 
     useEffect(() => {
         if (!user.client?.subscription) {
-            handleSubscription(plan_id, price);
+            handleSubscription(plan_id, price, plan_type);
         }
-        // else {
-        //     router.push("/dashboard");
-        // }
     }, [])
 
     if (loading) {

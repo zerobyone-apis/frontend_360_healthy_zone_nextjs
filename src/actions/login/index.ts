@@ -26,6 +26,11 @@ export const login = async ({ email, password }: login) => {
 
 		// cookieStore.set("user", Crypto.encrypt(JSON.stringify(body)));
 		const token: string = resp.headers.get("Authorization") || "";
+		console.log(body);
+		if (body.error) {
+			return body;
+		}
+
 		if (!token) return false;
 
 		// adding cookies...

@@ -56,7 +56,9 @@ export default function Page() {
 
 			setProgress(progressSorted);
 		} catch (error) {
-			console.log(error);
+			return <div className="flex justify-center items-center h-screen gap-2">
+				<p>Something went wrong...</p>
+			</div>;
 		}
 	}
 
@@ -85,7 +87,6 @@ export default function Page() {
 			await deactivateTraining(dietID);
 			toast.success("Training deactivated successfully");
 		} catch (e) {
-			console.error(e);
 			toast.error("Failed to deactivate training");
 		}
 
@@ -304,6 +305,7 @@ export default function Page() {
 						);
 					})
 				) : (
+
 					<div className="flex flex-col gap-2 justify-center items-center h-full">
 						<h3 className="text-lg">
 							It&apos;s time to assign some trainings 💪

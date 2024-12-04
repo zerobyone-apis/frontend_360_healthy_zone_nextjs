@@ -13,7 +13,13 @@ export default function NewGoalDialog() {
 	useEffect(() => {
 		getDashboardStats()
 			.then(data => setStats(data))
-			.catch(error => console.error(error));
+			.catch(() => {
+				toast.error("Something went wrong");
+				return <div className="flex justify-center items-center h-screen gap-2">
+					<p>Something went wrong...</p>
+				</div>;
+			}
+			);
 	}, []);
 
 	const [selectedClient, setSelectedClient] = useState("");
@@ -75,7 +81,6 @@ export default function NewGoalDialog() {
 			}, 100);
 		} catch (e) {
 			toast.error("Error creating goal");
-			console.log(e);
 		}
 	};
 

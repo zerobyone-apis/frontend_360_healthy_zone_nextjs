@@ -8,6 +8,7 @@ interface Card {
     plan_id: string;
     features: Feature[];
     main?: boolean;
+    type: string;
 }
 
 interface Feature {
@@ -21,6 +22,7 @@ export function Pricing() {
         {
             title: "Basic Plan",
             price: 45,
+            type: "BASIC",
             plan_id: "P-3NV09174PT820634WM2UXFRQ",
             description: "Your starting point for a healthier life",
             features: [
@@ -44,6 +46,7 @@ export function Pricing() {
         {
             title: "Standard plan",
             price: 78,
+            type: "MEDIUM",
             plan_id: "P-3Y5450704F819784LM34N5OQ",
             description: "For those looking for a comprehensive approach and constant follow-up",
             main: true,
@@ -69,6 +72,7 @@ export function Pricing() {
         {
             title: "Premium Plan",
             price: 99,
+            type: "PREMIUM",
             plan_id: "P-26B69100AR840883XM35QS5I",
             description: "The ultimate health and well-being experience",
             features: [

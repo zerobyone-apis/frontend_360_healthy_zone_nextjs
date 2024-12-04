@@ -1,9 +1,11 @@
 "use server";
 
-import { NotificationDto } from "@/interfaces";
 import { cookies } from "next/headers";
 
-export async function getNotificationsByUser(): Promise<NotificationDto[]> {
+export async function unblockUserRequest(
+	userID: string | number,
+	reason: string
+) {
 	const cookieStore = cookies();
 
 	//getting the token from the cookie
@@ -13,31 +15,32 @@ export async function getNotificationsByUser(): Promise<NotificationDto[]> {
 	//getting the user from the cookie
 	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
 
-	const userID = user.user.userId;
-
 	try {
 		const resp = await fetch(
-			process.env.BASE_PATH + "/v1.0/notifications/all/by/user/" + userID,
+			process.env.BASE_PATH + "/v1.0/admin/unlock/user/by/" + userID,
 			{
-				method: "GET",
+				method: "PATCH",
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: token,
 				},
-				body: null,
+				body: JSON.stringify({
+					admin_id: user.admin.id,
+					username_admin: user.admin.username,
+					reason_unlocked: reason,
+				}),
 				cache: "no-store",
 			}
 		);
-		let body = await resp.json();
+		let body = await resp.text();
 
 		if (!resp.ok) {
-			throw new Error(body.message);
+			throw new Error(body);
 		}
 
 		return body;
 	} catch (error) {
-		throw new Error(
-			`Error getting notifications for user id: ${userID} Error: ${error}`
-		);
+		console.log(error);
+		throw new Error("Error trying to unblock the user...");
 	}
 }
