@@ -1,3 +1,4 @@
+"use client";
 import { ApproveFeedback } from '@/actions/admin/approve-feedback';
 import { ApproveProgress } from '@/actions/admin/approve-progress';
 import { RejectFeedback } from '@/actions/admin/reject-feedback';
@@ -28,7 +29,6 @@ export default function ProgressModal({ open = false, handleCloseFn, goal, progr
 
     const [reasonFeedback, setReasonFeedback] = useState<string>("");
     const handleDeclineFeedback = async () => {
-        console.log("decline this comment...", reasonFeedback);
         if (!reasonFeedback) return;
         try {
             await RejectFeedback(progress.id, reasonFeedback);

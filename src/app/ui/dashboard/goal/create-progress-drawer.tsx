@@ -67,7 +67,6 @@ export function CreateProgressDrawer({ open = false, handleCloseFn, goal }: Prop
             }
 
             let resp = await CreateClientProgress(data, photos);
-            console.log(resp);
             toast.success("Progress submitted!");
 
             setTimeout(() => {
@@ -78,7 +77,6 @@ export function CreateProgressDrawer({ open = false, handleCloseFn, goal }: Prop
             return true
 
         } catch (e) {
-            console.log(e);
             toast.warning("Something went wrong");
             return false
         }

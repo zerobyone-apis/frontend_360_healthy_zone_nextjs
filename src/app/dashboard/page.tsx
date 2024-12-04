@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { PlanOfferCard } from "../ui/dashboard/plan-offer-card";
 import ProgressCard from "../ui/dashboard/progress-card";
 import { TasksCard } from "../ui/dashboard/tasks-card";
-import { motion, progress } from "framer-motion";
+import { motion } from "framer-motion";
 import Cookies from "js-cookie";
 import { User } from "@/interfaces/user";
 import { ClientSubscription, paypalSubscription } from "@/actions/paypal/subscriptions-paypal";
@@ -12,6 +12,7 @@ import { getNotificationsByUser } from "@/actions/users/get-notifications-by-use
 import { getProfileInfo } from "@/actions/profile/getProfileInfo";
 import { Spinner } from "flowbite-react";
 import { getCustomFormsByUserID } from "@/actions/customForm/get-all-custom-forms-by-userid";
+import { toast } from "react-toastify";
 
 export default function Page() {
 	const [paypalLink, setPaypalLink] = useState<string | null>(null);
@@ -43,10 +44,10 @@ export default function Page() {
 			if (respPaypalLink) {
 				setPaypalLink(respPaypalLink);
 			} else {
-				console.error("Error creating the subscription");
+				toast.error("Error creating the subscription");
 			}
 		} catch (error) {
-			console.error("Error creating subscription:", error);
+			toast.error("Error creating subscription");
 		}
 	}, [user, planId, price]);
 
@@ -97,8 +98,6 @@ export default function Page() {
 			<p>Something went wrong...</p>
 		</div>;
 	}
-
-	console.log("custom form", customForm);
 
 
 	return (

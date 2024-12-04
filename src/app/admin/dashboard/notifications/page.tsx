@@ -16,7 +16,6 @@ export default function Page({ }: Props) {
         setLoading(true)
         getAdminActionsSummary().then((data) => {
             setActions(data);
-            console.log(data)
         }).catch((e) => {
             setError(true);
         }).finally(() => {

@@ -54,7 +54,6 @@ export default function Page() {
 				setProfile(resp);
 				setLoading(false);
 			} catch (error) {
-				console.log(error);
 				return (
 					<div className="flex flex-col gap-2 justify-center items-center h-full">
 						<h3 className="text-lg">An error occurred while fetching data</h3>
@@ -69,7 +68,6 @@ export default function Page() {
 	const lastUpdateDate = profile ? parseServerDate(profile.updated_on) : "";
 
 	if (loading || !profile) return <LoadingPage message={"Loading profile settings"} />;
-	console.log(profile);
 
 	return (
 		<>

@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
 import { getNotificationsByUser } from "@/actions/users/get-notifications-by-user";
-import { NotificationDto, ROLES, User } from "@/interfaces";
+import { NotificationDto, User } from "@/interfaces";
 import { calculateDaysDifference } from "@/utils/daysDifference";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
@@ -52,7 +52,6 @@ export function NotificationBell({ }: Props) {
 			stompClient.subscribe('/user/notifications/user-message',  // este de aca es por USER ID
 				function (message) {
 					const data = JSON.parse(message.body);
-					console.log(data);
 					setNotifications([...notifications, {
 						message: data.content,
 						datetime_sent: data.event.datetime_sent,
@@ -64,13 +63,11 @@ export function NotificationBell({ }: Props) {
 
 
 			stompClient.subscribe('/notifications/notif', function (message) {
-				console.log(message);
 				// toast.success(message.body)
 			});
 
 
 			stompClient.subscribe('/user/notifications/user-notif', function (message) {
-				console.log(message);
 				// toast.success(message.body);
 			});
 		});

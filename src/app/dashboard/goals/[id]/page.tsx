@@ -73,7 +73,10 @@ export default function Page() {
 
 			setProgress(progressSorted);
 		} catch (error) {
-			console.log(error);
+			toast.error("Something went wrong, sorry.")
+			return <div className="flex justify-center items-center h-screen gap-2">
+				<p>Something went wrong...</p>
+			</div>;
 		}
 	}
 

@@ -30,10 +30,10 @@ export default function Page({ }: Props) {
             })
             .catch(() => {
                 setError(true);
+                toast.error("Error happens in the server side, sorry")
             })
             .finally(() => {
                 setLoading(false);
-                console.log(profiles);
             });
     }, []);
 

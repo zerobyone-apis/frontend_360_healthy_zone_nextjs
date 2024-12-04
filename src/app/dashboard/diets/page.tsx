@@ -19,7 +19,6 @@ export default function Page() {
 		async function fetchDiets() {
 			try {
 				const resp = await getAllDietsByUser();
-				console.log(resp);
 				setDiets(resp);
 			} catch (error) {
 				console.error("Error fetching diets:", error);

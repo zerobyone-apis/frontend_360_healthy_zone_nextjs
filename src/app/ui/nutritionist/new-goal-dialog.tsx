@@ -75,7 +75,6 @@ export default function NewGoalDialog() {
 			}, 100);
 		} catch (e) {
 			toast.error("Error creating goal");
-			console.log(e);
 		}
 	};
 

@@ -67,15 +67,14 @@ export default function Page() {
 
 			setProgress(progressSorted);
 		} catch (error) {
-			console.log(error);
+			return <div className="flex justify-center items-center h-screen gap-2">
+				<p>Something went wrong...</p>
+			</div>;
 		}
 	}
 
 	useEffect(() => {
-		getGoalAndProgress().finally(() => {
-			console.log("goal ", goal);
-			console.log("progress", progress);
-		})
+		getGoalAndProgress();
 	}, []);
 
 	const showTrainingDetails = searchParams.get("details");

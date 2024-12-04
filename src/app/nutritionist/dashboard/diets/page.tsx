@@ -15,7 +15,6 @@ export default function Page() {
     const [openDrawer, setOpenDrawer] = useState(false);
 
     useEffect(() => {
-        console.log(!!params.get("new-diet"))
         setOpenDrawer(!!params.get("new-diet"));
     }, [params]);
 
@@ -30,7 +29,6 @@ export default function Page() {
                     });
                 });
                 setDiets(diets_list);
-                console.log(diets_list);
             })
             .catch(e => {
                 console.error(e);

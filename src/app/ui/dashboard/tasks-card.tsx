@@ -1,13 +1,11 @@
 "use client"
 import NotificationCard from "../notification-card";
-import { TasksList } from "./tasks-list"
 
 type Props = {
     notifications: any[];
 }
 
 export function TasksCard({ notifications = [] }: Props) {
-    console.log("notifications: ", notifications);
 
     return (
         <div className="w-full  bg-jungle-green-500 flex flex-col justify-center p-4 rounded-3xl shadow gap-2 max-h-48">
