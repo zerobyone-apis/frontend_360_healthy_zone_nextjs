@@ -11,11 +11,9 @@ type Props = {
 
 export default function AssignUsersView({ clients }: Props) {
     const [selectedClient, setSelectedClient] = useState<any>();
-    const [showAssignModal, setShowAssignModal] = useState<boolean>();
 
     const assignClient = (client: any) => {
         setSelectedClient(client);
-        setShowAssignModal(true);
     }
 
     const selectedClientHeaders = ["id", "first_name", "last_name", "email", "phone", "client_status"]

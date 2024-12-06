@@ -7,6 +7,9 @@ import { updateProfile } from "@/actions/profile/update-profile";
 import { toast } from "react-toastify";
 import { Label, Modal, Tabs, TextInput, Button } from "flowbite-react";
 import { changePassword } from "@/actions/users/change-password";
+import { HiOutlineExclamationCircle } from "react-icons/hi2";
+import { paypalUnsubscribe } from "@/actions/paypal/unsubscribe-paypal";
+import { signout } from "@/actions/dashboard/signout";
 
 export default function Page() {
 	const [profile, setProfile] = useState({
@@ -15,7 +18,12 @@ export default function Page() {
 	})
 	const [loading, setLoading] = useState<boolean>(false);
 	const [openModal, setOpenModal] = useState<boolean>(false);
+	const [openUnsubscribeModal, setOpenUnsubscribeModal] = useState<boolean>(false);
 
+	function handleOnModalClose() {
+		setOpenModal(false);
+		setOpenUnsubscribeModal(false)
+	}
 	function handleOnChange(event: any) {
 		const { value, name } = event.target;
 		setProfile({ ...profile, [name]: value });
@@ -74,7 +82,7 @@ export default function Page() {
 			<Tabs aria-label="Default tabs">
 				<Tabs.Item active title="Profile">
 					<section>
-						<div className="inline-flex justify-between w-full mb-5 p-5">
+						<div className="inline-flex justify-between w-full mb-5 p-5 flex-wrap">
 							<div className="flex flex-col">
 								<h1 className="text-xl text-jungle-green-700 font-bold">
 									Settings
@@ -86,13 +94,33 @@ export default function Page() {
 							<div className="inline-flex gap-2">
 								<Button
 									type="button"
+									color="red"
+									size="xs"
+									onClick={() => setOpenUnsubscribeModal(true)}
+									className="px-3 py-2 text-xs font-medium text-center text-red-500 bg-white border-red-500 border-2 rounded-lg hover:bg-red-500  transition-colors focus:ring-2 focus:outline-none "
+								>
+									Unsubscribe
+								</Button>
+								{/* <Button
+									type="button"
+									color="red"
+									onClick={() => setOpenRemoveModal(true)}
+									className="px-3 py-2 text-xs font-medium text-center text-red-500 bg-white border-red-500 border-2 rounded-lg hover:bg-red-500  transition-colors focus:ring-2 focus:outline-none "
+								>
+									Remove Account
+								</Button> */}
+								<Button
+									type="button"
+									size="xs"
 									onClick={() => setOpenModal(true)}
+									color="blue"
 									className="px-3 py-2 text-xs font-medium text-center text-blue-500 bg-white border-blue-500 border-2 rounded-lg hover:bg-blue-500 hover:text-white transition-colors focus:ring-2 focus:outline-none focus:ring-blue-300"
 								>
 									Change password
 								</Button>
 								<Button
 									onClick={handleSave}
+									size="xs"
 									type="button"
 									className="px-3 py-2 text-xs font-medium text-center text-white bg-jungle-green-700 rounded-lg hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 flex justify-center"
 								>
@@ -247,9 +275,55 @@ export default function Page() {
 				</Tabs.Item>
 			</Tabs>
 
-			{<ChangePasswordDialog openModal={openModal} onCloseModal={() => setOpenModal(false)} />}
+			{<ChangePasswordDialog openModal={openModal} onCloseModal={handleOnModalClose} />}
+			{<ModalConfirmation openModal={openUnsubscribeModal} onCloseModal={handleOnModalClose} />}
 		</>
 	);
+}
+
+
+type ModalConfirmationProps = {
+	openModal: boolean;
+	onCloseModal: () => void;
+
+}
+
+function ModalConfirmation({ openModal, onCloseModal }: ModalConfirmationProps) {
+	const [processing, setIsProcessing] = useState<boolean>(false);
+	const handleUnsubscribe = () => {
+		setIsProcessing(true);
+
+		paypalUnsubscribe().then((data) => {
+			toast.success("Unsubscribed successfully 😢");
+			setTimeout(() => {
+				signout();
+				window.location.reload();
+			}, 200);
+		}).catch(() => {
+			toast.error("Something went wrong");
+		}).finally(() => setIsProcessing(false));
+	}
+
+	return (
+		<Modal show={openModal} size="md" onClose={onCloseModal} popup>
+			<Modal.Header />
+			<Modal.Body>
+				<div className="text-center">
+					<HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+					<h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+						Are you sure you want to unsubscribe?
+					</h3>
+					<div className="flex justify-center gap-4">
+						<Button color="failure" onClick={handleUnsubscribe} isProcessing={processing} disabled={processing}>
+							{"Yes, I'm sure"}
+						</Button>
+						<Button color="gray" onClick={onCloseModal} >
+							No, cancel
+						</Button>
+					</div>
+				</div>
+			</Modal.Body>
+		</Modal>)
 }
 
 type ChangePasswordDialogProps = {
