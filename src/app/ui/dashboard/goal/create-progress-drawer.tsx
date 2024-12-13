@@ -40,7 +40,6 @@ export function CreateProgressDrawer({ open = false, handleCloseFn, goal }: Prop
 
     const handleSubmit = async (event: any): Promise<boolean> => {
         event.preventDefault();
-        setLoading(true);
         if (!dietSelected && !trainingSelected) {
             toast.warning("No diet or training selected");
             return false
@@ -50,6 +49,7 @@ export function CreateProgressDrawer({ open = false, handleCloseFn, goal }: Prop
             toast.warning("No photos uploaded");
             return false;
         }
+        setLoading(true);
 
         try {
             let data = {
@@ -66,7 +66,7 @@ export function CreateProgressDrawer({ open = false, handleCloseFn, goal }: Prop
                 diet_id: treatment === "DIET" ? dietSelected : ""
             }
 
-            let resp = await CreateClientProgress(data, photos);
+            await CreateClientProgress(data, photos);
             toast.success("Progress submitted!");
 
             setTimeout(() => {

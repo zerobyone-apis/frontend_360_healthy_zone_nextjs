@@ -30,6 +30,7 @@ export default function Page() {
 	}
 
 	async function handleSave() {
+		setLoading(true);
 		try {
 			const info = {
 				description: profile.description,
@@ -51,6 +52,7 @@ export default function Page() {
 		} catch (e) {
 			toast.error("Error trying to update the profile, try later.");
 		}
+		setLoading(false);
 
 	}
 

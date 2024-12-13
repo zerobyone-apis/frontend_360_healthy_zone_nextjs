@@ -62,7 +62,7 @@ export const login = async ({ email, password }: login) => {
 			delete body.client.diets;
 			delete body.client.goalClients;
 			if (body.client.subscription) {
-				if (body.client.subscription.status !== "APPROVAL_PENDING") {
+				if (body.client.subscription.status == "APPROVAL_PENDING") {
 					body.client.plan_id = body.client.subscription.paypal_plan_id;
 					body.client.subscription =
 						body.client.subscription.paypal_subscription_id;

@@ -26,6 +26,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         redirect: "/dashboard/goals"
     },
     {
+        icon: "bx bx-bell text-xl",
+        title: "Notifications",
+        redirect: "/dashboard/notifications",
+    },
+    {
         icon: 'bx bxs-cog text-xl',
         title: "Settings",
         redirect: "/dashboard/settings"

@@ -9,13 +9,12 @@ import { useRouter } from "next/navigation";
 
 export default function Page() {
     const { width, height } = useWindowSize();
-    let user: User = JSON.parse(Cookies.get("user") || "{}");
     const router = useRouter();
     useEffect(() => {
-        user.client.subscription = true;
-        Cookies.set("user", JSON.stringify(user));
+        Cookies.set("user", "");
+        Cookies.set("token", "");
         setTimeout(() => {
-            router.push("/dashboard")
+            router.push("/login")
         }, 2500);
     });
 

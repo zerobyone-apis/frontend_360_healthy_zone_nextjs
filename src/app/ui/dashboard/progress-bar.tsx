@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 
 
 type Props = {
-    percent: number;
+    percent: number | string;
     bcolor?: string;
     tcolor: string;
 }
