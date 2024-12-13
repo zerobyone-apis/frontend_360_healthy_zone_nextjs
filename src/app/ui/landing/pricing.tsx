@@ -23,7 +23,7 @@ export function Pricing() {
             title: "Basic Plan",
             price: 45,
             type: "BASIC",
-            plan_id: "P-3NV09174PT820634WM2UXFRQ",
+            plan_id: process.env.NEXT_PUBLIC_PLAN_BASIC || "",
             description: "Your starting point for a healthier life",
             features: [
                 {
@@ -47,7 +47,7 @@ export function Pricing() {
             title: "Standard plan",
             price: 78,
             type: "MEDIUM",
-            plan_id: "P-3Y5450704F819784LM34N5OQ",
+            plan_id: process.env.NEXT_PUBLIC_PLAN_MEDIUM || "",
             description: "For those looking for a comprehensive approach and constant follow-up",
             main: true,
             features: [
@@ -73,7 +73,7 @@ export function Pricing() {
             title: "Premium Plan",
             price: 99,
             type: "PREMIUM",
-            plan_id: "P-26B69100AR840883XM35QS5I",
+            plan_id: process.env.NEXT_PUBLIC_PLAN_ULTIMATE || "",
             description: "The ultimate health and well-being experience",
             features: [
                 {
