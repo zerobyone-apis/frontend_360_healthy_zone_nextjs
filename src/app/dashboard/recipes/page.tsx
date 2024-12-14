@@ -1,7 +1,7 @@
 "use client"
 import { getRandomRecipes } from '@/actions/recipes/get-random-recipes'
 import { recipesStore } from '@/stores/recipes.store'
-import { Badge, Card, Label, Select, Tabs, TextInput } from 'flowbite-react'
+import { Badge, Card, Label, Select, Spinner, Tabs, TextInput } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { HiClock, HiChartPie, HiStar } from "react-icons/hi";
@@ -30,8 +30,8 @@ export default function Page() {
 
     if (loading && recipes.length && !error) {
         return (
-            <div>
-                <p>Loading...</p>
+            <div className='w-full h-full flex justify-center items-center'>
+                <Spinner className="mr-2" /><p> Loading ...</p>
             </div>
         )
     }
