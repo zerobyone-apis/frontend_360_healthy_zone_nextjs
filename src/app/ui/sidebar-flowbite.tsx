@@ -120,7 +120,7 @@ function ProfileDropdown({ show = false }) {
                         role="menuitem"
                         id="menu-item-0"
                     >
-                        Edit Profile
+                        Profile
                     </Link>
                     {/* <Link
                         href="#"

@@ -5,7 +5,7 @@ type Props = {
 	bcolor: string;
 	tcolor: string;
 	target: string;
-	percent: number;
+	percent: number | string;
 	title: string;
 	currentProgress: string;
 	icon?: string;

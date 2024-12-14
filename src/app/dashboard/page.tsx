@@ -9,16 +9,14 @@ import Cookies from "js-cookie";
 import { User } from "@/interfaces/user";
 import { ClientSubscription, paypalSubscription } from "@/actions/paypal/subscriptions-paypal";
 import { getNotificationsByUser } from "@/actions/users/get-notifications-by-user";
-import { getProfileInfo } from "@/actions/profile/getProfileInfo";
 import { Spinner } from "flowbite-react";
-import { getCustomFormsByUserID } from "@/actions/customForm/get-all-custom-forms-by-userid";
 import { toast } from "react-toastify";
+import { getClientDashboard } from "@/actions/client/client-dashboard";
 
 export default function Page() {
 	const [paypalLink, setPaypalLink] = useState<string | null>(null);
 	const [notifications, setNotifications] = useState<any[]>([]);
-	const [profile, setProfile] = useState<any>(null);
-	const [customForm, setCustomForm] = useState<any>(null);
+	const [dashboard, setDashboard] = useState<any>(null);
 	const [error, setError] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(true);
 
@@ -62,21 +60,10 @@ export default function Page() {
 		}
 	}, []);
 
-	const fetchProfileInfo = useCallback(async () => {
+	const fetchDashboardInfo = useCallback(async () => {
 		try {
-			const data = await getProfileInfo();
-			setProfile(data);
-		} catch {
-			setError(true);
-		}
-	}, []);
-
-	const fetchCustomForm = useCallback(async () => {
-		try {
-			const data = await getCustomFormsByUserID();
-			if (data.length) {
-				setCustomForm(data[data.length - 1]);
-			}
+			const data = await getClientDashboard();
+			setDashboard(data);
 		} catch {
 			setError(true);
 		}
@@ -84,9 +71,13 @@ export default function Page() {
 
 	useEffect(() => {
 		setLoading(true);
-		Promise.all([fetchSubscription(), fetchNotifications(), fetchProfileInfo(), fetchCustomForm()])
+		Promise.all([fetchSubscription(), fetchNotifications(), fetchDashboardInfo()]).catch(() => {
+			setError(true);
+		})
 			.finally(() => setLoading(false));
 	}, []);
+
+
 
 	if (loading) {
 		return <div className="flex justify-center items-center h-screen gap-2">
@@ -101,6 +92,40 @@ export default function Page() {
 		</div>;
 	}
 
+	const currentWeight = dashboard.client_profile.current_weight;
+	const targetWeight = dashboard.client_profile.target_weight;
+
+	// Supongamos que el peso inicial es igual al peso actual al principio.
+	const initialWeight = dashboard.client_profile.initial_weight || currentWeight;
+
+	let percent = 0;
+
+	if (currentWeight > targetWeight) {
+		// Objetivo de pérdida de peso
+		percent = ((initialWeight - currentWeight) / (initialWeight - targetWeight)) * 100;
+	} else {
+		// Objetivo de ganancia de peso
+		percent = (currentWeight / targetWeight) * 100;
+	}
+
+	// Asegúrate de que el porcentaje no exceda el 100% y redondea si es necesario
+	percent = Number(Math.min(Math.max(percent, 0), 100).toFixed(2))
+	console.log(dashboard)
+
+	let trainingsDone = 0;
+	let totalTrainings = 0;
+
+	dashboard.goals_with_progress.map((goal: any) => {
+		goal.trainings.map((training: any) => {
+			if (!training.isCompleted) {
+				trainingsDone += training.daily_training_days.filter((d: any) => d.is_day_completed).length;
+				totalTrainings += training.daily_training_days.length;
+			}
+		})
+	})
+
+	const trainingPercentage = ((trainingsDone * 100) / totalTrainings).toFixed(0);
+	console.log(trainingsDone, totalTrainings);
 
 	return (
 		<>
@@ -131,7 +156,7 @@ export default function Page() {
 					<PlanOfferCard />
 				</motion.div>
 
-				{profile && <motion.div
+				{dashboard.client_profile && <motion.div
 					initial={{ opacity: 0, scale: 0.5 }}
 					animate={{ opacity: 1, scale: 1 }}
 					transition={{
@@ -144,9 +169,9 @@ export default function Page() {
 					<ProgressCard
 						bcolor="bg-yellow-green-500"
 						tcolor="text-yellow-green-500"
-						target={profile.target_weight + " kg"}
-						percent={30}
-						currentProgress={profile.current_weight + " kg"}
+						target={`${targetWeight} kg`}
+						percent={percent}
+						currentProgress={`${currentWeight} kg`}
 						title="Weight"
 					/>
 				</motion.div>}
@@ -159,19 +184,19 @@ export default function Page() {
 						delay: 0.7,
 						ease: [0, 0.71, 0.2, 1.01],
 					}}
-					className="md:col-span-1 col-span-3"
+					className="md:col-span-2 col-span-3"
 				>
 					<ProgressCard
 						bcolor="bg-jungle-green-600"
 						tcolor="text-jungle-green-600"
-						target="3 / week"
-						percent={33}
-						currentProgress="1 / 3"
+						target={"complete all the daily exercises"}
+						percent={trainingPercentage}
+						currentProgress={`${trainingsDone} / ${totalTrainings}`}
 						title="Daily exercises"
 					/>
 				</motion.div>
 
-				<div className="md:col-span-1 col-span-3">
+				{/* <div className="md:col-span-1 col-span-3">
 					<ProgressCard
 						bcolor="bg-red-600"
 						tcolor="text-red-600"
@@ -180,7 +205,7 @@ export default function Page() {
 						currentProgress="19 days"
 						title="Diet progress"
 					/>
-				</div>
+				</div> */}
 			</div>
 
 			{paypalLink && (

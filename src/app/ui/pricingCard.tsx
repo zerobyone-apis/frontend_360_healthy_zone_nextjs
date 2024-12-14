@@ -15,6 +15,7 @@ type Props = {
   plan_id: string;
   features: Feature[];
   main: boolean;
+  type: string;
 };
 
 export function PricingCard({
@@ -23,13 +24,16 @@ export function PricingCard({
   description,
   features,
   plan_id,
-  main = false
+  main = false,
+  type
 }: Props) {
   const router = useRouter();
 
   const handleRegistration = () => {
     Cookies.set("plan_id", plan_id);
     Cookies.set("plan_price", String(price));
+    Cookies.set("plan_type", type);
+    console.log("plan type is ", type)
     const user: User | null = Cookies.get("user") ? JSON.parse(Cookies.get("user") || "") : null;
     if (user) {
       return window.location.reload();

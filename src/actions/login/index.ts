@@ -62,9 +62,11 @@ export const login = async ({ email, password }: login) => {
 			delete body.client.diets;
 			delete body.client.goalClients;
 			if (body.client.subscription) {
-				if (body.client.subscription.status !== "APPROVAL_PENDING")
-					body.client.subscription = true;
-				else body.client.subscription = null;
+				if (body.client.subscription.status == "APPROVAL_PENDING") {
+					body.client.plan_id = body.client.subscription.paypal_plan_id;
+					body.client.subscription =
+						body.client.subscription.paypal_subscription_id;
+				} else body.client.subscription = null;
 			}
 		}
 		if (body.user.roles === "ADMIN") {

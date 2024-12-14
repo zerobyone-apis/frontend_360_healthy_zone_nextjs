@@ -23,7 +23,7 @@ export function Pricing() {
             title: "Basic Plan",
             price: 45,
             type: "BASIC",
-            plan_id: "P-3NV09174PT820634WM2UXFRQ",
+            plan_id: process.env.NEXT_PUBLIC_PLAN_BASIC || "",
             description: "Your starting point for a healthier life",
             features: [
                 {
@@ -47,7 +47,7 @@ export function Pricing() {
             title: "Standard plan",
             price: 78,
             type: "MEDIUM",
-            plan_id: "P-3Y5450704F819784LM34N5OQ",
+            plan_id: process.env.NEXT_PUBLIC_PLAN_MEDIUM || "",
             description: "For those looking for a comprehensive approach and constant follow-up",
             main: true,
             features: [
@@ -73,7 +73,7 @@ export function Pricing() {
             title: "Premium Plan",
             price: 99,
             type: "PREMIUM",
-            plan_id: "P-26B69100AR840883XM35QS5I",
+            plan_id: process.env.NEXT_PUBLIC_PLAN_ULTIMATE || "",
             description: "The ultimate health and well-being experience",
             features: [
                 {
@@ -107,7 +107,7 @@ export function Pricing() {
                 <div className="space-y-9 lg:grid lg:grid-cols-3 sm:gap-6 md:gap-0  md:space-y-0 md:items-center">
                     {pricingCardList.map((card, index) =>
                         <div key={index}>
-                            <PricingCard title={card.title} description={card.description} price={card.price} features={card.features} main={card.main || false} plan_id={card.plan_id} />
+                            <PricingCard type={card.type} title={card.title} description={card.description} price={card.price} features={card.features} main={card.main || false} plan_id={card.plan_id} />
                         </div>
                     )}
 
