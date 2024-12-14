@@ -16,7 +16,6 @@ export default function Page() {
     useEffect(() => {
         setLoading(true);
         getRandomRecipes().then((data) => {
-            console.log(data.recipes);
             setRecipes(data.recipes);
         }).catch(() => {
             setError(true);

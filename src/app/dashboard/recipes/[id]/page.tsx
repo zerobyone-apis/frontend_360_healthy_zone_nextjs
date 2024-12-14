@@ -26,7 +26,6 @@ export default function Page({ }: Props) {
         setLoading(true);
 
         getRecipeByID(params.id).then((data) => {
-            console.log(data);
             setRecipe(data);
         }).catch(() => {
             setError(true);
@@ -86,7 +85,7 @@ export default function Page({ }: Props) {
                 Ingredients
             </h3>
             <List className='mt-2'>
-                {recipe.extendedIngredients.map((ingredient: any) => <List.Item icon={HiCheckCircle}>{ingredient.original}</List.Item>)}
+                {recipe.extendedIngredients.map((ingredient: any) => <List.Item key={ingredient.id} icon={HiCheckCircle}>{ingredient.original}</List.Item>)}
             </List>
 
             <hr className="border-gray-300 mt-2 mb-2" />

@@ -71,7 +71,9 @@ export default function Page() {
 
 	useEffect(() => {
 		setLoading(true);
-		Promise.all([fetchSubscription(), fetchNotifications(), fetchDashboardInfo()])
+		Promise.all([fetchSubscription(), fetchNotifications(), fetchDashboardInfo()]).catch(() => {
+			setError(true);
+		})
 			.finally(() => setLoading(false));
 	}, []);
 
