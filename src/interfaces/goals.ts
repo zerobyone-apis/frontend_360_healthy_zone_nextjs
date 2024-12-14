@@ -95,7 +95,7 @@ export interface GoalNewDTO {
 	percentage_body_fat: number;
 	healthy_focus_description: string | null;
 	type: TypeGoals | string | null;
-	nutritionist_plans: NutritionistPlansServices | null;
+	nutritionist_plans: NutritionistPlansServices | string | null;
 	trainer_plans: CoachPlansServices | null | string;
 	amount_of_days: number;
 	initial_weight: number;
