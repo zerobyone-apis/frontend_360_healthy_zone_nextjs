@@ -16,6 +16,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         redirect: "/dashboard/diets"
     },
     {
+        icon: 'bx bx-sushi text-xl',
+        title: "Recipes",
+        redirect: "/dashboard/recipes"
+    },
+    {
         icon: 'bx bx-run text-xl',
         title: "Trainings",
         redirect: "/dashboard/trainings"
