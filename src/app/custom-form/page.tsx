@@ -1,7 +1,6 @@
 "use client";
 import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
-import Image from 'next/image';
 
 // import required modules
 import { Pagination, Navigation } from 'swiper/modules';
@@ -41,12 +40,16 @@ export default function Page({ }: Props) {
         user.user.firstTimeLogin = false;
         Cookies.set("user", JSON.stringify(user));
 
-        //calling the real api to firsttimelogin to false
         try {
+            customForm.current_weight = Number(customForm.current_weight || 0);
+            customForm.initial_weight = Number(customForm.initial_weight || 0);
+            customForm.initial_height = Number(customForm.initial_height || 0);
+            customForm.age = Number(customForm.age || 0);
+
             await createCustomForm({ formData: customForm });
-            // await markFirstLogin();
             router.push("/dashboard")
         } catch (e) {
+            console.log(e);
             toast.error("Something went wrong")
         }
 
