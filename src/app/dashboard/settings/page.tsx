@@ -295,11 +295,10 @@ function ModalConfirmation({ openModal, onCloseModal }: ModalConfirmationProps) 
 	const handleUnsubscribe = () => {
 		setIsProcessing(true);
 
-		paypalUnsubscribe().then((data) => {
+		paypalUnsubscribe().then(() => {
 			toast.success("Unsubscribed successfully 😢");
-			setTimeout(() => {
-				signout();
-				window.location.reload();
+			setTimeout(async () => {
+				await signout();
 			}, 200);
 		}).catch(() => {
 			toast.error("Something went wrong");
