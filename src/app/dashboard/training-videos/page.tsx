@@ -1,0 +1,101 @@
+"use client"
+import { recipesStore } from '@/stores/recipes.store'
+import { trainingVideosStore } from '@/stores/training-videos.store'
+import { Badge, Card, Label, Select, Spinner, Tabs, TextInput } from 'flowbite-react'
+import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import { HiClock, HiChartPie, HiStar } from "react-icons/hi";
+
+export default function Page() {
+    const router = useRouter();
+    const [error, setError] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const favoritesTrainings = trainingVideosStore((state: any) => state.favorites);
+    const trainings = trainingVideosStore((state: any) => state.trainings);
+
+
+    if (loading && trainings.length && !error) {
+        return (
+            <div className='w-full h-full flex justify-center items-center'>
+                <Spinner className="mr-2" /><p> Loading ...</p>
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div>
+                <p>Error...</p>
+            </div>
+        )
+    }
+    return (
+        <div>
+            <div className="gap-3 grid-cols-3 grid">
+                <div className='md:col-span-1 col-span-3 mb-5'>
+                    <div className="mb-2 block">
+                        <Label htmlFor="Title" value="Title" />
+                    </div>
+                    <TextInput id="Title" type="text" placeholder="Training title" required />
+                </div>
+                <div className="col-span-3 md:col-span-1">
+                    <div className="mb-2 block">
+                        <Label htmlFor="type" value="Select type" />
+                    </div>
+                    <Select id="type" required>
+                        <option>All</option>
+                        <option>ABS</option>
+                    </Select>
+                </div>
+            </div>
+            <Tabs aria-label="Default tabs" variant="default">
+                <Tabs.Item active title="Recipes" >
+                    <section className="max-w-screen-xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center mt-4">
+                        {trainings.map((training: any) => <Card
+                            key={training.id}
+                            className="max-w-sm cursor-pointer"
+                        >
+                            <iframe width={"100%"} height="315" src={training.video} title="YouTube video player" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen />
+                            <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                {training.title}
+                            </h5>
+                            <div className='inline-flex gap-2'>
+                                <Badge color="gray">
+                                    {training.type}
+                                </Badge>
+                                {/* 
+                                <Badge color="gray" icon={HiChartPie}>
+                                    {recipe.servings}
+                                </Badge> */}
+                            </div>
+                        </Card>)}
+                    </section>
+                </Tabs.Item>
+                <Tabs.Item title="Favorites" icon={HiStar}>
+                    {/* {!recipesFavorites.length && "No favorites recipes yet!"}
+                    <section className="max-w-screen-xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center mt-4">
+                        {recipesFavorites.map((recipe: any) => <Card
+                            onClick={() => handleRedirect(recipe.id)}
+                            key={recipe.id}
+                            className="max-w-sm cursor-pointer"
+                            imgAlt="Meaningful alt text for an image that is not purely decorative"
+                            imgSrc={recipe.image}
+                        >
+                            <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                {recipe.title}
+                            </h5>
+                            <div className='inline-flex gap-2'>
+                                <Badge color="gray" icon={HiClock}>
+                                    {recipe.readyInMinutes} min
+                                </Badge>
+                                <Badge color="gray" icon={HiChartPie}>
+                                    {recipe.servings}
+                                </Badge>
+                            </div>
+                        </Card>)}
+                    </section> */}
+                </Tabs.Item>
+            </Tabs>
+        </div>
+    )
+}

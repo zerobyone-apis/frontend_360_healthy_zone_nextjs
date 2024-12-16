@@ -20,8 +20,8 @@ export async function paypalUnsubscribe() {
 				method: "PATCH",
 				headers: {
 					"Id-Client": user.client.id,
-					"Id-Plan": user.client.subscription,
-					"Id-Subscription": user.client.plan_id,
+					"Id-Plan": user.client.plan_id,
+					"Id-Subscription": user.client.subscription,
 					"Content-Type": "application/json",
 					Authorization: token,
 				},
@@ -45,6 +45,6 @@ export async function paypalUnsubscribe() {
 		return paypalLink;
 	} catch (error) {
 		console.error("Error subscription: ", error);
-		throw new Error("Error Creating subscription plan for this client");
+		throw new Error("Error Creating unsubscribing plan for this client");
 	}
 }
