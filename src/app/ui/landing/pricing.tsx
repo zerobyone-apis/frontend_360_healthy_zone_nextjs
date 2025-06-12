@@ -1,10 +1,13 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { PricingCard } from "../pricingCard";
 
 interface Card {
     price: number;
     title: string;
     description: string;
+    plan_id: string;
     features: Feature[];
+    main?: boolean;
 }
 
 interface Feature {
@@ -17,70 +20,74 @@ export function Pricing() {
     const pricingCardList: Card[] = [
         {
             title: "Basic Plan",
-            description: "Nutrition or Coach Access Only",
-            price: 20,
+            price: 45,
+            plan_id: "P-5D4660646N0837058M34NTXY",
+            description: "Your starting point for a healthier life",
             features: [
                 {
-                    title: "Monthly session with a nutritionist or coach ",
-                    description: "(choose one)"
+                    title: "24/7 platform access",
                 },
                 {
-                    title: "Customized meal or workout plan",
+                    title: "Customized plan",
                 },
                 {
-                    title: "Weekly progress tracking via app",
+                    title: "Expert advice",
                 },
                 {
-                    title: "Exclusive nutrition or fitness tips and articles",
+                    title: "Limited communication",
+                },
+                {
+                    title: "Monthly adjustments",
                 }
-            ]
+            ],
         },
         {
             title: "Standard plan",
-            description: "Access to Both Nutrition and Coach",
-            price: 35,
+            price: 78,
+            plan_id: "P-3Y5450704F819784LM34N5OQT",
+            description: "For those looking for a comprehensive approach and constant follow-up",
+            main: true,
             features: [
                 {
                     title: "All benefits of the Basic Plan"
                 },
                 {
-                    title: "Monthly sessions with both a nutritionist and a coach",
+                    title: "Combined diet and training plans:",
+                    description: "Receive a comprehensive plan that combines both nutrition and physical training adapted to your specific goals."
                 },
                 {
-                    title: "Combined customized meal and workout plans "
+                    title: "Access to visual resources"
                 },
                 {
-                    title: "Access to online support groups and community",
+                    title: "Continuous follow-up",
                 },
                 {
-                    title: "Monthly progress analysis with personalized reports"
-                }
+                    title: "Bi-weekly adjustments"
+                },
             ]
         },
         {
             title: "Premium Plan",
-            description: "Full Access + Exclusive Benefits",
-            price: 20,
+            price: 99,
+            plan_id: "P-3Y5450704F819784LM34N5OQ",
+            description: "The ultimate health and well-being experience",
             features: [
                 {
                     title: "All benefits of the Standard Plan",
                 },
                 {
-                    title: "Bi-monthly sessions with nutritionists and coaches",
+                    title: "Real-time support",
                 },
                 {
-                    title: "Access to exclusive webinars and workshops",
+                    title: "Exclusive access",
                 },
                 {
-                    title: "Special programs ",
-                    description: "(weight loss, muscle building, etc.)"
+                    title: "Holistic wellness plans",
+                    description: " (tips on sleep, stress management, and healthy habits, etc..)"
                 },
                 {
-                    title: "Discounts on associated products and additional services",
+                    title: "Adjustment every 10 days",
                 },
-                {
-                    title: "Priority support and long-term goal planning"
-                }
             ]
         }
     ]
@@ -89,12 +96,16 @@ export function Pricing() {
         <section className="bg-white dark:bg-gray-900 h-full relative" id="pricing">
             <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
                 <div className="mx-auto max-w-screen-md text-center mb-8 lg:mb-12">
-                    <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Choose the best plans</h2>
+                    <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Our Plans</h2>
                     <p className="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">Choose a plan thats right far your fitness life. Simple pricing & No hidden charges.</p>
                 </div>
-                <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
 
-                    {pricingCardList.map((card, index) => <PricingCard key={index} title={card.title} description={card.description} price={card.price} features={card.features} />)}
+                <div className="space-y-9 lg:grid lg:grid-cols-3 sm:gap-6 md:gap-0  md:space-y-0 md:items-center">
+                    {pricingCardList.map((card, index) =>
+                        <div key={index}>
+                            <PricingCard title={card.title} description={card.description} price={card.price} features={card.features} main={card.main || false} plan_id={card.plan_id} />
+                        </div>
+                    )}
 
                 </div>
             </div>

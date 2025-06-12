@@ -31,7 +31,7 @@ export default function TrainingResumeCard({
 			className={twMerge(
 				clsx(
 					"flex-grow border-l-8 rounded-md px-3 py-2 w-full bg-slate-50",
-					trainingObjectStyles[trainingStatus].card
+					trainingObjectStyles[trainingStatus]?.card
 				)
 			)}
 		>
@@ -45,7 +45,7 @@ export default function TrainingResumeCard({
 						className={twMerge(
 							clsx(
 								"p-1 rounded ",
-								trainingStatus && trainingObjectStyles[trainingStatus].label
+								trainingStatus && trainingObjectStyles[trainingStatus]?.label
 							)
 						)}
 					>
@@ -54,7 +54,7 @@ export default function TrainingResumeCard({
 								clsx(
 									"font-bold",
 									trainingStatus &&
-									trainingObjectStyles[trainingStatus].labelText
+									trainingObjectStyles[trainingStatus]?.labelText
 								)
 							)}
 						>
@@ -67,7 +67,7 @@ export default function TrainingResumeCard({
 						<Button
 							className={clsx(
 								"p-2 border-2 rounded font-bold",
-								trainingObjectStyles[trainingStatus].label
+								trainingObjectStyles[trainingStatus]?.label
 							)}
 						>
 							DETAILS{" "}
