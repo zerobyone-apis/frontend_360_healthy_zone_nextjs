@@ -24,7 +24,6 @@ export default function TrainingView({ setCurrentIndex, exercise }: Props) {
 			timerout = setTimeout(() => {
 				if (timeLeft <= 0) {
 					clearTimeout(timer);
-					console.log("Finish timer");
 					ringSoundEffect.play();
 					setCurrentIndex((state: any) => state + 1);
 				}

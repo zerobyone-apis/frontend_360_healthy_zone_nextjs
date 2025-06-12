@@ -36,11 +36,11 @@ function DrawerField({ field }: { field: Fields }) {
     return (
         <>
             <button className='w-full p-3 rounded-xl flex justify-between bg-gray-200 hover:bg-gray-300 hover:cursor-pointer' key={field.id} onClick={() => setIsOpen(true)}>
-                <div className='w-full flex flex-col gap-2 text-start'>
-                    <p>{field.label}</p> {val && <Badge color="gray" size="sm" className='truncate max-w-full'>{val}</Badge>}
+                <div className='w-full flex flex-row gap-2 text-start items-center'>
+                    <p>{field.label}</p> {val && <span className='truncate max-w-full text-sm text-start text-gray-500'>{val}</span>}
                 </div>
 
-                {!val ? <HiArrowRight /> : <HiCheckBadge className='text-jungle-green-500' />}
+                {!val ? <HiArrowRight /> : <div><HiCheckBadge className='text-jungle-green-500' /> </div>}
             </button>
 
             <Drawer open={isOpen} onClose={handleClose} position="bottom" className="p-1">

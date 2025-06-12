@@ -9,6 +9,7 @@ export default async function Page() {
 	let stats: SummaryCoach;
 	try {
 		stats = await getDashboardStats();
+		console.log(stats.goals_created);
 	} catch (e) {
 		console.error(e);
 		return (

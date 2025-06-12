@@ -1,13 +1,15 @@
+"use client"
 import { ProgressResponseDTO } from "@/interfaces/progress";
 import clsx from "clsx";
-import Link from "next/link";
 import React, { ReactElement } from "react";
+import { Button } from "../button";
 
 type Props = {
 	progress: ProgressResponseDTO;
+	handleSeeProgress: (progress: ProgressResponseDTO) => void;
 };
 
-export default function ProgressCard({ progress }: Props) {
+export default function ProgressCard({ progress, handleSeeProgress }: Props) {
 	const pics = progress.advace_pictures_uris_form;
 	let photosFormatted: ReactElement[] = [];
 	if (pics) {
@@ -29,6 +31,7 @@ export default function ProgressCard({ progress }: Props) {
 		for (let i = 0; i < 4; i++) {
 			photosFormatted.push(
 				<img
+					key={i}
 					src={"/imgs/placeholder_not_found.png"}
 					alt=""
 					className={clsx(
@@ -39,7 +42,7 @@ export default function ProgressCard({ progress }: Props) {
 		}
 	}
 	return (
-		<div className="w-full shadow bg-white p-5 rounded">
+		<div className="w-full shadow bg-white p-5 rounded mb-3.5">
 			<div className="inline-flex justify-between w-full">
 				<div className="-space-x-2 rtl:space-x-reverse inline-flex">
 					{photosFormatted}
@@ -57,14 +60,14 @@ export default function ProgressCard({ progress }: Props) {
 				</p>
 			</div>
 			<div className="inline-flex rounded-md justify-end w-full" role="group">
-				<Link
-					href={`?progress-details=true&progress-id=${progress.id}`}
+				<Button
 					type="button"
+					onClick={() => handleSeeProgress(progress)}
 					className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
 				>
 					<i className="bx bx-detail"></i>
 					Details & Comments
-				</Link>
+				</Button>
 			</div>
 		</div>
 	);
@@ -98,12 +101,11 @@ function formatDate(dateString: string): string {
 	);
 
 	// Format the date
-	const formattedDate = `${
-		months[date.getMonth()]
-	} ${date.getDate()}, ${date.getFullYear()} at ${date
-		.getHours()
-		.toString()
-		.padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
+	const formattedDate = `${months[date.getMonth()]
+		} ${date.getDate()}, ${date.getFullYear()} at ${date
+			.getHours()
+			.toString()
+			.padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
 
 	return formattedDate;
 }

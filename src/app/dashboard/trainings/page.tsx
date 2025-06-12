@@ -3,11 +3,13 @@ import { getAllTrainings } from "@/actions/trainings";
 import TrainingResumeCard from "@/app/ui/dashboard/trainings/training-resume-card";
 import Image from "next/image";
 import { Button } from "@/app/ui/button";
+import Link from "next/link";
 
 export default async function Page() {
 	const trainings: any | null = await getAllTrainings();
+	console.log(trainings);
 	const trainingCompletedLength = trainings.filter(
-		(training: any) => training.isCompleted
+		(training: any) => training.isCompleted || training.training_status == "COMPLETED"
 	).length;
 
 	if (!trainings.length || !trainings)
@@ -17,9 +19,10 @@ export default async function Page() {
 				<p className="text-gray-500">
 					Please wait a few days while we prepare your training plan
 				</p>
-				<Button className="bg-jungle-green-500 rounded text-white font-bold mt-3">
+
+				<Link href={"/dashboard"}><Button className="bg-jungle-green-500 rounded text-white font-bold mt-3">
 					Dashboard
-				</Button>
+				</Button></Link>
 			</div>
 		);
 

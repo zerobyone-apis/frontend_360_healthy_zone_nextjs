@@ -16,6 +16,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 			redirect: "/admin/dashboard/pending-actions",
 		},
 		{
+			icon: "bx bx-bell text-xl",
+			title: "Notifications",
+			redirect: "/admin/dashboard/notifications",
+		},
+		{
 			icon: "bx bxs-group text-xl",
 			title: "Users List",
 			redirect: "/admin/dashboard/users-list",

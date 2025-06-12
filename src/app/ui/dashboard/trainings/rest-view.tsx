@@ -14,7 +14,6 @@ export default function RestView({
 	setCurrentIndex,
 	nextExercise,
 }: Props) {
-	console.log("RestView");
 	let timer = 0;
 	const nextExerciseAudio = new Audio(
 		"/audios/training/next_exercise_will_start.mp3"
@@ -67,9 +66,9 @@ export default function RestView({
 				{nextExercise.duration_in_seconds
 					? nextExercise.duration_in_seconds + " seconds"
 					: nextExercise.repetitions +
-					  " reps, " +
-					  nextExercise.series +
-					  " sets"}
+					" reps, " +
+					nextExercise.series +
+					" sets"}
 			</h5>
 			<Image
 				src={nextExercise.url_image || "/imgs/placeholder_not_found.png"}

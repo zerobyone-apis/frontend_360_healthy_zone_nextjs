@@ -7,7 +7,7 @@ export default (): QuestionDTO[] => {
 			type: "fields",
 			title: "About you",
 			subtitle: "This info will help us to understand how can we help you",
-			img: "https://www.voxco.com/wp-content/uploads/2021/04/students-feedback-survey-cvr.jpg",
+			img: "/imgs/custom-form/casual-life-3d-young-woman-does-yoga.png",
 			fields: [
 				{
 					id: "age",
