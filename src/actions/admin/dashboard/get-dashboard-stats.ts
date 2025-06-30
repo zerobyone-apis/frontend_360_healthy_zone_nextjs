@@ -27,7 +27,7 @@ export async function getAdminDashboardStatus(): Promise<SummaryAdmin> {
 				cache: "no-store",
 			}
 		);
-		let body = await resp.json();
+		const body = await resp.json();
 		console.log(resp.status);
 		if (resp.status !== 200) {
 			throw new Error(body.message);

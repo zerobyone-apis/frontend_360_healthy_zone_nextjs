@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+/* eslint-disable no-empty-pattern */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-var */
 "use client";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
@@ -16,7 +20,7 @@ type Props = {};
 export function NotificationBell({ }: Props) {
 
 	const user: User = JSON.parse(Cookies.get("user") || "{}");
-	const token: string = Cookies.get("token") || "";
+	const token: string = Cookies.get("token") || ""; // Todo validar como ocultar la conneccion de consola.
 	const userId = user.user?.userId || "";
 	const userEmail = user.user?.email || "";
 
@@ -36,7 +40,7 @@ export function NotificationBell({ }: Props) {
 			"Access-Control-Allow-Origin": "*",
 			"X-User": userId,
 			"X-Email": userEmail,
-			"jwt-token": token
+			// "jwt-token": token
 		}
 
 		stompClient.connect(header, (frame: any) => {

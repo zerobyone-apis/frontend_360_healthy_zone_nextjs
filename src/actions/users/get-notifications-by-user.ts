@@ -28,7 +28,7 @@ export async function getNotificationsByUser(): Promise<NotificationDto[]> {
 				cache: "no-store",
 			}
 		);
-		let body = await resp.json();
+		const body = await resp.json();
 
 		if (!resp.ok) {
 			throw new Error(body.message);

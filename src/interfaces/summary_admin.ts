@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { GoalResponseDTO } from "./goals";
 import { ProgressResponseDTO } from "./progress";
 
@@ -16,6 +17,9 @@ export interface SummaryAdmin {
         amount_of_pending_payments: number;
         payments: Payment[]; // You can replace 'any' with a more specific type if you have one
     };
+    to_approval_notifications: number,
+    to_assign_clients_to_professionals: number,
+    to_approvals_client_progresses: number,
 }
 
 export interface Payment {
@@ -35,6 +39,7 @@ export interface UserMetrics {
     amount: number;
 }
 
+// todo: esta llamada no se hace y se toman los valores del summary.
 export interface AdminActionsSummary {
     "to_approval_notifications": any[],
     "to_approvals_client_progresses": ProgressResponseDTO[],

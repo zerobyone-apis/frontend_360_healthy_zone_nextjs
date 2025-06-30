@@ -1,4 +1,7 @@
-import { getAdminActionsSummary } from "@/actions/admin/dashboard/get-actions-summary";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react/react-in-jsx-scope */
+
+// import { getAdminActionsSummary } from "@/actions/admin/dashboard/get-actions-summary";
 import { getAdminDashboardStatus } from "@/actions/admin/dashboard/get-dashboard-stats";
 import { getUserMetricsByDate } from "@/actions/admin/dashboard/get-user-metrics";
 import AmountCard from "@/app/ui/admin/amount-card";
@@ -10,7 +13,7 @@ import { cookies } from "next/headers";
 export default async function Page() {
 	const cookieStore = cookies();
 	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
-	let stats, metrics, actions;
+	let stats, metrics; //actions;
 
 	const { initDate, endDate } = getLast30Days();
 	try {
@@ -19,7 +22,7 @@ export default async function Page() {
 			init_date: initDate,
 			end_date: endDate,
 		});
-		actions = await getAdminActionsSummary();
+	//	actions = await getAdminActionsSummary(); // TODO: Esta llamada desaparecera
 	} catch (e) {
 		return (<div className="flex flex-col gap-2 justify-center items-center h-full">
 			<h3 className="text-lg">An error occurred while fetching data</h3>
@@ -69,17 +72,17 @@ export default async function Page() {
 			<div className="col-span-full md:col-span-2 gap-2 flex flex-col">
 				<AmountCardRedirect
 					title="Global Notifications"
-					content={actions.to_approval_notifications.length}
+					content={stats.to_approval_notifications}
 					redirectTo="/admin/dashboard/notifications"
 				/>
 				<AmountCardRedirect
-					title="Client progress to approve"
-					content={actions.to_approvals_client_progresses.length}
+					title="Client progress to approve" 
+					content={stats.to_approvals_client_progresses}
 					redirectTo="/admin/dashboard/pending-actions?tab=progress"
 				/>
 				<AmountCardRedirect
 					title="Clients to assign"
-					content={actions.to_assign_clients_to_professionals.length}
+					content={stats.to_assign_clients_to_professionals}
 					redirectTo="/admin/dashboard/pending-actions?tab=clients"
 				/>
 			</div>

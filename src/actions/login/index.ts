@@ -22,7 +22,7 @@ export const login = async ({ email, password }: login) => {
 			}),
 			cache: "no-store",
 		});
-		let body = await resp.json();
+		const body = await resp.json();
 
 		// cookieStore.set("user", Crypto.encrypt(JSON.stringify(body)));
 		const token: string = resp.headers.get("Authorization") || "";
@@ -75,6 +75,7 @@ export const login = async ({ email, password }: login) => {
 			}
 		}
 		if (body.user.roles === "ADMIN") {
+			console.log("Es admin, se borrara el assigments")
 			delete body.admin.assignments;
 		}
 

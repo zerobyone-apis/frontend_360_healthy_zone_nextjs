@@ -2,7 +2,17 @@
 
 import { cookies } from "next/headers";
 
-export async function getClientDashboard() {
+export interface DashboardClientStats {
+	client_id: number,
+	target_weight: number,
+    initial_weight: number,
+    current_weight: number,
+    trainingsDone: number,
+    totalTrainings: number,
+    trainingPercentage: number
+}
+
+export async function getClientDashboard(): Promise<DashboardClientStats> {
 	const cookieStore = cookies();
 
 	//getting the token from the cookie

@@ -28,6 +28,8 @@ export interface ProgressResponseDTO {
 	training_id: number | string | null;
 }
 
+
+
 enum SelectedType {
 	"EXELENTE" = "EXELENTE",
 	"BIEN" = "BIEN",
