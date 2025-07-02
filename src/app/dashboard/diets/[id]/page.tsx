@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 "use client"
 import { getDietByID } from "@/actions/diets/get-diet-bt-id";
 import { Button } from "@/app/ui/button";
