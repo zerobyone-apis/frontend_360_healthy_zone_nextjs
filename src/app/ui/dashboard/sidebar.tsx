@@ -4,12 +4,13 @@ import Link from "next/link";
 import { usePathname } from 'next/navigation';
 
 export function Sidebar({ list }: { list: ListItemInterface[] }) {
-
     return (
-        <aside className='md:h-[100vh] max-h-full lg:w-full sm:w-[80%] md:w-[45%] relative  bg-jungle-green-500'>
-            <div className="h-full w-full flex justify-center items-center">
-                <ul className=" pl-3 font-bold flex justify-center flex-col items-center gap-2 w-full text-center">
-                    {list.map((li, index) => <ListItem {...li} key={index}></ListItem>)}
+        <aside className="md:h-screen w-64 bg-jungle-green-500 text-white fixed">
+            <div className="h-full flex flex-col pt-8">
+                <ul className="px-4 flex flex-col gap-2 font-medium">
+                    {list.map((li, index) => (
+                        <ListItem {...li} key={index} />
+                    ))}
                 </ul>
             </div>
         </aside>
@@ -25,12 +26,9 @@ function ListItem({ icon, title, redirect = "" }: ListItemInterface): any {
     const pathname = usePathname();
 
     return (
-        <div className="w-full">
-            <Link key={redirect} href={redirect}>
-                <li className={clsx('w-full flex gap-2 p-2 content-start text-center items-center hover:text-black active:text-jungle-green-500 hover:bg-white active:bg-white rounded-full transition-colors justify-center', pathname == redirect ? 'bg-white text-jungle-green-500' : "text-white")}>
-                    <i className={icon}></i> <p className="hidden lg:block truncate">{title}</p>
-                </li>
-            </Link >
-        </div>
+        <Link href={redirect} className={clsx('flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white hover:text-jungle-green-500 transition-colors', pathname === redirect ? 'bg-white text-jungle-green-500' : '')}>
+            <i className={clsx(icon, 'text-xl')}></i>
+            <span className="truncate">{title}</span>
+        </Link>
     )
 }

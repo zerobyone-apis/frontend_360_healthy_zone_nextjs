@@ -1,31 +1,21 @@
-import { TasksList } from "./tasks-list"
+import { TasksList, Task } from "./tasks-list";
 
-type Props = {}
+type Props = {
+    tasks: Task[];
+};
 
-export function TasksCard({ }: Props) {
-    const tasks = [{
-        title: "Call with nutritionist",
-        subtitle: "10 AM CST",
-        id: "2dmai2ad"
-    },
-    {
-        title: "Follow coach instructions",
-        subtitle: "Exercise post launch time",
-        id: "2dmai2a2d"
-    },
-    {
-        title: "Go, Go, Go!",
-        subtitle: "Run for 2km and mark it done when you finish",
-        id: "2dmai212313ad"
-    }]
+export function TasksCard({ tasks }: Props) {
     return (
-        <div className="w-full  bg-jungle-green-500 flex flex-col justify-center p-4 rounded-3xl shadow gap-2">
-            <div className="w-full p-2 flex justify-between">
-                <p className="font-light text-white">Pending tasks: <span className="font-bold">{tasks.length}</span></p>
-                <p className="text-white">View All...</p>
+        <div className="w-full bg-white rounded-2xl shadow p-4 flex flex-col gap-4">
+            <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold text-jungle-green-500">My Tasks</h3>
+                <span className="text-sm text-gray-500">{tasks.length} pending</span>
             </div>
-            <div className="w-[90%] h-full overflow-auto">
+            <div className="max-h-72 overflow-auto pr-1">
                 <TasksList tasks={tasks} />
+            </div>
+            <div className="flex justify-end">
+                <a href="#" className="text-sm text-jungle-green-600 hover:underline">View all</a>
             </div>
         </div>
     )

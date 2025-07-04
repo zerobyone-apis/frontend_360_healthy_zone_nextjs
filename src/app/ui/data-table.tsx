@@ -17,17 +17,24 @@ type Data = {
     class?: string;
 }
 
+type ExtraAction = {
+    title: string;
+    onClick: (row: Data[]) => void;
+    color?: string;
+};
+
 type Props = {
     title?: string;
-    headings: Headings[]
-    data: Data[][],
-    actionTitle?: string,
-    actionFunction?: (row: Data[]) => void
-    actionColor?: string
+    headings: Headings[];
+    data: Data[][];
+    actionTitle?: string;
+    actionFunction?: (row: Data[]) => void;
+    actionColor?: string;
+    extraActions?: ExtraAction[];
 };
 
 
-export default function DataTable({ headings, data, actionTitle, actionFunction, actionColor = "text-blue-600", title }: Props) {
+export default function DataTable({ headings, data, actionTitle, actionFunction, actionColor = "text-blue-600", title, extraActions = [] }: Props) {
 
     const [filter, setFilter] = useState<string>("");
     const [filteredData, setFilteredData] = useState(data);
@@ -66,9 +73,9 @@ export default function DataTable({ headings, data, actionTitle, actionFunction,
                                 {heading.text}
                             </th>
                         ))}
-                        {actionTitle && <th scope="col" className="px-6 py-3">
-                            Actions
-                        </th>}
+                        {(actionTitle || extraActions.length) && (
+                            <th scope="col" className="px-6 py-3">Actions</th>
+                        )}
                     </tr>
                 </thead>
                 <tbody>
@@ -79,9 +86,24 @@ export default function DataTable({ headings, data, actionTitle, actionFunction,
                                     {cell && cell.type === "badge" ? <span className={clsx("px-2 py-1 font-semibold rounded-full", cell.class)}>{cell.value}</span> : cell && cell.type === "button" ? <button className={clsx("font-medium bg-transparent hover:underline", cell.class)}>{cell.value}</button> : cell && cell.value}
                                 </td>
                             ))}
-                            {actionTitle && actionFunction && <td className="px-6 py-4">
-                                <button onClick={() => actionFunction(row)} className={clsx("font-medium bg-transparent hover:underline", actionColor)}>{actionTitle}</button>
-                            </td>}
+                            {(actionTitle || extraActions.length) && (
+                                <td className="px-6 py-4 space-x-2">
+                                    {actionTitle && actionFunction && (
+                                        <button onClick={() => actionFunction(row)} className={clsx("font-medium bg-transparent hover:underline", actionColor)}>
+                                            {actionTitle}
+                                        </button>
+                                    )}
+                                    {extraActions.map((action, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => action.onClick(row)}
+                                            className={clsx("font-medium bg-transparent hover:underline", action.color ?? "text-blue-600")}
+                                        >
+                                            {action.title}
+                                        </button>
+                                    ))}
+                                </td>
+                            )}
                         </tr>
                     ))}
                 </tbody>

@@ -7,22 +7,16 @@ type Props = {
 	redirectTo?: string;
 };
 
-export default function AmountCardRedirect({
-	title,
-	content,
-	redirectTo = "",
-}: Props) {
-	return (
-		<div className="bg-white p-5 rounded shadow inline-flex justify-between w-full items-center">
-			<div className="inline-flex gap-4">
-				<h3 className="text-sm font-semibold">{title}</h3>
-				<span className="inline-flex items-center justify-center w-6 h-6 text-xs font-semibold text-jungle-green-800 bg-jungle-green-200 p-2 rounded-full">
-					{content}
-				</span>
-			</div>
-			<Link href={redirectTo}>
-				<i className="text-2xl text-gray-400 bx bx-chevron-right"></i>
-			</Link>
-		</div>
-	);
+export default function AmountCardRedirect({ title, content, redirectTo = "" }: Props) {
+    return (
+        <Link href={redirectTo} className="bg-white p-5 rounded-lg shadow flex justify-between items-center hover:bg-gray-50">
+            <div className="flex gap-3 items-center">
+                <h3 className="text-sm font-semibold text-gray-500">{title}</h3>
+                <span className="inline-flex items-center justify-center min-w-6 h-6 px-2 text-xs font-semibold text-white bg-jungle-green-500 rounded-full">
+                    {content}
+                </span>
+            </div>
+            <i className="text-xl text-gray-400 bx bx-chevron-right"></i>
+        </Link>
+    );
 }
