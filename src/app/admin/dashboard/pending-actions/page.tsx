@@ -1,14 +1,10 @@
 "use client"
 import { assignClientToProfessional } from "@/actions/admin/assign-professional";
-import { approveClientProgress } from "@/actions/admin/approve-progress";
-import { disapproveClientProgress } from "@/actions/admin/disapprove-progress";
-import { approveProgressFeedback } from "@/actions/admin/approve-progress-feedback";
-import { disapproveProgressFeedback } from "@/actions/admin/disapprove-progress-feedback";
 import { getAdminActionsSummary } from "@/actions/admin/dashboard/get-actions-summary";
 import { getCoachesList } from "@/actions/admin/get-coaches-list";
 import { getNutritionistsList } from "@/actions/admin/get-nutritionists-list";
 import DataTable from "@/app/ui/data-table";
-import PreviewProgressModal from "@/app/ui/admin/progress-preview-modal";
+import ProgressReviewModal from "@/app/ui/admin/progress-review-modal";
 import { CoachDto } from "@/interfaces/coach.dto";
 import { NutritionistDto } from "@/interfaces/nutritionist.dto";
 import { AdminActionsSummary } from "@/interfaces/summary_admin";
@@ -19,9 +15,7 @@ export default function Page() {
     const [actions, setActions] = useState<AdminActionsSummary>();
     const [showAssignModal, setShowAssignModal] = useState(false);
     const [selectedClient, setSelectedClient] = useState<any>();
-    const [showApproveModal, setShowApproveModal] = useState(false);
-    const [selectedProgressId, setSelectedProgressId] = useState<string | number | null>(null);
-    const [showPreviewModal, setShowPreviewModal] = useState(false);
+    const [showReviewModal, setShowReviewModal] = useState(false);
     const [selectedProgress, setSelectedProgress] = useState<any | null>(null);
     const [error, setError] = useState<boolean>(false);
 
@@ -58,20 +52,13 @@ export default function Page() {
         setShowAssignModal(true);
     }
 
-    const openApproveModal = (progressRow: any[]) => {
-        const progressId = progressRow.find((cell) => cell.key === "id")?.value;
-        if (!progressId) return;
-        setSelectedProgressId(progressId);
-        setShowApproveModal(true);
-    };
-
-    const openPreviewModal = (progressRow: any[]) => {
+    const openReviewModal = (progressRow: any[]) => {
         const progressId = progressRow.find((cell) => cell.key === "id")?.value;
         if (!progressId) return;
         const progressObj = actions?.to_approvals_client_progresses.find(p => p.id === progressId);
         if (!progressObj) return;
         setSelectedProgress(progressObj);
-        setShowPreviewModal(true);
+        setShowReviewModal(true);
     };
 
     // Progress of clients
@@ -115,13 +102,8 @@ export default function Page() {
         setSelectedClient(null);
     }
 
-    const handleCloseApproveModal = () => {
-        setShowApproveModal(false);
-        setSelectedProgressId(null);
-    }
-
-    const handleClosePreviewModal = () => {
-        setShowPreviewModal(false);
+    const handleCloseReviewModal = () => {
+        setShowReviewModal(false);
         setSelectedProgress(null);
     }
 
@@ -139,9 +121,8 @@ export default function Page() {
                 <DataTable
                     headings={headingsProgress}
                     data={dataProgress}
-                    actionTitle="Approve"
-                    actionFunction={openApproveModal}
-                    extraActions={[{ title: "Preview", onClick: openPreviewModal }]}
+                    actionTitle="Review"
+                    actionFunction={openReviewModal}
                 ></DataTable>
             ) : (
                 <CheckCard content="All progress has been approved"></CheckCard>
@@ -149,11 +130,8 @@ export default function Page() {
             {showAssignModal && selectedClient && (
                 <AssignModal client={selectedClient} handleClose={handleCloseAssignModal}></AssignModal>
             )}
-            {showApproveModal && selectedProgressId && (
-                <ApproveModal progressId={selectedProgressId} handleClose={handleCloseApproveModal}></ApproveModal>
-            )}
-            {showPreviewModal && selectedProgress && (
-                <PreviewProgressModal progress={selectedProgress} handleClose={handleClosePreviewModal}></PreviewProgressModal>
+            {showReviewModal && selectedProgress && (
+                <ProgressReviewModal progress={selectedProgress} handleClose={handleCloseReviewModal}></ProgressReviewModal>
             )}
         </div>
     );
@@ -300,100 +278,6 @@ function AssignModal({ client, handleClose }: { client?: any, handleClose: () =>
                         {/* <button className="text-white inline-flex w-full justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Assign
                         </button> */}
-                    </div>
-                </div>
-            </div>
-        </dialog>
-    );
-}
-
-function ApproveModal({ progressId, handleClose }: { progressId: string | number, handleClose: () => void }) {
-    const [reasonProgress, setReasonProgress] = useState<string>("");
-    const [reasonFeedback, setReasonFeedback] = useState<string>("");
-    const [showReasonProgress, setShowReasonProgress] = useState<boolean>(false);
-    const [showReasonFeedback, setShowReasonFeedback] = useState<boolean>(false);
-
-    const handleApproveProgress = async () => {
-        const ok = await approveClientProgress(progressId);
-        if (ok) {
-            toast.success("Progress approved successfully");
-            window.location.reload();
-        } else {
-            toast.error("Error approving progress, please try later");
-        }
-    };
-
-    const handleDisapproveProgress = async () => {
-        if (!reasonProgress) return;
-        const ok = await disapproveClientProgress(progressId, reasonProgress);
-        if (ok) {
-            toast.success("Progress disapproved successfully");
-            window.location.reload();
-        } else {
-            toast.error("Error disapproving progress");
-        }
-    };
-
-    const handleApproveFeedback = async () => {
-        const ok = await approveProgressFeedback(progressId);
-        if (ok) {
-            toast.success("Feedback approved successfully");
-            window.location.reload();
-        } else {
-            toast.error("Error approving feedback");
-        }
-    };
-
-    const handleDisapproveFeedback = async () => {
-        if (!reasonFeedback) return;
-        const ok = await disapproveProgressFeedback(progressId, reasonFeedback);
-        if (ok) {
-            toast.success("Feedback disapproved successfully");
-            window.location.reload();
-        } else {
-            toast.error("Error disapproving feedback");
-        }
-    };
-
-    return (
-        <dialog id="approve-modal" tabIndex={-1} aria-hidden="false"
-            className="flex bg-black/50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full max-h-full">
-            <div className="relative p-4 w-full max-w-lg max-h-full">
-                <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                    <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Approve options</h3>
-                        <button onClick={handleClose} type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                            <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" /></svg>
-                            <span className="sr-only">Close modal</span>
-                        </button>
-                    </div>
-                    <div className="p-4 md:p-5 space-y-6">
-                        <div>
-                            <h4 className="text-md font-semibold mb-2 text-gray-700">Client Progress</h4>
-                            <div className="flex gap-2 mb-2">
-                                <button onClick={handleApproveProgress} className="text-white bg-jungle-green-600 hover:bg-jungle-green-700 focus:ring-4 focus:outline-none focus:ring-jungle-green-200 font-medium rounded-lg text-sm px-4 py-2">Approve</button>
-                                <button onClick={() => setShowReasonProgress(!showReasonProgress)} className="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-200 font-medium rounded-lg text-sm px-4 py-2">Disapprove</button>
-                            </div>
-                            {showReasonProgress && (
-                                <div className="flex flex-col gap-2">
-                                    <textarea className="w-full border rounded p-2" placeholder="Reason" value={reasonProgress} onChange={(e) => setReasonProgress(e.target.value)}></textarea>
-                                    <button onClick={handleDisapproveProgress} className="self-end text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-200 font-medium rounded-lg text-sm px-4 py-2">Send</button>
-                                </div>
-                            )}
-                        </div>
-                        <div>
-                            <h4 className="text-md font-semibold mb-2 text-gray-700">Professional Feedback</h4>
-                            <div className="flex gap-2 mb-2">
-                                <button onClick={handleApproveFeedback} className="text-white bg-jungle-green-600 hover:bg-jungle-green-700 focus:ring-4 focus:outline-none focus:ring-jungle-green-200 font-medium rounded-lg text-sm px-4 py-2">Approve</button>
-                                <button onClick={() => setShowReasonFeedback(!showReasonFeedback)} className="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-200 font-medium rounded-lg text-sm px-4 py-2">Disapprove</button>
-                            </div>
-                            {showReasonFeedback && (
-                                <div className="flex flex-col gap-2">
-                                    <textarea className="w-full border rounded p-2" placeholder="Reason" value={reasonFeedback} onChange={(e) => setReasonFeedback(e.target.value)}></textarea>
-                                    <button onClick={handleDisapproveFeedback} className="self-end text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-200 font-medium rounded-lg text-sm px-4 py-2">Send</button>
-                                </div>
-                            )}
-                        </div>
                     </div>
                 </div>
             </div>
