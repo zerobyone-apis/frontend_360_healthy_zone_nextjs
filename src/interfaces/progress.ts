@@ -7,6 +7,7 @@ export interface ProgressResponseDTO {
     } | null;
     delivery_status: string;
     description_advance?: string | null;
+    professional_feedback?: string | null;
     initial_height: number;
     initial_weight: number;
     initial_body_fat_percentage: number;

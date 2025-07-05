@@ -16,6 +16,8 @@ export default function ProgressReviewModal({ progress, handleClose }: Props) {
   const pics = progress.advace_pictures_uris_form;
   const photos = pics ? (Object.values(pics).filter(Boolean) as string[]) : [];
 
+  const [expandedImage, setExpandedImage] = useState<string | null>(null);
+
   const [reasonProgress, setReasonProgress] = useState("");
   const [reasonFeedback, setReasonFeedback] = useState("");
   const [showReasonProgress, setShowReasonProgress] = useState(false);
@@ -109,7 +111,8 @@ export default function ProgressReviewModal({ progress, handleClose }: Props) {
                       key={idx}
                       src={src}
                       alt={`progress-photo-${idx}`}
-                      className="w-full h-40 object-cover rounded"
+                      className="w-full h-40 object-cover rounded cursor-pointer"
+                      onClick={() => setExpandedImage(src)}
                     />
                   ))
                 ) : (
@@ -157,6 +160,11 @@ export default function ProgressReviewModal({ progress, handleClose }: Props) {
               </div>
               <div>
                 <h4 className="text-md font-semibold mb-2 text-gray-700">Professional Feedback</h4>
+                {progress.professional_feedback && (
+                  <p className="text-sm text-gray-600 mb-2">
+                    {progress.professional_feedback}
+                  </p>
+                )}
                 <div className="flex gap-2 mb-2">
                   <button
                     onClick={handleApproveFeedback}
@@ -192,6 +200,18 @@ export default function ProgressReviewModal({ progress, handleClose }: Props) {
           </div>
         </div>
       </div>
+      {expandedImage && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center"
+          onClick={() => setExpandedImage(null)}
+        >
+          <img
+            src={expandedImage}
+            alt="expanded"
+            className="max-w-full max-h-full rounded"
+          />
+        </div>
+      )}
     </dialog>
   );
 }
