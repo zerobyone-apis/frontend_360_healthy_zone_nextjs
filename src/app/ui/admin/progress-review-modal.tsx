@@ -160,9 +160,9 @@ export default function ProgressReviewModal({ progress, handleClose }: Props) {
               </div>
               <div>
                 <h4 className="text-md font-semibold mb-2 text-gray-700">Professional Feedback</h4>
-                {progress.professional_feedback && (
+                {progress.professionalComment && (
                   <p className="text-sm text-gray-600 mb-2">
-                    {progress.professional_feedback}
+                    {progress.professionalComment}
                   </p>
                 )}
                 <div className="flex gap-2 mb-2">

@@ -1,6 +1,6 @@
 "use client";
 import { ApproveFeedback } from '@/actions/admin/approve-feedback';
-import { ApproveProgress } from '@/actions/admin/approve-progress';
+import { approveClientProgress } from '@/actions/admin/approve-progress';
 import { RejectFeedback } from '@/actions/admin/reject-feedback';
 import { postProffesionalFeedback } from '@/actions/progress/professionalFeedback';
 import { GoalResponseDTO, ProgressResponseDTO } from '@/interfaces';
@@ -57,7 +57,7 @@ export default function ProgressModal({ open = false, handleCloseFn, goal, progr
 
     const handleApproveProgress = async () => {
         try {
-            await ApproveProgress(progress.id);
+            await approveClientProgress(progress.id);
             handleCloseFn();
             toast.success("Progress has been approved");
             setTimeout(() => {
