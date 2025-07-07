@@ -1,3 +1,6 @@
+/* eslint-disable prefer-const */
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import { getAdminActionsSummary } from '@/actions/admin/dashboard/get-actions-summary';
 import AssignUsersView from '@/app/ui/admin/assign-users-view';
@@ -11,6 +14,12 @@ type Props = {}
 export default function Page({ }: Props) {
 
     const [actions, setActions] = useState<AdminActionsSummary>();
+    const [showAssignModal, setShowAssignModal] = useState(false);
+    const [selectedClient, setSelectedClient] = useState<any>();
+    const [showApproveModal, setShowApproveModal] = useState(false);
+    const [selectedProgressId, setSelectedProgressId] = useState<string | number | null>(null);
+    const [showPreviewModal, setShowPreviewModal] = useState(false);
+    const [selectedProgress, setSelectedProgress] = useState<any | null>(null);
     const [error, setError] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 

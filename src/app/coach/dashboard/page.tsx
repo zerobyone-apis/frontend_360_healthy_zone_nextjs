@@ -1,5 +1,6 @@
+/* eslint-disable react/react-in-jsx-scope */
 "use server";
-import { getDashboardStats } from "@/actions/coach/dashboard";
+import { getDashboardCoachSummaryStats } from "@/actions/coach/dashboard";
 import AmountCard from "@/app/ui/admin/amount-card";
 import UserMiniList from "@/app/ui/user-mini-list";
 import { cookies } from "next/headers";
@@ -12,12 +13,10 @@ export default async function Page() {
 	let totalTrainings = 0;
 
 	try {
-		stats = await getDashboardStats();
-		console.log(stats)
-		totalGoals = stats.goals_created.length;
-		stats.goals_created.forEach((goal: any) => {
-			totalTrainings += goal.trainings.length;
-		})
+		stats = await getDashboardCoachSummaryStats();
+		
+		totalGoals = stats.total_goals_created;
+		totalTrainings = stats.total_trainings_created
 	} catch (e) {
 		console.error(e);
 		return (
@@ -28,7 +27,6 @@ export default async function Page() {
 		);
 	}
 
-
 	if (!stats) return null;
 	return (
 		<div className="grid grid-cols-3 gap-4">
@@ -38,7 +36,7 @@ export default async function Page() {
 			</div>
 
 			<div className="md:col-span-1 col-span-full gap-2 flex flex-col">
-				<AmountCard title={"Customers"} content={`${stats.full_assignments.length} / ${stats.custom.customers_limit}`} />
+				<AmountCard title={"Customers"} content={`${stats.client_assigned.length} / ${stats.custom.customers_limit}`} />
 			</div>
 			<div className="md:col-span-1 col-span-full gap-2 flex flex-col">
 				<AmountCard title={"Goals"} content={totalGoals} />
@@ -47,7 +45,7 @@ export default async function Page() {
 				<AmountCard title={"Trainings"} content={totalTrainings} />
 			</div>
 			<div className="col-span-full">
-				<UserMiniList users={stats.full_assignments} redirect="/coach/dashboard/customers" />
+				<UserMiniList clients={stats.client_assigned} redirect="/coach/dashboard/customers" />
 			</div>
 		</div>
 	);

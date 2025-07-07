@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 "use server";
 import { getDashboardStats } from "@/actions/coach/dashboard";
 import DialogsWrapper from "@/app/ui/coach/coach-goals-dialogs-wrapper";

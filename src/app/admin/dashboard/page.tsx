@@ -1,19 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/react-in-jsx-scope */
 
-// import { getAdminActionsSummary } from "@/actions/admin/dashboard/get-actions-summary";
 import { getAdminDashboardStatus } from "@/actions/admin/dashboard/get-dashboard-stats";
 import { getUserMetricsByDate } from "@/actions/admin/dashboard/get-user-metrics";
 import AmountCard from "@/app/ui/admin/amount-card";
 import AmountCardRedirect from "@/app/ui/admin/amount-card-redirect";
 import GraphicChart from "@/app/ui/admin/payments-chart";
+import RecentPaymentsTable from "@/app/ui/admin/recent-payments-table";
 import getLast30Days from "@/utils/getLast30Days";
 import { cookies } from "next/headers";
 
 export default async function Page() {
 	const cookieStore = cookies();
 	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
-	let stats, metrics; //actions;
+
+    let stats, metrics;
 
 	const { initDate, endDate } = getLast30Days();
 	try {
@@ -55,37 +54,58 @@ export default async function Page() {
 					content={stats.amount_of_active_coaches}
 				/>
 			</div>
-			<div className="col-span-2 md:col-span-1">
-				<AmountCard
-					title="Active Nutritionists"
-					content={stats.amount_of_active_nutritionist}
-				/>
-			</div>
-			<div className="col-span-full md:col-span-2">
-				<GraphicChart
-					title="Total users in last 30 days"
-					metrics={metrics}
-					buttonText="View all"
-					buttonLink="/admin/dashboard/users"
-				/>
-			</div>
-			<div className="col-span-full md:col-span-2 gap-2 flex flex-col">
-				<AmountCardRedirect
-					title="Global Notifications"
-					content={stats.to_approval_notifications}
-					redirectTo="/admin/dashboard/notifications"
-				/>
-				<AmountCardRedirect
-					title="Client progress to approve" 
-					content={stats.to_approvals_client_progresses}
-					redirectTo="/admin/dashboard/pending-actions?tab=progress"
-				/>
-				<AmountCardRedirect
-					title="Clients to assign"
-					content={stats.to_assign_clients_to_professionals}
-					redirectTo="/admin/dashboard/pending-actions?tab=clients"
-				/>
-			</div>
-		</section>
-	);
+                        <div className="col-span-2 md:col-span-1">
+                                <AmountCard
+                                        title="Active Nutritionists"
+                                        content={stats.amount_of_active_nutritionist}
+                                />
+                        </div>
+                        <div className="col-span-2 md:col-span-1">
+                                <AmountCard
+                                        title="Progress to approve"
+                                        content={stats.amount_of_client_progress_to_approval_today}
+                                />
+                        </div>
+                        <div className="col-span-2 md:col-span-1">
+                                <AmountCard
+                                        title="Pending payments"
+                                        content={stats.success_and_pending_payments.amount_of_pending_payments}
+                                />
+                        </div>
+                        <div className="col-span-2 md:col-span-1">
+                                <AmountCard
+                                        title="Successful payments"
+                                        content={stats.success_and_pending_payments.amount_of_success_payments}
+                                />
+                        </div>
+                        <div className="col-span-full md:col-span-2">
+                                <GraphicChart
+                                        title="Total users in last 30 days"
+                                        metrics={metrics}
+                                        buttonText="View all"
+                                        buttonLink="/admin/dashboard/users"
+                                />
+                        </div>
+                        <div className="col-span-full md:col-span-2">
+                                <RecentPaymentsTable payments={stats.success_and_pending_payments.payments} />
+                        </div>
+                        <div className="col-span-full md:col-span-2 gap-2 flex flex-col">
+                                <AmountCardRedirect
+                                        title="Notifications to approve"
+                                        content={stats.to_approval_notifications}
+                                        redirectTo="/admin/dashboard/pending-actions?tab=notifications"
+                                />
+                                <AmountCardRedirect
+                                        title="Client progress to approve"
+                                        content={stats.to_approval_client_progresses}
+                                        redirectTo="/admin/dashboard/pending-actions?tab=progress"
+                                />
+                                <AmountCardRedirect
+                                        title="Clients to assign"
+                                        content={stats.to_assign_clients_to_professionals}
+                                        redirectTo="/admin/dashboard/pending-actions?tab=clients"
+                                />
+                        </div>
+                </section>
+        );
 }
