@@ -11,7 +11,6 @@ export default function DialogsWrapper() {
 	const router = useRouter();
 	const goalId = params.get("goal_id");
 	const confirmDelete = () => {
-		console.log("confirm delete ", goalId);
 		deactivateGoal(Number(goalId))
 			.then(() => {
 				router.push("/nutritionist/dashboard/goals");

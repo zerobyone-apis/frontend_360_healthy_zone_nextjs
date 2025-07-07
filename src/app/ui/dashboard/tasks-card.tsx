@@ -1,18 +1,24 @@
-import { TasksList, Task } from "./tasks-list";
+
+
+"use client"
+import NotificationCard from "../notification-card";
 
 type Props = {
-    tasks: Task[];
-};
+    notifications: any[];
+}
 
-export function TasksCard({ tasks }: Props) {
+export function TasksCard({ notifications = [] }: Props) {
+
     return (
-        <div className="w-full bg-white rounded-2xl shadow p-4 flex flex-col gap-4">
-            <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold text-jungle-green-500">My Tasks</h3>
-                <span className="text-sm text-gray-500">{tasks.length} pending</span>
+        <div className="w-full  bg-jungle-green-500 flex flex-col justify-center p-4 rounded-3xl shadow gap-2 max-h-48">
+            <div className="w-full p-2 flex justify-between">
+                <p className="font-light text-white">Pending notifications: <span className="font-bold">{notifications.length}</span></p>
             </div>
-            <div className="max-h-72 overflow-auto pr-1">
-                <TasksList tasks={tasks} />
+            <div className="w-[90%] h-full overflow-auto">
+                {notifications.map((notification, index: number) => <NotificationCard key={index} message={notification.message}
+                    date={notification.created_on} title={notification.typeEvent}
+                    emitted_by={notification.emitted_by}
+                />)}
             </div>
             <div className="flex justify-end">
                 <a href="#" className="text-sm text-jungle-green-600 hover:underline">View all</a>

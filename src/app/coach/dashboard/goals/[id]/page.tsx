@@ -12,6 +12,7 @@ import ConfirmationDialog from "@/app/ui/confirmation-dialog";
 import TrainingDetailsDialog from "@/app/ui/coach/training-details.dialog";
 import { deactivateTraining } from "@/actions/trainings/deactivate-training";
 import ProgressCard from "@/app/ui/coach/progress-card";
+import ProgressModal from "@/app/ui/dashboard/goal/progress-modal";
 
 export default function Page() {
 	const router = useRouter();
@@ -19,6 +20,17 @@ export default function Page() {
 	const searchParams = useSearchParams();
 	const [goal, setGoal] = useState<GoalResponseDTO>();
 	const [progress, setProgress] = useState<ProgressResponseDTO[] | null>();
+
+	const [progressSelected, setProgressSelected] = useState<ProgressResponseDTO>();
+	const [openProgressModal, setOpenProgressModal] = useState(false);
+	const handleCloseFn = () => {
+		setOpenProgressModal(false);
+	}
+	const handleSeeProgress = (progress: ProgressResponseDTO) => {
+		setProgressSelected(progress);
+		setOpenProgressModal(true)
+	}
+
 
 	async function getGoalAndProgress() {
 		const id: string = Array.isArray(param.id) ? param.id[0] : param.id;
@@ -55,7 +67,9 @@ export default function Page() {
 
 			setProgress(progressSorted);
 		} catch (error) {
-			console.log(error);
+			return <div className="flex justify-center items-center h-screen gap-2">
+				<p>Something went wrong...</p>
+			</div>;
 		}
 	}
 
@@ -75,7 +89,6 @@ export default function Page() {
 			await deactivateTraining(trainingId);
 			toast.success("Training deactivated successfully");
 		} catch (e) {
-			console.error(e);
 			toast.error("Failed to deactivate training");
 		}
 
@@ -130,10 +143,10 @@ export default function Page() {
 				<div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
 					<div
 						className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-						style={{ width: goal.isCompleted ? "100%" : goal.percentage + "%" }}
+						style={{ width: goal.isCompleted ? "100%" : goal.progressGoalPercentage + "%" }}
 					>
 						{" "}
-						{goal.isCompleted ? "100" : goal.percentage}%
+						{goal.isCompleted ? "100" : goal.progressGoalPercentage}%
 					</div>
 				</div>
 			</div>
@@ -176,7 +189,7 @@ export default function Page() {
 				</div>
 				<div className="col-span-3">
 					{progress?.map((p, index) => (
-						<ProgressCard progress={p} key={index} />
+						<ProgressCard progress={p} key={index} handleSeeProgress={handleSeeProgress} />
 					))}
 
 					{!progress?.length &&
@@ -324,6 +337,9 @@ export default function Page() {
 					</div>
 				)}
 			</div>
+
+
+			{progressSelected && <ProgressModal progress={progressSelected} goal={goal} handleCloseFn={handleCloseFn} open={openProgressModal} professionalView />}
 
 			{confirmDelete && trainingId && (
 				<ConfirmationDialog

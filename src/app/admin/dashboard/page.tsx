@@ -1,3 +1,4 @@
+
 import { getAdminDashboardStatus } from "@/actions/admin/dashboard/get-dashboard-stats";
 import { getUserMetricsByDate } from "@/actions/admin/dashboard/get-user-metrics";
 import AmountCard from "@/app/ui/admin/amount-card";
@@ -10,15 +11,17 @@ import { cookies } from "next/headers";
 export default async function Page() {
 	const cookieStore = cookies();
 	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
+
     let stats, metrics;
 
 	const { initDate, endDate } = getLast30Days();
 	try {
 		stats = await getAdminDashboardStatus();
-                metrics = await getUserMetricsByDate({
-                        init_date: initDate,
-                        end_date: endDate,
-                });
+		metrics = await getUserMetricsByDate({
+			init_date: initDate,
+			end_date: endDate,
+		});
+	//	actions = await getAdminActionsSummary(); // TODO: Esta llamada desaparecera
 	} catch (e) {
 		return (<div className="flex flex-col gap-2 justify-center items-center h-full">
 			<h3 className="text-lg">An error occurred while fetching data</h3>

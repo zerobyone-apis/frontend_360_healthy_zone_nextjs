@@ -1,0 +1,46 @@
+"use server";
+
+import { cookies } from "next/headers";
+
+export async function unblockUserRequest(
+	userID: string | number,
+	reason: string
+) {
+	const cookieStore = cookies();
+
+	//getting the token from the cookie
+	const tokenValue = cookieStore.get("token")?.value || "";
+	const token = tokenValue;
+
+	//getting the user from the cookie
+	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
+
+	try {
+		const resp = await fetch(
+			process.env.BASE_PATH + "/v1.0/admin/unlock/user/by/" + userID,
+			{
+				method: "PATCH",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: token,
+				},
+				body: JSON.stringify({
+					admin_id: user.admin.id,
+					username_admin: user.admin.username,
+					reason_unlocked: reason,
+				}),
+				cache: "no-store",
+			}
+		);
+		let body = await resp.text();
+
+		if (!resp.ok) {
+			throw new Error(body);
+		}
+
+		return body;
+	} catch (error) {
+		console.log(error);
+		throw new Error("Error trying to unblock the user...");
+	}
+}

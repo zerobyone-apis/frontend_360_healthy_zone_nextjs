@@ -8,7 +8,7 @@ import {
 	dailyTrainMarkAsComplete,
 	trainingMarkAsComplete,
 } from "@/actions/trainings/mark-as-completed";
-import { ExerciseDTO, Training } from "@/interfaces/trainings";
+import { Training } from "@/interfaces/trainings";
 
 type Params = {
 	day: string;

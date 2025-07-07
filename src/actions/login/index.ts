@@ -22,10 +22,15 @@ export const login = async ({ email, password }: login) => {
 			}),
 			cache: "no-store",
 		});
-		let body = await resp.json();
+		const body = await resp.json();
 
 		// cookieStore.set("user", Crypto.encrypt(JSON.stringify(body)));
 		const token: string = resp.headers.get("Authorization") || "";
+		console.log(body);
+		if (body.error) {
+			return body;
+		}
+
 		if (!token) return false;
 
 		// adding cookies...
@@ -56,8 +61,21 @@ export const login = async ({ email, password }: login) => {
 			delete body.client.training;
 			delete body.client.diets;
 			delete body.client.goalClients;
+			if (body.client.subscription) {
+				if (
+					body.client.subscription.status == "APPROVAL_PENDING" ||
+					body.client.subscription.status == "ACTIVE"
+				) {
+					body.client.plan_id = body.client.subscription.paypal_plan_id;
+					body.client.subscription =
+						body.client.subscription.paypal_subscription_id;
+				} else {
+					body.client.subscription = null;
+				}
+			}
 		}
 		if (body.user.roles === "ADMIN") {
+			console.log("Es admin, se borrara el assigments")
 			delete body.admin.assignments;
 		}
 

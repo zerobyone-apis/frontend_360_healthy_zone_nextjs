@@ -119,8 +119,8 @@ export default function ReviewSection({ }: Props) {
                         </div>
                         <div className="col-span-12 max-xl:mt-8 xl:col-span-8 xl:pl-8 w-full min-h-[230px]">
                             <div
-                                className="grid grid-cols-12 h-full px-8 max-lg:py-8 rounded-3xl bg-gray-100 w-full max-xl:max-w-3xl max-xl:mx-auto">
-                                <div className="col-span-12 md:col-span-8 flex items-center">
+                                className="grid grid-cols-12 h-full px-8 max-lg:py-8 rounded-3xl bg-gray-100 max-xl:max-w-3xl max-xl:mx-auto w-full">
+                                <div className="col-span-12 md:col-span-8 flex items-center w-full">
                                     <div className="flex flex-col sm:flex-row items-center max-lg:justify-center w-full h-full">
                                         <div
                                             className="sm:pr-3 sm:border-r border-gray-200 flex items-center justify-center flex-col">
@@ -194,7 +194,6 @@ export default function ReviewSection({ }: Props) {
                                             </div>
                                             <p className="font-normal text-lg leading-8 text-gray-400">46 Ratings</p>
                                         </div>
-
                                         <div
                                             className="sm:pl-3 sm:border-l border-gray-200 flex items-center justify-center flex-col">
                                             <h2 className="font-manrope font-bold text-5xl text-black text-center mb-4">4.8</h2>
@@ -267,16 +266,6 @@ export default function ReviewSection({ }: Props) {
                                             </div>
                                             <p className="font-normal text-lg leading-8 text-gray-400">Last Month</p>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="col-span-12 md:col-span-4 max-lg:mt-8 md:pl-8">
-                                    <div className="flex items-center flex-col justify-center w-full h-full ">
-                                        <button
-                                            className="rounded-full px-6 py-4 bg-indigo-600 font-semibold text-lg text-white whitespace-nowrap mb-6 w-full text-center shadow-sm shadow-transparent transition-all duration-500 hover:bg-indigo-700 hover:shadow-indigo-400">Write
-                                            A Review</button>
-                                        <button
-                                            className="rounded-full px-6 py-4 bg-white font-semibold text-lg text-indigo-600 whitespace-nowrap w-full text-center shadow-sm shadow-transparent transition-all duration-500 hover:bg-indigo-100 hover:shadow-indigo-200">See
-                                            All Reviews</button>
                                     </div>
                                 </div>
                             </div>
@@ -354,65 +343,19 @@ export default function ReviewSection({ }: Props) {
                                 </svg>
                             </div>
                             <div className="flex items-center gap-3">
-                                <h6 className="font-semibold text-lg leading-8 text-black">@john.doe</h6>
-                                <p className="font-medium text-base leading-7 text-gray-400">Nov 01, 2023</p>
+                                <h6 className="font-semibold text-lg leading-8 text-black">Anonymous</h6>
+                                <p className="font-medium text-base leading-7 text-gray-400">Dec 02, 2024</p>
                             </div>
                         </div>
 
                         <p className="font-normal text-lg leading-8 text-gray-500 ">
-                            I recently had the opportunity to explore Pagedone&apos;s UI design system, and it left a lasting
-                            impression on my workflow. The system seamlessly blends user-friendly features with a robust set
-                            of design components, making it a go-to for creating visually stunning and consistent
-                            interfaces.
+                            360 Healthy Zone is an excellent app for anyone looking to improve their health and well-being in a holistic way.
+                            Its intuitive design makes it easy to navigate, and the personalized features cater to individual needs perfectly.
+                            I love how it combines healthy meal plans, exercise routines, and progress tracking all in one place.
+                            The tips and recommendations feel trustworthy and well-researched, and the app motivates users with clear metrics and friendly reminders without being intrusive.
+                            It&apos;s a fantastic tool for transforming your lifestyle and staying consistent with your health goals.
                         </p>
 
-                    </div>
-                    <div
-                        className="flex flex-col sm:flex-row items-center justify-between pt-8  max-xl:max-w-3xl max-xl:mx-auto">
-                        <p className="font-normal text-lg py-[1px] text-black">46 reviews</p>
-                        <form>
-                            <div className="flex">
-
-                                <div className="relative ">
-                                    <div className=" absolute -left-0 px-2 top-0 py-2">
-                                        <p className="font-normal text-lg leading-8 text-gray-500">Sort by:</p>
-
-                                    </div>
-                                    <input type="text"
-                                        className="block w-60 h-11 pr-4 pl-20 py-2.5 text-lg leading-8 font-medium rounded-full cursor-pointer shadow-xs text-black bg-transparent placeholder-black focus:outline-gray-200 "
-                                        placeholder="Most Relevant" />
-                                    <div id="dropdown-button" data-target="dropdown"
-                                        className="dropdown-toggle flex-shrink-0 cursor-pointer z-10 inline-flex items-center py-2.5 px-4 text-base font-medium text-center text-gray-900 bg-transparent absolute right-0 top-2 pl-2 "
-                                    ><svg className="ml-2" width="12" height="7" viewBox="0 0 12 7" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M1 1.5L4.58578 5.08578C5.25245 5.75245 5.58579 6.08579 6 6.08579C6.41421 6.08579 6.74755 5.75245 7.41421 5.08579L11 1.5"
-                                                stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round"
-                                                strokeLinejoin="round" />
-                                        </svg>
-                                    </div>
-                                    <div id="dropdown"
-                                        className="absolute top-9 right-0 z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                                        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                            aria-labelledby="dropdown-button">
-                                            <li>
-                                                <a href="#"
-                                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Most Relevant</a>
-                                            </li>
-                                            <li>
-                                                <a href="#"
-                                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">last week</a>
-                                            </li>
-                                            <li>
-                                                <a href="#"
-                                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">oldest</a>
-                                            </li>
-
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>

@@ -15,10 +15,15 @@ export default function Page() {
 
 	async function handleLoginForm() {
 		let resp = await login(userdata);
+		if (resp.error && resp.message) {
+			return toast.error(resp.message);
+		}
 		if (!resp || resp.status === 500)
 			return toast.warning("Check your credentials and try again");
 		if (resp.user.roles === "CLIENT") {
 			if (resp.user.firstTimeLogin === true) return router.push("/custom-form");
+			if (!resp.client.subscription) return router.push("/subscription-process");
+
 			return router.push("/dashboard");
 		}
 		if (resp.user.roles === "COACH") return router.push("/coach/dashboard");
@@ -92,7 +97,7 @@ export default function Page() {
 									</div>
 								</div>
 								<a
-									href="#"
+									href="/change-password"
 									className="text-sm font-medium text-jungle-green-600 hover:underline"
 								>
 									Forgot password?

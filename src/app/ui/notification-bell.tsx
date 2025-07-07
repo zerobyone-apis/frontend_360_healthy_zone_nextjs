@@ -1,9 +1,13 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+/* eslint-disable no-empty-pattern */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-var */
 "use client";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
 import { getNotificationsByUser } from "@/actions/users/get-notifications-by-user";
-import { NotificationDto, ROLES, User } from "@/interfaces";
+import { NotificationDto, User } from "@/interfaces";
 import { calculateDaysDifference } from "@/utils/daysDifference";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
@@ -16,7 +20,7 @@ type Props = {};
 export function NotificationBell({ }: Props) {
 
 	const user: User = JSON.parse(Cookies.get("user") || "{}");
-	const token: string = Cookies.get("token") || "";
+	const token: string = Cookies.get("token") || ""; // Todo validar como ocultar la conneccion de consola.
 	const userId = user.user?.userId || "";
 	const userEmail = user.user?.email || "";
 
@@ -36,14 +40,15 @@ export function NotificationBell({ }: Props) {
 			"Access-Control-Allow-Origin": "*",
 			"X-User": userId,
 			"X-Email": userEmail,
-			"jwt-token": token
+			// "jwt-token": token
 		}
 
 		stompClient.connect(header, (frame: any) => {
 
 			if (user.admin !== null) {
 				stompClient.subscribe('/notifications/messages', function (message) { //  para todos..
-					toast(message.body)
+					const data = JSON.parse(message.body);
+					toast(data.content)
 				});
 			}
 
@@ -51,25 +56,22 @@ export function NotificationBell({ }: Props) {
 			stompClient.subscribe('/user/notifications/user-message',  // este de aca es por USER ID
 				function (message) {
 					const data = JSON.parse(message.body);
-					console.log(data);
 					setNotifications([...notifications, {
 						message: data.content,
 						datetime_sent: data.event.datetime_sent,
 						id: notifications?.length,
 						typeEvent: data.event.type_event
 					}]);
-					toast.success(data.content);
+					toast(data.content);
 				});
 
 
 			stompClient.subscribe('/notifications/notif', function (message) {
-				console.log(message);
 				// toast.success(message.body)
 			});
 
 
 			stompClient.subscribe('/user/notifications/user-notif', function (message) {
-				console.log(message);
 				// toast.success(message.body);
 			});
 		});

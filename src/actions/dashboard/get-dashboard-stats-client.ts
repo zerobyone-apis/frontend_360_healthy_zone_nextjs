@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 
 export async function getDashboardStats() {
-    const cookieStore = cookies();
+    const cookieStore = cookies();  
 
     //getting the token from the cookie
     const tokenValue = cookieStore.get("token")?.value || "";
@@ -24,7 +24,7 @@ export async function getDashboardStats() {
             body: null,
             cache: "no-store",
         });
-        let body = await resp.json();
+        const body = await resp.json();
         console.log(resp.status);
         if(!resp.ok) {
             throw new Error(body.message);

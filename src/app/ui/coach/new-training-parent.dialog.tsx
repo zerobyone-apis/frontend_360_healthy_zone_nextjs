@@ -10,7 +10,7 @@ import { getLatestGoalByClientID } from "@/actions/goals/get-latest-goal";
 
 type Props = {};
 
-export default function NewTrainingDialogParent({}: Props) {
+export default function NewTrainingDialogParent({ }: Props) {
 	const training = trainingStore((state: any) => state.training);
 	const resetTraining = trainingStore((state: any) => state.resetTraining);
 	const [openDialog, setOpenDialog] = useState<"new" | "select" | null>(null);
@@ -57,7 +57,6 @@ export default function NewTrainingDialogParent({}: Props) {
 			}, 100);
 		} catch (e) {
 			toast.error("Error creating training");
-			console.log(e);
 		}
 	};
 

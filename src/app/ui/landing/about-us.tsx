@@ -24,8 +24,8 @@ export default function AboutUs() {
                     We are a company that facilitates the path to a healthier lifestyle. Through our
                     our platform, we connect people who want to improve their wellness with experts in fitness and nutrition, providing the
                     fitness and nutrition experts, providing the necessary tools to achieve concrete goals.</p>
-                <p>  If you want to learn more about our history and values, we invite you to explore the complete section.</p>
-                <Button className='mt-5'>More information</Button>
+                {/* <p>  If you want to learn more about our history and values, we invite you to explore the complete section.</p>
+                <Button className='mt-5'>More information</Button> */}
             </div>
         </section>
     )

@@ -27,14 +27,14 @@ export async function getAdminActionsSummary (): Promise<AdminActionsSummary> {
 				cache: "no-store",
 			}
 		);
-		let body = await resp.json();
+		const body = await resp.json();
 		if (resp.status !== 200) {
 			throw new Error(body.message);
 		}
 
 		return body;
 	} catch (error) {
-		console.log(error);
+		console.log('Dashboard error: ',error);
 		throw new Error("Error fetching user metrics");
 	}
 }

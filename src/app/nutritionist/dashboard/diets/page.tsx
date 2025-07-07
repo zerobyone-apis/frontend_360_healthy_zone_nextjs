@@ -6,6 +6,7 @@ import Link from "next/link";
 import DietResumeCard from "@/app/ui/nutritionist/diet-resume-card";
 import { NewDietDrawer } from "@/app/ui/nutritionist/new-diet-drawer";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function Page() {
     const [stats, setStats] = useState<any>(null);
@@ -16,7 +17,6 @@ export default function Page() {
     const [openDrawer, setOpenDrawer] = useState(false);
 
     useEffect(() => {
-        console.log(!!params.get("new-diet"))
         setOpenDrawer(!!params.get("new-diet"));
     }, [params]);
 
@@ -31,10 +31,9 @@ export default function Page() {
                     });
                 });
                 setDiets(diets_list);
-                console.log(diets_list);
             })
-            .catch(e => {
-                console.error(e);
+            .catch(() => {
+                toast.error("Something went wrong");
                 setError(true);
             });
     }, []);

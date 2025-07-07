@@ -11,6 +11,8 @@ import ConfirmationDialog from "@/app/ui/confirmation-dialog";
 import { deactivateTraining } from "@/actions/trainings/deactivate-training";
 import ProgressCard from "@/app/ui/coach/progress-card";
 import DietResumeCard from "@/app/ui/dashboard/diets/diet-resume-card";
+import LoadingPage from "@/app/ui/loading.page";
+import ProgressModal from "@/app/ui/dashboard/goal/progress-modal";
 
 export default function Page() {
 	const router = useRouter();
@@ -54,7 +56,9 @@ export default function Page() {
 
 			setProgress(progressSorted);
 		} catch (error) {
-			console.log(error);
+			return <div className="flex justify-center items-center h-screen gap-2">
+				<p>Something went wrong...</p>
+			</div>;
 		}
 	}
 
@@ -62,11 +66,20 @@ export default function Page() {
 		getGoalAndProgress();
 	}, []);
 
-	const showTrainingDetails = searchParams.get("details");
+	const [progressSelected, setProgressSelected] = useState<ProgressResponseDTO>();
+	const [openProgressModal, setOpenProgressModal] = useState(false);
+
+	const handleCloseFn = () => {
+		setOpenProgressModal(false);
+	}
+
+	const handleSeeProgress = (progress: ProgressResponseDTO) => {
+		setProgressSelected(progress);
+		setOpenProgressModal(true)
+	}
+
 	const confirmDelete = searchParams.get("confirm-delete");
 	const dietID = searchParams.get("diet_id");
-	const trainingSelected =
-		goal?.trainings.find(train => train.training_id == dietID) || null;
 	const confirmDeactivateDiet = async () => {
 		// Deactivate training
 		if (!dietID) return;
@@ -74,7 +87,6 @@ export default function Page() {
 			await deactivateTraining(dietID);
 			toast.success("Training deactivated successfully");
 		} catch (e) {
-			console.error(e);
 			toast.error("Failed to deactivate training");
 		}
 
@@ -85,19 +97,11 @@ export default function Page() {
 	};
 
 	//TODO Implement the page LOADING and ERROR states
-	if (!goal) return <div>Loading</div>;
+	if (!goal) return <LoadingPage />
 
 	return (
 		<section className="p-2">
 			<div className="w-full inline-flex justify-end gap-2">
-				<Link
-					href={`?edit-progress=true`}
-					type="button"
-					className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
-				>
-					<i className="bx bx-detail"></i>
-					Edit progress
-				</Link>
 				<Link
 					href={`?confirm-delete=true`}
 					type="button"
@@ -129,10 +133,10 @@ export default function Page() {
 				<div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
 					<div
 						className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-						style={{ width: goal.isCompleted ? "100%" : goal.percentage + "%" }}
+						style={{ width: goal.isCompleted ? "100%" : goal.progressGoalPercentage + "%" }}
 					>
 						{" "}
-						{goal.isCompleted ? "100" : goal.percentage}%
+						{goal.isCompleted ? "100" : goal.progressGoalPercentage}%
 					</div>
 				</div>
 			</div>
@@ -175,7 +179,7 @@ export default function Page() {
 				</div>
 				<div className="col-span-3">
 					{progress?.map((p, index) => (
-						<ProgressCard progress={p} key={index} />
+						<ProgressCard progress={p} key={index} handleSeeProgress={handleSeeProgress} />
 					))}
 
 					{!progress?.length &&
@@ -301,6 +305,7 @@ export default function Page() {
 						);
 					})
 				) : (
+
 					<div className="flex flex-col gap-2 justify-center items-center h-full">
 						<h3 className="text-lg">
 							It&apos;s time to assign some trainings 💪
@@ -332,6 +337,9 @@ export default function Page() {
 					title={"Are you sure you want to deactivate this training?"}
 				/>
 			)}
+
+			{progressSelected && <ProgressModal progress={progressSelected} goal={goal} handleCloseFn={handleCloseFn} open={openProgressModal} professionalView />}
+
 		</section>
 	);
 }

@@ -6,14 +6,20 @@ import { NotificationBell } from './notification-bell';
 import Link from 'next/link';
 import { signout } from '@/actions/dashboard/signout';
 import useOnClickOutside from '@/hooks/useOnClickOutside';
+import Cookies from 'js-cookie';
+import { User } from '@/interfaces';
 
 type Props = {
     list: any[];
 }
 
 export default function Sidebar({ list }: Props) {
+
+    const user: any = JSON.parse(Cookies.get("user") || "{}");
     const [isOpen, setIsOpen] = useState(false);
     const [showProfileDrop, setShowProfileDrop] = useState<boolean>(false);
+    const picProfile = user.client?.profile_picture || user.nutritionist?.image_profile_url || user.coach?.image_profile_url || user.admin?.image_profile_url || "/profile.png";
+
     return (
         <>
             <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -44,7 +50,7 @@ export default function Sidebar({ list }: Props) {
                                     <img
                                         alt="imagen"
                                         className="w-10 h-10 rounded-full ring-3 border-2 border-jungle-green-500 p-1"
-                                        src={"/profile.png"}
+                                        src={picProfile}
                                     />
                                     <ProfileDropdown show={showProfileDrop} />
                                 </div>
@@ -109,14 +115,14 @@ function ProfileDropdown({ show = false }) {
             >
                 <div className="py-1" role="none">
                     <Link
-                        href="#"
+                        href="/dashboard/settings"
                         className="text-gray-700 text-start block px-4 py-2 text-sm hover:bg-gray-100 w-full"
                         role="menuitem"
                         id="menu-item-0"
                     >
-                        Edit Profile
+                        Profile
                     </Link>
-                    <Link
+                    {/* <Link
                         href="#"
                         className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
                         role="menuitem"
@@ -131,7 +137,7 @@ function ProfileDropdown({ show = false }) {
                         id="menu-item-2"
                     >
                         Subscription
-                    </Link>
+                    </Link> */}
                     <button
                         className="text-gray-700 block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
                         role="menuitem"

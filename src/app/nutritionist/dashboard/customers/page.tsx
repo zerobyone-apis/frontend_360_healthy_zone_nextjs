@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getDashboardStats } from "@/actions/nutritionist/dashboard";
 import CustomerCard from "@/app/ui/coach/customer-card";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 export default function Page() {
 	const [stats, setStats] = useState<any>(null);
@@ -13,7 +14,7 @@ export default function Page() {
 				setStats(data);
 			})
 			.catch(e => {
-				console.error(e);
+				toast.error("Something went wrong");
 				setError(true);
 			});
 	}, []);
