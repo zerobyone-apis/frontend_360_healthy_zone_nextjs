@@ -1,3 +1,5 @@
+
+
 "use client"
 import NotificationCard from "../notification-card";
 
@@ -17,6 +19,9 @@ export function TasksCard({ notifications = [] }: Props) {
                     date={notification.created_on} title={notification.typeEvent}
                     emitted_by={notification.emitted_by}
                 />)}
+            </div>
+            <div className="flex justify-end">
+                <a href="#" className="text-sm text-jungle-green-600 hover:underline">View all</a>
             </div>
         </div>
     )

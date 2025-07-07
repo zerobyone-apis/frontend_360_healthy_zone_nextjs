@@ -1,12 +1,12 @@
-'use client'
-type task = {
+"use client";
+export type Task = {
     title: string;
     subtitle: string;
     id: string;
-}
+};
 type Props = {
-    tasks: task[];
-}
+    tasks: Task[];
+};
 
 export function TasksList({ tasks }: Props) {
     return (
@@ -14,11 +14,11 @@ export function TasksList({ tasks }: Props) {
             {
                 tasks.map(task => {
                     return (
-                        <div key={task.id} className={'w-full min-h-[40px] bg-white rounded-xl p-2 flex gap-2 items-center'}>
-                            <div className="bg-jungle-green-500 rounded-full w-10 h-10"></div>
-                            <div className="">
-                                <h3 className='text-base font-semibold'>{task.title}</h3>
-                                <h5 className='text-sm font-light'>{task.subtitle}</h5>
+                        <div key={task.id} className="w-full bg-gray-50 rounded-lg p-3 flex items-center gap-3">
+                            <i className="bx bx-check-circle text-jungle-green-500"></i>
+                            <div className="flex flex-col">
+                                <span className="text-sm font-medium text-gray-800">{task.title}</span>
+                                <span className="text-xs text-gray-500">{task.subtitle}</span>
                             </div>
                         </div>
                     )

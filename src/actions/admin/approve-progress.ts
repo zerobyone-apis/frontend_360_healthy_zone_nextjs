@@ -2,41 +2,42 @@
 
 import { cookies } from "next/headers";
 
-export async function ApproveProgress(progressID: string) {
-	const cookieStore = cookies();
+export async function approveClientProgress(progressId: number | string) {
+    const cookieStore = cookies();
+    const tokenValue = cookieStore.get("token")?.value || "";
+    const token = tokenValue;
+    const user = JSON.parse(cookieStore.get("user")?.value || "{}");
+    const adminId = user.admin?.id;
 
-	//getting the token from the cookie
-	const tokenValue = cookieStore.get("token")?.value || "";
-	const token = tokenValue;
+    try {
+        if (!progressId) {
+            throw new Error("Progress ID is required");
+        }
+        if (!adminId) {
+            throw new Error("Admin ID is required");
+        }
+        const resp = await fetch(
+            process.env.BASE_PATH + `/v1.0/admin/approve/client/progress/by/${progressId}`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: token,
+                    admin_id: adminId,
+                },
+                body: null,
+                cache: "no-store",
+            }
+        );
 
-	//getting the user from the cookie
-	const user = JSON.parse(cookieStore.get("user")?.value || "{}");
+        if (![200, 201, 202].includes(resp.status)) {
+            const body = await resp.text();
+            throw new Error(body);
+        }
 
-	try {
-		const resp = await fetch(
-			process.env.BASE_PATH +
-				"/v1.0/admin/approve/client/progress/by/" +
-				progressID,
-			{
-				method: "PATCH",
-				headers: {
-					admin_id: user.admin.id,
-					"Content-Type": "application/json",
-					Authorization: token,
-				},
-				body: /* body here if required */ null,
-				cache: "no-store",
-			}
-		);
-		let body = await resp.text();
-
-		if (!resp.ok) {
-			throw new Error("Error trying to approve this progress");
-		}
-
-		return body;
-	} catch (error) {
-		console.log(error);
-		throw new Error("Error trying to approve...");
-	}
+        return true;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
 }

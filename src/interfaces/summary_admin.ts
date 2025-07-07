@@ -12,6 +12,7 @@ export interface SummaryAdmin {
     amount_of_active_nutritionist: number;
     amount_of_inactive_nutritionist: number;
     amount_of_client_progress_to_approval_today: number;
+    to_approval_client_progresses: number;
     success_and_pending_payments: {
         amount_of_success_payments: number;
         amount_of_pending_payments: number;
@@ -45,6 +46,7 @@ export interface AdminActionsSummary {
     "to_approvals_client_progresses": ProgressResponseDTO[],
     "to_assign_clients_to_professionals": Customer[]
 }
+
 
 export interface Customer 
     {

@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useEffect, useState } from "react";
 import { getDashboardStats } from "@/actions/coach/dashboard";
 import CustomerCard from "@/app/ui/coach/customer-card";
 import Link from "next/link";
-import { redirect } from "next/dist/server/api-utils";
 
 export default function Page() {
 	const [stats, setStats] = useState<any>(null);

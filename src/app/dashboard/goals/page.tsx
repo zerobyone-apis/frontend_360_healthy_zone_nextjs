@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 "use server";
 import { getGoalsByClientID } from "@/actions/goals/get-goal-by-id-client";
 import CustomerGoalCard from "@/app/ui/coach/customer-goal-card";
