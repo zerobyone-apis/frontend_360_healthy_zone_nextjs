@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useEffect, useState } from "react";
 import { getDashboardStats } from "@/actions/nutritionist/dashboard";
@@ -23,7 +24,7 @@ export default function Page() {
         getDashboardStats()
             .then((data: any) => {
                 setStats((prev: any) => ({ ...prev, ...data }));
-                let diets_list: any[] = [];
+                const diets_list: any[] = [];
                 data.goals_created.forEach((goal: any) => {
                     goal.diets.forEach((diet: any) => {
                         if (diet) diets_list.push({ ...diet, client_info: { ...goal.client } });

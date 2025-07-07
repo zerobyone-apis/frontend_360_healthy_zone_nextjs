@@ -45,6 +45,14 @@ export interface ClientEdited {
 	isActive: boolean;
 }
 
+export interface ClientShortEdited {
+	id: number | string;
+	edited_name: string;
+	city: string;
+	country: string;
+	isActive: boolean;
+}
+
 export interface GoalResponseDTO {
 	id: number;
 	client: ClientEdited;

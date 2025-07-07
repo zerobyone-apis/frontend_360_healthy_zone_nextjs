@@ -263,10 +263,10 @@ export default function NewGoalDialog() {
 		</dialog>
 	);
 }
+
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 import { createNewGoal } from "@/actions/goals/create-goal";
-import { set } from "date-fns";
 
 function ClientInfoAccordion({ client }: { client: ClientEdited }) {
 	const [hidden, setHidden] = useState(false);

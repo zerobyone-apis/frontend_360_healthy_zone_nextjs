@@ -1,8 +1,10 @@
+/* eslint-disable react/react-in-jsx-scope */
 "use server";
-import { getDashboardStats } from "@/actions/nutritionist/dashboard";
+
 import UserMiniList from "@/app/ui/user-mini-list";
 import AmountCard from "@/app/ui/admin/amount-card";
 import { cookies } from "next/headers";
+import { getDashboardNutritionistSummaryStats } from "@/actions/coach/dashboard";
 
 export default async function Page() {
 	const cookieStore = cookies();
@@ -12,12 +14,11 @@ export default async function Page() {
 	let totalGoals = 0;
 	let totalDiets = 0;
 	try {
-		stats = await getDashboardStats();
+		stats = await getDashboardNutritionistSummaryStats();
 		console.log(stats);
-		totalGoals = stats.goals_created.length;
-		stats.goals_created.forEach((goal: any) => {
-			totalDiets += goal.diets.length;
-		})
+		totalGoals = stats.total_goals_created;
+		totalDiets = stats.total_diets_created;
+		
 	} catch (e) {
 		console.error(e);
 		return (
@@ -28,7 +29,7 @@ export default async function Page() {
 		);
 	}
 
-	if (!stats.full_assignments.length) {
+	if (!stats.client_assigned.length) {
 		return (
 			<div className="flex flex-col gap-2 justify-center items-center h-full">
 				<h3 className="text-lg">Wait until the admin assign a client to you</h3>
@@ -44,7 +45,7 @@ export default async function Page() {
 			</div>
 
 			<div className="md:col-span-1 col-span-full gap-2 flex flex-col">
-				<AmountCard title={"Customers"} content={`${stats.full_assignments.length} / ${stats.custom.customers_limit}`} />
+				<AmountCard title={"Customers"} content={`${stats.client_assigned.length} / ${stats.custom.customers_limit}`} />
 			</div>
 			<div className="md:col-span-1 col-span-full gap-2 flex flex-col">
 				<AmountCard title={"Goals"} content={totalGoals} />
@@ -53,7 +54,7 @@ export default async function Page() {
 				<AmountCard title={"Diets"} content={totalDiets} />
 			</div>
 			<div className="col-span-full">
-				<UserMiniList users={stats.full_assignments} redirect="/nutritionist/dashboard/customers" />
+				<UserMiniList clients={stats.client_assigned} redirect="/nutritionist/dashboard/customers" />
 			</div>
 		</div>
 	);

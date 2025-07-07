@@ -9,7 +9,7 @@ type Props = {
 
 export default function ProgressCard({ progress }: Props) {
 	const pics = progress.advace_pictures_uris_form;
-	let photosFormatted: ReactElement[] = [];
+	const photosFormatted: ReactElement[] = [];
 	if (pics) {
 		Object.keys(pics).forEach((key: string, index: number) => {
 			const pic = pics[key];

@@ -1,13 +1,13 @@
-import { UserBody } from '@/interfaces/user'
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from 'next/link';
 import React from 'react'
 
 type Props = {
-    users: any[];
+    clients: any[];
     redirect: string;
 }
 
-export default function UserMiniList({ users, redirect }: Props) {
+export default function UserMiniList({ clients, redirect }: Props) {
     return (
         <div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <div className="flex items-center justify-between mb-4">
@@ -18,8 +18,7 @@ export default function UserMiniList({ users, redirect }: Props) {
             </div>
             <div className="flow-root max-h-[300px] overflow-auto">
                 <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700  ">
-                    {users.map((user: any) => {
-                        const client = user.client;
+                    {clients.map((client: any) => {
                         const subtitle = client.city && client.country ? `${client.city}, ${client.country}` : client.country
 
                         return (

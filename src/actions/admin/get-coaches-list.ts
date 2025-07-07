@@ -11,7 +11,7 @@ export async function getCoachesList(): Promise<CoachDto[]> {
     const token = tokenValue;
 
     try {
-        const resp = await fetch(process.env.BASE_PATH + "/v1.0/coach", {
+        const resp = await fetch(process.env.BASE_PATH + "/v1.0/coach/actives", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -20,13 +20,13 @@ export async function getCoachesList(): Promise<CoachDto[]> {
             body: /* body here if required */ null,
             cache: "no-store",
         });
-        let body = await resp.json();
+        const body = await resp.json();
         if(resp.status !== 200) {
             throw new Error(body.message);
         }
         
         return body;
     } catch (error) {
-        throw new Error("Error fetching coaches list");
+        throw new Error(`Error fetching coaches list ${error}`);
     }
 }

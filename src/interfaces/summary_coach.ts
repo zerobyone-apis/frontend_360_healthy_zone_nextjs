@@ -1,4 +1,4 @@
-import { ClientEdited } from "./goals";
+import { ClientEdited, ClientShortEdited } from "./goals";
 
 interface Client {
     id: number;
@@ -92,4 +92,15 @@ export interface SummaryCoach extends Custom  {
     remaining_clients: string;
     full_assignments: FullAssignment[];
     goals_created: Goal[];
+} 
+
+export interface DashboardSummary extends Custom  {
+    total_completed_assignments: number;
+    total_in_progress_assignments: number;
+    total_ready_to_start_assignments: number;
+    remaining_clients: string;
+    client_assigned: ClientShortEdited[];
+    total_goals_created: number;
+    total_trainings_created: number;
+    total_diets_created: number;
 } 
