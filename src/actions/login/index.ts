@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import { cookies } from "next/headers";
 // import { Crypto } from "@/utils/encrypt";
@@ -89,8 +90,8 @@ export const login = async ({ email, password }: login) => {
 		cookieStore.set("token", token, { expires: Date.now() + sevenDays });
 
 		return body;
-	} catch (error) {
-		console.log(error);
-		throw new Error("Error trying to login");
+	} catch (error: any) {
+		console.error('Error in login: ', error);
+		throw new Error(`Error trying to login`);
 	}
 };

@@ -62,7 +62,7 @@ export default function Page() {
 			} else {
 				toast.error("Error creating the subscription");
 			}
-		} catch (error) {
+		} catch {
 			toast.error("Error creating subscription");
 		}
 	}, [user, planId, price]);
