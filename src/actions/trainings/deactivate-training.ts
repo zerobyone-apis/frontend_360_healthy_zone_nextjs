@@ -16,7 +16,7 @@ export async function deactivateTraining(id: string | number) {
             body: null,
             cache: "no-store",
         });
-        let body = await resp.text();
+        const body = await resp.text();
         console.log(resp.status);
         if(!resp.ok || resp.status !== 200) {
             throw new Error(body || "Failed to deactivate training");

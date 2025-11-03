@@ -29,7 +29,7 @@ export const registration = async ({
 			}),
 		});
 		if(!resp.ok) return null;
-		let respi = await resp.json();
+		const respi = await resp.json();
 		return respi;
 	} catch (error) {
 		console.log(error)
@@ -64,7 +64,7 @@ export const professionalRegistration = async ({
 		);
 
 		if(!resp.ok) return null;
-		let respi = await resp.json();
+		const respi = await resp.json();
 		return respi;
 	} catch (error) {
 		console.log(error)

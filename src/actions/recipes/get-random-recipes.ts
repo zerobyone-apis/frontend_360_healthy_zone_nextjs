@@ -13,7 +13,7 @@ export async function getRandomRecipes() {
 				body: /* body here if required */ null,
 			}
 		);
-		let body = await resp.json();
+		const body = await resp.json();
 
 		if (!resp.ok) {
 			throw new Error(body);

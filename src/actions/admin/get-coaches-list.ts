@@ -20,7 +20,7 @@ export async function getCoachesList(): Promise<CoachDto[]> {
             body: /* body here if required */ null,
             cache: "no-store",
         });
-        let body = await resp.json();
+        const body = await resp.json();
         if(resp.status !== 200) {
             throw new Error(body.message);
         }

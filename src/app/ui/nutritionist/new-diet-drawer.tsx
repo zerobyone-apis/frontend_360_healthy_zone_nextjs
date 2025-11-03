@@ -69,7 +69,7 @@ export function NewDietDrawer({ open = false, handleCloseFn, hint, clients }: Pr
     const checkGoalByClientD = async (clientID: string) => {
         try {
             setLoading(true);
-            let resp = await getLatestGoalByClientID(clientID);
+            const resp = await getLatestGoalByClientID(clientID);
             setGoalAssigned(resp);
         } catch (e) {
             setGoalAssigned(null)

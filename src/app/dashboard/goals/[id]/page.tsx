@@ -359,10 +359,10 @@ export default function Page() {
 					canClose={true}
 					confirmAction={confirmDeactivateTraining}
 					cancelAction={() => {
-						router.push("/coach/dashboard/goals/" + goal.id, { replace: true });
+						router.replace("/coach/dashboard/goals/" + goal.id);
 					}}
 					handleClose={() => {
-						router.push("/coach/dashboard/goals/" + goal.id, { replace: true });
+						router.replace("/coach/dashboard/goals/" + goal.id);
 					}}
 					title={"Are you sure you want to deactivate this training?"}
 				/>
@@ -371,7 +371,7 @@ export default function Page() {
 				<TrainingDetailsDialog
 					training={trainingSelected}
 					handleCloseOuter={() => {
-						router.push("/coach/dashboard/goals/" + goal.id, { replace: true });
+						router.replace("/coach/dashboard/goals/" + goal.id);
 					}}
 				/>
 			)}

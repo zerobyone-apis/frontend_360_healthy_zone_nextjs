@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+/* eslint-disable no-empty-pattern */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 import { getAdminActionsSummary } from '@/actions/admin/dashboard/get-actions-summary';
 import NotificationCard from '@/app/ui/notification-card'

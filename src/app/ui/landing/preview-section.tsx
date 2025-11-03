@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+/* eslint-disable no-empty-pattern */
 "use client"
 import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';

@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+export const dynamic = "force-dynamic";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { getGoalByID } from "@/actions/goals/get-goal-by-id";
@@ -346,10 +349,10 @@ export default function Page() {
 					canClose={true}
 					confirmAction={confirmDeactivateTraining}
 					cancelAction={() => {
-						router.push("/coach/dashboard/goals/" + goal.id, { replace: true });
+						router.push("/coach/dashboard/goals/" + goal.id);
 					}}
 					handleClose={() => {
-						router.push("/coach/dashboard/goals/" + goal.id, { replace: true });
+						router.push("/coach/dashboard/goals/" + goal.id);
 					}}
 					title={"Are you sure you want to deactivate this training?"}
 				/>
@@ -358,7 +361,7 @@ export default function Page() {
 				<TrainingDetailsDialog
 					training={trainingSelected}
 					handleCloseOuter={() => {
-						router.push("/coach/dashboard/goals/" + goal.id, { replace: true });
+						router.push("/coach/dashboard/goals/" + goal.id);
 					}}
 				/>
 			)}

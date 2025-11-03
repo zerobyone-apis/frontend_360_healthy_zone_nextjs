@@ -1,4 +1,6 @@
-"use client"
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+/* eslint-disable no-empty-pattern */
+"use client";
 import React, { useState } from 'react'
 import Logo from "@/app/ui/svgs/logo-360-healthy-zone.svg";
 import Link from 'next/link';

@@ -18,7 +18,7 @@ export async function getGoalByID(
 		);
 		if (!resp.ok) return null;
 
-		let body = await resp.json();
+		const body = await resp.json();
 
 		return body;
 	} catch (error) {

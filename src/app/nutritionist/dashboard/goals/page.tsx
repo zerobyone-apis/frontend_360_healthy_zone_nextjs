@@ -1,4 +1,5 @@
-"use server";
+/* eslint-disable react/react-in-jsx-scope */
+export const dynamic = "force-dynamic";
 import { getDashboardStats } from "@/actions/nutritionist/dashboard";
 import DialogsWrapper from "@/app/ui/nutritionist/nutritionist-goals-dialogs-wrapper";
 import CustomerGoalCard from "@/app/ui/coach/customer-goal-card";

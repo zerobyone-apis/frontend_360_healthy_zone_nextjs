@@ -22,7 +22,7 @@ export async function getDietByID(id: string | number) {
 			body: /* body here if required */ null,
 			cache: "no-store",
 		});
-		let body = await resp.json();
+		const body = await resp.json();
 
 		if (!resp.ok) {
 			throw new Error(body.message);

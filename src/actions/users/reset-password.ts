@@ -15,7 +15,7 @@ export async function resetPassword(email: string) {
 				cache: "no-store",
 			}
 		);
-		let body = await resp.json();
+		const body = await resp.json();
 
 		if (!resp.ok) {
 			throw new Error(body.message);

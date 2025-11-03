@@ -23,7 +23,7 @@ export async function getAllCustomers() {
             }
         );
 
-        let respi = await resp.text();
+        const respi = await resp.text();
         return {
             error: false,
             message: "Data updated successfuly",

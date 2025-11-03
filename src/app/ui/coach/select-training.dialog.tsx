@@ -1,3 +1,5 @@
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { getExercises } from "@/actions/trainings/get-exercises";
 import clsx from "clsx";
@@ -35,7 +37,7 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 
 	const handleSelect = (exercise: any) => {
 		setSelected(prevSelected => {
-			let updatedSelected = [...prevSelected];
+			const updatedSelected = [...prevSelected];
 			const dayIndex = currentDay - 1;
 
 			if (!updatedSelected[dayIndex]) {
@@ -129,11 +131,11 @@ export default function SelectTrainingModal({ handleComplete }: Props) {
 	}
 
 	function handleClose() {
-		router.replace("/coach/dashboard/customers", { shallow: true });
+		router.replace("/coach/dashboard/customers");
 	}
 
 	const amountOfDays = training.amount_of_training_days;
-	let dayOptions = [];
+	const dayOptions = [];
 	for (let i = 1; i <= amountOfDays; i++) {
 		dayOptions.push(
 			<option key={i} value={i}>

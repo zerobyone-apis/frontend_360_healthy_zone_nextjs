@@ -42,7 +42,7 @@ export default function Page() {
 			.finally(() => setLoading(false));
 	}, []);
 
-	let days: ReactElement[] = [];
+	const days: ReactElement[] = [];
 
 	if (training) {
 		for (let i = 0; i < training.amount_of_training_days; i++) {

@@ -25,7 +25,7 @@ export async function getAllDietsByUser() {
 				cache: "no-store",
 			}
 		);
-		let body = await resp.json();
+		const body = await resp.json();
 
 		if (!resp.ok) {
 			throw new Error(body.message);

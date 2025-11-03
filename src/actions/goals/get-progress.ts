@@ -20,7 +20,7 @@ export async function getProgressByClientID(
 		if (!resp.ok) {
 			return [];
 		}
-		let body = await resp.json();
+		const body = await resp.json();
 		return body;
 	} catch (error) {
 		console.log(error);

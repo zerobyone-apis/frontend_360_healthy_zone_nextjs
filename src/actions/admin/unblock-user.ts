@@ -32,7 +32,7 @@ export async function unblockUserRequest(
 				cache: "no-store",
 			}
 		);
-		let body = await resp.text();
+		const body = await resp.text();
 
 		if (!resp.ok) {
 			throw new Error(body);

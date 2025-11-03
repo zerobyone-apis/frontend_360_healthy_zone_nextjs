@@ -26,7 +26,7 @@ export async function createTraining({clientID, training}: {clientID: string, tr
             body: JSON.stringify(training),
             cache: "no-store",
         });
-        let body = await resp.json();
+        const body = await resp.json();
         console.log(resp.status);
         if(resp.status !== 201) {
             throw new Error(body.message);

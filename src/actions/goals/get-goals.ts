@@ -25,7 +25,7 @@ export async function getGoals(
 				cache: "no-store",
 			}
 		);
-		let body = await resp.json();
+		const body = await resp.json();
 		return body;
 	} catch (error) {
 		console.log(error);

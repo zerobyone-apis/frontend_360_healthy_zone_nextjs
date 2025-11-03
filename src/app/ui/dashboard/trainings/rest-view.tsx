@@ -14,14 +14,14 @@ export default function RestView({
 	setCurrentIndex,
 	nextExercise,
 }: Props) {
-	let timer = 0;
+	const timer = 0;
 	const nextExerciseAudio = new Audio(
 		"/audios/training/next_exercise_will_start.mp3"
 	);
 	const [timeLeft, setTimeLeft] = useState(Number(restInSeconds));
 
 	useEffect(() => {
-		let timerout = setTimeout(() => {
+		const timerout = setTimeout(() => {
 			if (timeLeft <= 0) {
 				clearTimeout(timer);
 				setCurrentIndex((state: any) => state + 1);

@@ -36,7 +36,7 @@ export default function Page({ }: Props) {
 
     const handleComplete = async () => {
         //mocked firstTimeLogin tu false...
-        let user = JSON.parse(Cookies.get("user") || "{}");
+        const user = JSON.parse(Cookies.get("user") || "{}");
         user.user.firstTimeLogin = false;
         Cookies.set("user", JSON.stringify(user));
 

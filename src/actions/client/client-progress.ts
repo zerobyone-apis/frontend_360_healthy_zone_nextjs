@@ -21,7 +21,7 @@ export async function getClientProgress(clientId: string) {
 			}
 		);
 
-		let respi = await resp.json();
+		const respi = await resp.json();
 		console.log(respi);
 		return respi;
 	} catch (error) {

@@ -1,3 +1,5 @@
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { CoachPlansServices, TrainingTypes } from "@/interfaces/trainings";
 import { trainingStore } from "@/stores/training.store";
@@ -50,7 +52,7 @@ export default function NewTrainingDialog({ handleNext, goal }: Props) {
 	const router = useRouter();
 
 	function handleClose() {
-		router.replace("/coach/dashboard/trainings", { shallow: true });
+		router.replace("/coach/dashboard/trainings");
 	}
 
 	const handleNextStep = () => {

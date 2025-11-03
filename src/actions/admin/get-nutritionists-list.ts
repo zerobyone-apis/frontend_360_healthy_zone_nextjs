@@ -20,7 +20,7 @@ export async function getNutritionistsList(): Promise<NutritionistDto[]> {
             body: /* body here if required */ null,
             cache: "no-store",
         });
-        let body = await resp.json();
+        const body = await resp.json();
         if(resp.status !== 200) {
             throw new Error(body.message);
         }

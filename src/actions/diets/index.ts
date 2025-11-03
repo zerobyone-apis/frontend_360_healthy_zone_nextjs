@@ -9,9 +9,9 @@ export async function getAllDietsByUserID(userID: number) {
 
 export async function getDietById(dietID: number) {
 	// funcion hardcoded
-	let diet: DietResponseDTO | null = await new Promise((resolve, _reject) => {
+	const diet: DietResponseDTO | null = await new Promise((resolve, _reject) => {
 		setTimeout(() => {
-			let dietResponse: any =
+			const dietResponse: any =
 				mockup.find(data => data.diet_id === dietID) || null;
 			return resolve(dietResponse);
 		}, 2000);

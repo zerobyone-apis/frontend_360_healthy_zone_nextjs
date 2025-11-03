@@ -29,7 +29,7 @@ export async function RejectFeedback(progressID: string, reason: string) {
 				cache: "no-store",
 			}
 		);
-		let body = await resp.text();
+		const body = await resp.text();
 
 		if (!resp.ok) {
 			console.log(body);

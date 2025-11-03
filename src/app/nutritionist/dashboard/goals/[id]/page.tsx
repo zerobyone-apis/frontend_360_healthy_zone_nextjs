@@ -329,10 +329,10 @@ export default function Page() {
 					canClose={true}
 					confirmAction={confirmDeactivateDiet}
 					cancelAction={() => {
-						router.push("/nutritionist/dashboard/goals/" + goal.id, { replace: true });
+						router.replace("/nutritionist/dashboard/goals/" + goal.id);
 					}}
 					handleClose={() => {
-						router.push("/nutritionist/dashboard/goals/" + goal.id, { replace: true });
+						router.replace("/nutritionist/dashboard/goals/" + goal.id);
 					}}
 					title={"Are you sure you want to deactivate this training?"}
 				/>

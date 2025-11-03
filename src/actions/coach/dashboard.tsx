@@ -21,7 +21,7 @@ export async function getDashboardStats(): Promise<SummaryCoach> {
 				cache: "no-store",
 			}
 		);
-		let body = await resp.json();
+		const body = await resp.json();
 		body.custom = {
 			customers: body.remaining_clients.split("/")[0].slice(),
 			customers_limit: body.remaining_clients.split("/")[1].slice(),

@@ -49,7 +49,7 @@ export async function assignClientToProfessional({
 				cache: "no-store",
 			}
 		);
-		let body = await resp.json();
+		const body = await resp.json();
 		if (resp.status !== 200 && resp.status !== 201) {
 			throw new Error(body.message);
 		}

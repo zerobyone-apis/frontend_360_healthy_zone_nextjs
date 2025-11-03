@@ -17,10 +17,10 @@ export default function TrainingDetailsDialog({
 		if (handleCloseOuter) {
 			return handleCloseOuter();
 		}
-		router.replace("/coach/dashboard/trainings", { shallow: true });
+		router.replace("/coach/dashboard/trainings");
 	};
 	const [selectedDay, setSelectedDay] = useState(0); // 0 is the first day
-	let days = [];
+	const days = [];
 
 	// sort the days by the day number
 	training.daily_training_days.sort(

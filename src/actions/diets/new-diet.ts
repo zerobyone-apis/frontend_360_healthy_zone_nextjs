@@ -26,7 +26,7 @@ export async function createNewDiet(clientID: string, dietObj: any) {
 				cache: "no-store",
 			}
 		);
-		let body = await resp.json();
+		const body = await resp.json();
 		if (!resp.ok) {
 			console.log(body);
 			throw new Error(body.message);

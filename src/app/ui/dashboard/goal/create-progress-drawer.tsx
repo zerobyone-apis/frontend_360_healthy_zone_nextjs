@@ -52,7 +52,7 @@ export function CreateProgressDrawer({ open = false, handleCloseFn, goal }: Prop
         setLoading(true);
 
         try {
-            let data = {
+            const data = {
                 initial_height: profile.initial_height,
                 initial_weight: profile.initial_weight,
                 goal_id: goal.id,
@@ -85,7 +85,7 @@ export function CreateProgressDrawer({ open = false, handleCloseFn, goal }: Prop
 
     const currentFatPercentage = () => {
 
-        let pertcentage = calculateFatPercentage({
+        const pertcentage = calculateFatPercentage({
             age: Number(profile.age),
             weight: Number(currentWeight),
             height: profile.initial_height,

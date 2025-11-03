@@ -68,7 +68,7 @@ export default function ProgressModal({ open = false, handleCloseFn, goal, progr
         }
     }
 
-    let stars = [];
+    const stars = [];
     const level = {
         "EXELENTE": 5,
         "BIEN": 4,
@@ -253,14 +253,14 @@ export default function ProgressModal({ open = false, handleCloseFn, goal, progr
 
 
 function ProgressPhotos({ pics }: { pics: any }) {
-    let photosFormatted: ReactElement[] = [];
+    const photosFormatted: ReactElement[] = [];
 
     if (pics) {
         Object.keys(pics).forEach((key: string, index: number) => {
             const pic = pics[key];
             if (pic)
                 photosFormatted.push(
-                    <a href={pic} target="_blank" key={index}>
+                    <a href={pic} target="_blank" key={index} rel="noreferrer">
                         <img
                             src={pic}
                             alt={"training-pic-" + index}

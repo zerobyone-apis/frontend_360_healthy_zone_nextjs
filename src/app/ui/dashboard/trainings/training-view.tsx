@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default function TrainingView({ setCurrentIndex, exercise }: Props) {
-	let timer = 0;
+	const timer = 0;
 	const router = useRouter();
 	const halfTimeSoundEffect = new Audio(
 		"/audios/training/half_time_keep_working.mp3"

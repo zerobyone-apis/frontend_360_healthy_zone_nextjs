@@ -24,7 +24,7 @@ export async function getProfileInfo() {
 				cache: "no-store",
 			}
 		);
-		let body = await resp.json();
+		const body = await resp.json();
 		console.log(resp.status);
 		if (!resp.ok) {
 			throw new Error(body.message);

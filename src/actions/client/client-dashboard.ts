@@ -35,7 +35,7 @@ export async function getClientDashboard(): Promise<DashboardClientStats> {
 				cache: "no-store",
 			}
 		);
-		let body = await resp.json();
+		const body = await resp.json();
 
 		if (!resp.ok) {
 			throw new Error(body.message);

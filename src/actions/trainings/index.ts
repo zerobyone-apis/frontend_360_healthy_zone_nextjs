@@ -73,13 +73,13 @@ export async function getTrainingsID(trainingID: number | string) {
 export async function getExerciseDay(day_id: string, training_id: string) {
 
 	// Funcion hardcoded...
-	let training: any = await new Promise(async (resolve, _reject) => {
-		let trainingResponse = await getTrainingsID(Number(training_id));
-		let dailyTraining = trainingResponse.daily_training_days.find(
+	const training: any = await new Promise(async (resolve, _reject) => {
+		const trainingResponse = await getTrainingsID(Number(training_id));
+		const dailyTraining = trainingResponse.daily_training_days.find(
 			(day: any) => day.id == day_id
 		);
 		//fragmentando ejercicios y descansos:
-		let exercisesAndRests: any = [
+		const exercisesAndRests: any = [
 			/**
 			 * Primer descanso antes de comenzar
 			 */
@@ -90,11 +90,11 @@ export async function getExerciseDay(day_id: string, training_id: string) {
 		];
 
 		dailyTraining.selected_exercises.forEach((exerciseData: any, index: number) => {
-			let rest = {
+			const rest = {
 				rest: true,
 				rest_in_seconds: exerciseData.rest_in_seconds,
 			};
-			let exercise = { ...exerciseData, rest: false };
+			const exercise = { ...exerciseData, rest: false };
 			exercisesAndRests.push(exercise);
 			if (index !== dailyTraining.length - 1) exercisesAndRests.push(rest);
 		});

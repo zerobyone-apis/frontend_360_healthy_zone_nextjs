@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 /* eslint-disable no-empty-pattern */
-"use client"
+"use client";
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import {
     ClientSubscription,

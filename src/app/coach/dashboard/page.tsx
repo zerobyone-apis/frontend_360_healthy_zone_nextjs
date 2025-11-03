@@ -1,4 +1,6 @@
-"use server";
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const dynamic = "force-dynamic";
 import { getDashboardStats } from "@/actions/coach/dashboard";
 import AmountCard from "@/app/ui/admin/amount-card";
 import UserMiniList from "@/app/ui/user-mini-list";

@@ -9,7 +9,7 @@ export default function TrainingDifficultyCard({
 	difficulty,
 	days_remaining,
 }: Props) {
-	let stars: ReactNode[] = [];
+	const stars: ReactNode[] = [];
 	for (let i = 0; i < 5; i++) {
 		if (difficulty - 1 >= i)
 			stars.push(<i className="bx bxs-star text-yellow-200"></i>);

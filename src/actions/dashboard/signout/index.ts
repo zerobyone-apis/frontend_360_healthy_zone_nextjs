@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 export async function signout() {
 	console.log("ingreso en cookie");
-	let cookieStore = cookies();
+	const cookieStore = cookies();
 	cookieStore.delete("user");
 	cookieStore.delete("token");
 	console.log("Elimino token y user");

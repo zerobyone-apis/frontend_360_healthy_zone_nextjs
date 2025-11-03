@@ -1,4 +1,9 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+/* eslint-disable no-empty-pattern */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
 import { getDashboardStats } from "@/actions/coach/dashboard";
 import { deactivateTraining } from "@/actions/trainings/deactivate-training";
 import CustomerTrainingCard from "@/app/ui/coach/customer-training-card";
@@ -52,7 +57,7 @@ export default function Page({ }: Props) {
 			toast.error("Failed to deactivate training");
 		}
 
-		router.push("/coach/dashboard/trainings", { replace: true });
+		router.replace("/coach/dashboard/trainings");
 		setTimeout(() => {
 			window.location.reload();
 		}, 100);
@@ -115,10 +120,10 @@ export default function Page({ }: Props) {
 					canClose={true}
 					confirmAction={confirmDeactivateTraining}
 					cancelAction={() =>
-						router.push("/coach/dashboard/trainings", { replace: true })
+						router.replace("/coach/dashboard/trainings")
 					}
 					handleClose={() =>
-						router.push("/coach/dashboard/trainings", { replace: true })
+						router.replace("/coach/dashboard/trainings")
 					}
 					title={"Are you sure you want to deactivate this training?"}
 				/>

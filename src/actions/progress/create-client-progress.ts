@@ -33,9 +33,12 @@ export async function CreateClientProgress(data: any, photos: File[]) {
 		String(data.target_body_fat_percentage)
 	);
 	formdata.append("selected_type", data.selected_type);
-	data?.training_id &&
+	if (data?.training_id) {
 		formdata.append("training_id", String(data?.training_id));
-	data?.diet_id && formdata.append("diet_id", String(data?.diet_id));
+	}
+	if (data?.diet_id) {
+		formdata.append("diet_id", String(data?.diet_id));
+	}
 
 	const requestOptions: RequestInit = {
 		method: "POST",
@@ -51,7 +54,7 @@ export async function CreateClientProgress(data: any, photos: File[]) {
 	};
 
 	try {
-		let resp = await fetch(
+		const resp = await fetch(
 			process.env.NEXT_PUBLIC_BASE_PATH + "/v1.0/progress/trains/create",
 			requestOptions
 		);

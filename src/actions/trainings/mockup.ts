@@ -117,7 +117,7 @@ export const exercises_from_api = async () => {
 		});
 		const result = await response.json();
 		console.log(result);
-		let data = result.map((exercise: any, index: number) => {
+		const data = result.map((exercise: any, index: number) => {
 			return {
 				id: randomUUID(),
 				name: exercise.name,

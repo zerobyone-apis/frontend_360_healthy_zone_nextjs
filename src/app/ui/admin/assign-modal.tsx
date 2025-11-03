@@ -30,7 +30,7 @@ export function AssignModal({ client, handleClose }: { client?: any, handleClose
 
 
     const handleSelect = async (professional_id: string | number) => {
-        let obj: { coach_id: string | number | null, nutritionist_id: string | number | null } = {
+        const obj: { coach_id: string | number | null, nutritionist_id: string | number | null } = {
             coach_id: null,
             nutritionist_id: null,
         }

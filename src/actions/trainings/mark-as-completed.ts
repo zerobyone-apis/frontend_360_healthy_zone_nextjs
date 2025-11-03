@@ -24,7 +24,7 @@ export async function trainingMarkAsComplete(trainingID: number | string) {
             body:  null,
             cache: "no-store",
         });
-        let body = await resp.text();
+        const body = await resp.text();
         console.log(resp.status);
         if(resp.status !== 200) {
             throw new Error(body);
@@ -60,7 +60,7 @@ export async function dailyTrainMarkAsComplete(dayId: number | string) {
             body:  null,
             cache: "no-store",
         });
-        let body = await resp.text();
+        const body = await resp.text();
         console.log(resp.status);
         if(resp.status !== 200) {
             throw new Error(body);

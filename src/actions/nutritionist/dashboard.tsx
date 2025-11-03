@@ -20,7 +20,7 @@ export async function getDashboardStats(): Promise<any> {
 				cache: "no-store",
 			}
 		);
-		let body = await resp.json();
+		const body = await resp.json();
 		body.custom = {
 			customers: body.full_assignments.length,
 			customers_limit: body.remaining_clients.split("/")[1].slice(),

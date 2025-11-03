@@ -6,7 +6,8 @@ interface PersonData {
 }
 
 export function calculateFatPercentage(data: PersonData): number {
-	let { weight, height, gender, age } = data;
+	const { weight, height, gender} = data
+	let { age } = data;
 	if (!age) age = 30;
 
 	// Fórmula de Brozek para mujeres

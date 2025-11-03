@@ -33,7 +33,7 @@ export async function getUserMetricsByDate({
 				cache: "no-store",
 			}
 		);
-		let body = await resp.json();
+		const body = await resp.json();
 		if (resp.status !== 200) {
 			throw new Error(body.message);
 		}

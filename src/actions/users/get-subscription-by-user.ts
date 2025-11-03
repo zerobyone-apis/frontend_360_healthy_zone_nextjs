@@ -26,7 +26,7 @@ export async function fetchTemplate() {
 				cache: "no-store",
 			}
 		);
-		let body = await resp.json();
+		const body = await resp.json();
 
 		if (!resp.ok) {
 			throw new Error(body.message);

@@ -30,7 +30,7 @@ export async function getGoalsByClientID(): Promise<GoalResponseDTO[] | Array<ne
                     cache: "no-store",
                 }
             );
-            let body = await resp.json();
+            const body = await resp.json();
             return body;
         } catch (error) {
             console.log(error);

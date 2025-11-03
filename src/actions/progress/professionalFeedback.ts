@@ -31,7 +31,7 @@ export async function postProffesionalFeedback(obj: any): Promise<any> {
 			body: JSON.stringify(objBody),
 			cache: "no-store",
 		});
-		let body = await resp.json();
+		const body = await resp.json();
 
 		if (!resp.ok) {
 			throw new Error(body.message);
