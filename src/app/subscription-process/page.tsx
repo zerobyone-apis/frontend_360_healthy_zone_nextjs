@@ -66,10 +66,11 @@ export default function Page({ }: Props) {
                     const result = await refreshUserData();
                     if (result.success && result.user) {
                         // Verificar si ahora tiene suscripción activa
-                        if (result.user.client?.subscription) {
+                        if (result.user.client?.subscription && result.user.client?.subscription.status == "ACTIVE") {
                             console.log("Payment completed! Subscription active");
                             toast.success("Payment completed successfully!");
                             setPaypalLink(null);
+                            
                             // Redirigir al dashboard
                             router.push("/dashboard");
                         }
