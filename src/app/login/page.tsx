@@ -16,6 +16,7 @@ export default function Page() {
 
   async function handleLoginForm() {
     const resp = await login(userdata);
+
     if (resp.error && resp.message) {
       return toast.error(resp.message);
     }
@@ -23,11 +24,15 @@ export default function Page() {
       return toast.warning('Check your credentials and try again');
     if (resp.user.roles === 'CLIENT') {
       if (resp.user.firstTimeLogin === true) return router.push('/custom-form');
-      if (!resp.client.subscription)
+      if (
+        !resp.client.subscription.status || 
+        resp.client.subscription.status != 'ACTIVE'
+      )
         return router.push('/subscription-process');
-
+    } else {
       return router.push('/dashboard');
     }
+
     if (resp.user.roles === 'COACH') return router.push('/coach/dashboard');
     if (resp.user.roles === 'NUTRITIONIST')
       return router.push('/nutritionist/dashboard');

@@ -1,97 +1,99 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use server";
-import { cookies } from "next/headers";
+'use server';
+import { cookies } from 'next/headers';
 // import { Crypto } from "@/utils/encrypt";
 
 type login = {
-	email: string;
-	password: string;
+  email: string;
+  password: string;
 };
 
 export const login = async ({ email, password }: login) => {
-	try {
-		const resp = await fetch(process.env.BASE_PATH + "/v1.0/user/login", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				"Cache-Control": "no-store",
-				cache: "no-store",
-			},
-			body: JSON.stringify({
-				email,
-				password,
-			}),
-			cache: "no-store",
-		});
-		const body = await resp.json();
+  try {
+    const resp = await fetch(process.env.BASE_PATH + '/v1.0/user/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store',
+        cache: 'no-store',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+      cache: 'no-store',
+    });
+    const body = await resp.json();
 
-		// cookieStore.set("user", Crypto.encrypt(JSON.stringify(body)));
-		const token: string = resp.headers.get("Authorization") || "";
-		console.log(body);
-		if (body.error) {
-			return body;
-		}
+    // cookieStore.set("user", Crypto.encrypt(JSON.stringify(body)));
+    const token: string = resp.headers.get('Authorization') || '';
 
-		if (!token) return false;
+    if (body.error) {
+      return body;
+    }
 
-		// adding cookies...
-		const sevenDays = 168 * 60 * 60 * 1000;
-		const cookieStore = cookies();
+    if (!token) return false;
 
-		if (body.user.roles === "COACH") {
-			delete body.coach.clients;
-			delete body.coach.trainings;
-			delete body.nutritionist;
-			delete body.client;
-			delete body.admin;
-		}
-		if (body.user.roles === "NUTRITIONIST") {
-			delete body.nutritionist.clients;
-			delete body.nutritionist.diets;
-			delete body.coach;
-			delete body.client;
-			delete body.admin;
-		}
+    // adding cookies...
+    const sevenDays = 168 * 60 * 60 * 1000;
+    const cookieStore = cookies();
 
-		if (body.user.roles === "CLIENT") {
-			delete body.nutritionist;
-			delete body.coach;
-			delete body.admin;
-			delete body.client.trainings;
-			delete body.client.goals;
-			delete body.client.training;
-			delete body.client.diets;
-			delete body.client.goalClients;
-			if (body.client.subscription) {
-				if (
-					body.client.subscription.status == "APPROVAL_PENDING" ||
-					body.client.subscription.status == "ACTIVE"
-				) {
-					body.client.plan_id = body.client.subscription.paypal_plan_id;
-					body.client.subscription =
-						body.client.subscription.paypal_subscription_id;
-				} else {
-					body.client.subscription = null;
-				}
-			}
-		}
-		if (body.user.roles === "ADMIN") {
-			console.log("Es admin, se borrara el assigments")
-			delete body.admin.assignments;
-		}
+    if (body.user.roles === 'COACH') {
+      delete body.coach.clients;
+      delete body.coach.trainings;
+      delete body.nutritionist;
+      delete body.client;
+      delete body.admin;
+    }
+    if (body.user.roles === 'NUTRITIONIST') {
+      delete body.nutritionist.clients;
+      delete body.nutritionist.diets;
+      delete body.coach;
+      delete body.client;
+      delete body.admin;
+    }
 
-		delete body.user.notifications;
+    if (body.user.roles === 'CLIENT') {
+      delete body.nutritionist;
+      delete body.coach;
+      delete body.admin;
+      delete body.client.trainings;
+      delete body.client.goals;
+      delete body.client.training;
+      delete body.client.diets;
+      delete body.client.goalClients;
+      if (body.client.subscription) {
+        if (
+          body.client.subscription.status == 'APPROVAL_PENDING' ||
+          body.client.subscription.status == 'ACTIVE'
+        ) {
+          body.client.plan_id = body.client.subscription.paypal_plan_id;
+          body.client.subscription = {
+            id: body.client.subscription.paypal_subscription_id,
+            status: body.client.subscription.status,
+          };
+        } else {
+          body.client.subscription = null;
+        }
+      }
+    }
+    if (body.user.roles === 'ADMIN') {
+      console.log('Es admin, se borrara el assigments');
+      delete body.admin.assignments;
+    }
 
-		cookieStore.set("user", JSON.stringify(body), {
-			expires: Date.now() + sevenDays,
-		});
+    delete body.user.notifications;
 
-		console.log("login body:", body);
-		cookieStore.set("token", token, { expires: Date.now() + sevenDays });
+    cookieStore.set('user', JSON.stringify(body), {
+      expires: Date.now() + sevenDays,
+    });
 
-		return body;
-	} catch (error: any) {
-		console.error('Error in login: ', error);
-		throw new Error(`Error trying to login`);
-	}
+    console.log('login body:', body);
+    cookieStore.set('token', token, { expires: Date.now() + sevenDays });
+
+    return body;
+  } catch (error: any) {
+    console.error('Error in login: ', error);
+    throw new Error(`Error trying to login`);
+  }
 };
